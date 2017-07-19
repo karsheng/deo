@@ -10,6 +10,8 @@ import { AUTH_USER, FETCH_USER_INFO } from './actions/types';
 import _ from 'lodash';
 import { ROOT_URL } from './constants';
 import axios from 'axios';
+import'../style/style.css';
+import'../style/bootstrap.min.css';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
