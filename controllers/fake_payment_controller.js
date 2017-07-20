@@ -12,7 +12,7 @@ module.exports = {
 			.populate({ path: 'category', model: 'category' })
 			.populate({ path: 'orders.meal', model: 'meal' })
 			.then(reg => {
-				if (reg) {
+				if (reg && !reg.paid) {
 					const payment = new Payment({
 						user: user._id,
 						registration: reg._id,
@@ -23,6 +23,8 @@ module.exports = {
 					payment.save()
 						.then(p => res.send(p))
 						.catch(next);
+				} else {
+					res.status(422).send({message: 'Payment already made'});
 				}
 			});
 	}

@@ -12,6 +12,7 @@ const faker = require('faker');
 const Payment = require('../../models/payment');
 const mongoose = require('mongoose');
 const Registration = mongoose.model('registration');
+const executeFakePayment = require('../../helper/fake_payment_execute_helper');
 
 describe('Fake Payment Controller', function(done){
 	this.timeout(20000);
@@ -102,6 +103,24 @@ describe('Fake Payment Controller', function(done){
 						Registration.findById(reg._id)
 							.then(result => {
 								assert(result.paid === true);
+								done();
+							});
+					});
+			});
+	});
+
+	it('disallows repeated payment', done => {
+		const orders = [
+			{ meal: meal1, quantity: 1 }
+		];
+		createRegistration(userToken, event._id, cat1, orders)
+			.then(reg => {
+				executeFakePayment(userToken, reg)
+					.then(result1 => {
+							assert(result1.registration.toString() === reg._id.toString());
+						executeFakePayment(userToken, reg)
+							.then(result2 => {
+								assert(result2.message === 'Payment already made');
 								done();
 							});
 					});
