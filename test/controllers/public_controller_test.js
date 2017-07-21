@@ -14,7 +14,7 @@ describe('Public Controller', function(done) {
 	var adminToken;
 	var cat1, cat2, cat3, cat4, cat5, cat6;
 	var meal1, meal2, meal3;
-	var event1, event2;
+	var event1, event2, event3;
 
 	beforeEach(done => {
 		createAdmin('karshenglee@gmail.com', 'qwerty123')
@@ -31,7 +31,8 @@ describe('Public Controller', function(done) {
 				meal3 = meals[2];
 				Promise.all([
 					createEvent(adminToken, 'Test Event 1'),
-					createEvent(adminToken, 'Test Event 2')
+					createEvent(adminToken, 'Test Event 2'),
+					createEvent(adminToken, 'Test Event 3')
 				])
 				.then(events => {
 					Promise.all([
@@ -74,7 +75,7 @@ describe('Public Controller', function(done) {
 								adminToken,
 								events[1]._id,
 								'Event 2',
-								new Date().getTime(),
+								new Date(2018, 4, 4),
 								'Genting Highland',
 								4.1862,
 								102.6299,
@@ -89,11 +90,32 @@ describe('Public Controller', function(done) {
 									description: 'collection description'
 								},
 								'http:result.com/result'
+							),
+							updateEvent(
+								adminToken,
+								events[2]._id,
+								'Test Event 3',
+								new Date(2017, 5, 5),
+								'Some Place',
+								4.1862,
+								102.6299,
+								faker.lorem.paragraph(),
+								faker.image.imageUrl(),
+								[cat1, cat2],
+								[meal1],
+								true,
+								{
+									address: '1 Road',
+									time: '11th Nov 2017, 12th Nov 2017',
+									description: 'collection description'
+								},
+								'http:result.com/result'
 							)
 						])
 						.then(updatedEvents => {
 							event1 = updatedEvents[0];
 							event2 = updatedEvents[1];
+							event3 = updatedEvents[2];
 							done();
 						});
 					});
@@ -116,13 +138,13 @@ describe('Public Controller', function(done) {
 			});
 	});
 
-	it('GET to /api/event/open/all returns all open events', done => {
+	it('GET to /api/event/open/all returns all open events sorted by date (starts with soonest event)', done => {
 		request(app)
 			.get('/api/event/open/all')
 			.end((err, res) => {
-				assert(res.body.length === 1);
-				assert(res.body[0].name === 'Event 2');
-				assert(res.body[0].open === true);
+				assert(res.body.length === 2);
+				assert(res.body[0].name === 'Test Event 3');
+				assert(res.body[1].name === 'Event 2');
 				done();
 			});
 	});

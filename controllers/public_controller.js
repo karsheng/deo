@@ -17,7 +17,7 @@ module.exports = {
 	getAllOpenEvents(req, res, next) {
 		Event
 		.find({ open: true })
-		.sort({ _id: 1 })
+		.sort({ datetime: 1 })
 		.then(events => res.json(events))
 		.catch(next);
 	},
