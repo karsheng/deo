@@ -1,5 +1,5 @@
 // Change this
-export const ROOT_URL = process.env.NODE_ENV === 'production' ? 'https://deoraces.herokuapp.com' : 'http://localhost:3090';
+export const ROOT_URL = 'https://deoraces.herokuapp.com';
 
 export const INTERESTS = [
   '5km',
