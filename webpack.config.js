@@ -21,7 +21,7 @@ module.exports = {
   },
   module: {
     rules: [
-      {
+      { 
         use: 'babel-loader',
         test: /\.js$/,
         exclude: /node_modules/
@@ -37,14 +37,17 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
+      }
     }),
     new webpack.optimize.CommonsChunkPlugin({
       names: ['vendor', 'manifest']
     }),
     new HtmlWebpackPlugin({
       template: 'client/src/index.html'
-    })
+    }),
+    new webpack.optimize.UglifyJsPlugin()
   ],
   devServer: {
     historyApiFallback: true,

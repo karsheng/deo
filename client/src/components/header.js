@@ -1,56 +1,167 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
+import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
+import withWidth, { SMALL } from 'material-ui/utils/withWidth';
+import { ToolbarGroup, ToolbarSeparator } from 'material-ui/Toolbar';
+import Popover from 'material-ui/Popover';
+
 
 class Header extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { open: false };
+		this.state = { 
+			open: false,
+			isSmallSize: true,
+			iconStyleLeft: {},
+			popOverOpen: false
+		};
 	}
 
 	handleToggle = () => this.setState({open: !this.state.open});
   handleClose = () => this.setState({open: false});
+  handleTouchTap = (event) => {
 
-  renderMenuItems () {
-  	if (this.props.authenticated) {
-  		return([
-				<MenuItem key={2} containerElement={<Link to="/profile" />}>Profile</MenuItem>,
-				<MenuItem key={3} containerElement={<Link to="/signout" />}>Sign Out</MenuItem>
-			]);
+    // This prevents ghost click.
+    event.preventDefault();
+
+    this.setState({
+      popOverOpen: true,
+      anchorEl: event.currentTarget,
+    });
+  };
+
+  handleRequestClose = () => {
+    this.setState({
+      popOverOpen: false,
+    });
+  };
+
+  componentWillMount() {
+  	if (this.props.width === SMALL) {
+  		this.setState({
+  			isSmallSize: true,
+				iconStyleLeft: {}
+  		});
   	} else {
-			return([
-				<MenuItem key={2} containerElement={<Link to="/signin" />}>Sign In</MenuItem>,
-				<MenuItem key={3} containerElement={<Link to="/signup" />}>Sign Up</MenuItem>
-			]);  		
+  		this.setState({
+  			isSmallSize: false,
+				iconStyleLeft: { display: 'none' }
+  		});
+  	}
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+  	if (nextProps.width === SMALL) {
+  		this.setState({
+  			isSmallSize: true,
+				iconStyleLeft: {}
+  		});
+  	} else {
+  		this.setState({
+  			isSmallSize: false,
+				iconStyleLeft: { display: 'none' }
+  		});
+  	}
+  }
+
+  renderMenuItems() {
+  	return([
+  		<MenuItem key={1}>About</MenuItem>,
+  		<MenuItem key={2}>Results</MenuItem>,
+  		<MenuItem key={3}>Contact</MenuItem>
+  	]);
+  }
+
+  renderNavItems() {
+  	// render drawer if screen is small
+  	if (this.state.isSmallSize) {
+  		return(
+	      <Drawer
+	        docked={false}
+	        width={200}
+	        open={this.state.open}
+	        onRequestChange={(open) => this.setState({open})}
+	      >
+					<MenuItem key={1} containerElement={<Link to="/" />}>Home</MenuItem>
+					{this.renderMenuItems()}
+	      </Drawer>	
+	  	);
+  	} else {
+  		// render buttons if screen is not small
+  		return(
+  			<ToolbarGroup>
+  				<FlatButton>About</FlatButton>
+  				<FlatButton>Results</FlatButton>
+  				<FlatButton>Contact</FlatButton>
+  			</ToolbarGroup>
+  		);
+  	}
+  }
+
+  renderUserLink() {
+  	if (this.props.authenticated) {
+  		const { user } = this.props;
+
+  		if (user) {
+	  		return(
+	  		<ToolbarGroup>
+	        <FlatButton
+	          onTouchTap={this.handleTouchTap.bind(this)}
+	          label={'Hi, ' + user.name}
+	        />
+					<Popover
+	          open={this.state.popOverOpen}
+	          anchorEl={this.state.anchorEl}
+	          anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+	          targetOrigin={{horizontal: 'right', vertical: 'top'}}
+	          onRequestClose={this.handleRequestClose.bind(this)}
+	        >
+	          <Menu>
+	            <MenuItem onTouchTap={() => this.setState({ popOverOpen: false })} containerElement={<Link to="/profile" />} primaryText="Profile" />
+	            <MenuItem onTouchTap={() => this.setState({ popOverOpen: false })} containerElement={<Link to="/signout" />} primaryText="Sign out"/>
+	          </Menu>
+	        </Popover>
+	       </ToolbarGroup>
+		  	);
+  		}
+  	} else {
+  		return(
+				<ToolbarGroup>
+					<FlatButton containerElement={<Link to="/signin" />}>Log In</FlatButton>
+					<ToolbarSeparator />
+					<FlatButton containerElement={<Link to="/signup" />}>Sign Up</FlatButton>
+				</ToolbarGroup>
+  		);
   	}
   }
 
 	render() {
 		return (
 			<div>
-			<AppBar 
-				title="Runners App"
-				onLeftIconButtonTouchTap={this.handleToggle}
-			/>
-      <Drawer
-        docked={false}
-        width={200}
-        open={this.state.open}
-        onRequestChange={(open) => this.setState({open})}
-      >
-				<MenuItem key={1} containerElement={<Link to="/" />}>Home</MenuItem>
-				{this.renderMenuItems()}
-      </Drawer>			
+				<AppBar 
+					title="Runners App"
+					onLeftIconButtonTouchTap={this.handleToggle}
+					iconStyleLeft={this.state.iconStyleLeft}
+					onTitleTouchTap={() => this.props.history.push('/')}
+				>
+					{this.renderNavItems()}
+					{this.renderUserLink()}
+				</AppBar>
 			</div>
 		);
 	}
 }
 
 function mapStateToProps(state) {
-	return { authenticated: state.auth.authenticated };
+	return { 
+		authenticated: state.auth.authenticated,
+		user: state.auth.info
+	};
 }
 
-export default connect(mapStateToProps)(Header);
+export default withWidth()(connect(mapStateToProps)(withRouter(Header)));
