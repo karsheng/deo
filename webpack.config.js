@@ -16,6 +16,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
+    publicPath: '/',
     filename: '[name].[chunkhash].js'
   },
   module: {
@@ -44,5 +45,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'client/src/index.html'
     })
-  ]
+  ],
+  devServer: {
+    historyApiFallback: true,
+    contentBase: './'
+  }
 };

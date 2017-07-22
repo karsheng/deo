@@ -12,7 +12,7 @@ mongoose.Promise = global.Promise;
 // DB Setup
 if (process.env.NODE_ENV === 'production') {
 	mongoose.connect('mongodb://heroku_9rj0dww5:t2f7sljkj66vls4rasqgkhat8d@ds115583.mlab.com:15583/heroku_9rj0dww5');
-} else if (process.env.NODE_ENV !== 'test') {
+} else if (process.env.NODE_ENV === 'test') {
 
 } else {
 	mongoose.connect('mongodb://localhost:deoevents/deoevents');	

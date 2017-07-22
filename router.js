@@ -14,6 +14,8 @@ const requireAuth = passport.authenticate('user-jwt', { session: false });
 const requireSignin = passport.authenticate('user-local', { session: false });
 const adminRequireAuth = passport.authenticate('admin-jwt', { session: false });
 const adminRequireSignin = passport.authenticate('admin-local', { session: false });
+const express = require('express');
+const path = require('path');
 
 
 module.exports = function(app) {
@@ -64,18 +66,9 @@ module.exports = function(app) {
 	app.delete('/api/admin/associate/:associate_id', adminRequireAuth, AdminController.deleteAssociate);
 
 	if (process.env.NODE_ENV === 'production') {
-		const express = require('express');
 	  app.use(express.static('dist'));
 	  app.get('*', (req, res) => {
 	    res.sendFile(path.join(__dirname, 'dist/index.html'));
 	  });
-	} else if (process.env.NODE_ENV === 'test') {
-		
-	} else {
-	  const webpackMiddleware = require('webpack-dev-middleware');
-	  const webpack = require('webpack');
-	  const webpackConfig = require('./webpack.config.js');
-	  app.use(webpackMiddleware(webpack(webpackConfig)));
-
-	}
+	} 
 };
