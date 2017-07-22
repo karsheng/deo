@@ -10,6 +10,9 @@ import withWidth, { SMALL } from 'material-ui/utils/withWidth';
 import { ToolbarGroup, ToolbarSeparator } from 'material-ui/Toolbar';
 import Popover from 'material-ui/Popover';
 
+const style = {
+	boxShadow: 'none'
+};
 
 class Header extends Component {
 	constructor(props) {
@@ -143,7 +146,8 @@ class Header extends Component {
 	render() {
 		return (
 			<div>
-				<AppBar 
+				<AppBar
+					style={style}
 					title="Runners App"
 					onLeftIconButtonTouchTap={this.handleToggle}
 					iconStyleLeft={this.state.iconStyleLeft}
