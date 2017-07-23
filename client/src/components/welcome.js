@@ -3,25 +3,25 @@ import { connect } from 'react-redux';
 import * as actions from '../actions/event_actions';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
-import { GridList, GridTile } from 'material-ui/GridList';
+import { Card, CardHeader, CardMedia, CardActions } from 'material-ui/Card';
 import Slider from 'react-slick';
 import Divider from 'material-ui/Divider';
 import { formatDate } from '../helper/';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 
-const styles = {
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-  },
-  gridList: {
-    display: 'flex',
-    flexWrap: 'nowrap',
-    overflowX: 'auto',
-  },
-  titleStyle: {
-    color: 'rgb(0, 188, 212)',
-  },
+const containerStyle = {
+	marginBottom: '24px'
+};
+
+const cardActionsStyle = {
+	textAlign: 'center'
+};
+
+const viewEventBtnStyle = {
+	boxShadow: 'none',
+	borderRadius: '0px',
+	height: '48px'
 };
 
 const settings = {
@@ -42,18 +42,35 @@ class WelcomePage extends Component {
 	renderEvents() {
 		const events =  _.map(this.props.events, (event) => {
 			if (event.open) {
+
 				return(
-					<GridTile
-						key={event._id}
-						titleStyle={styles.titleStyle}
-						containerElement={<Link to={"/event/" + event._id}></Link>}
-					>
-						<img src={event.imageUrl} alt=""/>
-							<p>{event.name}</p>
-							<p>{formatDate(event.datetime)}</p>
-							<p>{event.address}</p>
-					</GridTile>
-				);				
+					<div key={event._id} className="col-xs-12 col-sm-4">
+						<Card
+							containerStyle={containerStyle}
+						>
+							<CardHeader
+								title={event.name}
+								subtitle={event.address + ' | ' + formatDate(event.datetime)}
+							>
+							</CardHeader>
+							<CardMedia>
+								<img src={event.imageUrl} alt={event.name} />
+							</CardMedia>
+							<CardActions
+								style={cardActionsStyle}
+							>
+								 <FlatButton
+								 	style={viewEventBtnStyle}
+								 	fullWidth={true}
+								 	secondary={true}
+								 	onTouchTap={() => this.props.history.push(`/event/${event._id}`)}
+								 	label="View Event"
+								 >
+								 </FlatButton>
+							</CardActions>
+						</Card>
+					</div>
+				);
 			}
 		});
 
@@ -71,13 +88,15 @@ class WelcomePage extends Component {
 				<br/>
 				<br/>
 				<h2>Events</h2>
-				<div style={styles.root}>
-					<GridList style={styles.gridList} cols={1.1} cellHeight="auto">
+				<div className="row">
 					{this.renderEvents()}
-					</GridList>	
 				</div>
 				<br/>
-				<br/>
+				<RaisedButton
+					label="View More"
+					fullWidth={true}
+					secondary={true}
+				/>
 			</div>
 		);
 	}

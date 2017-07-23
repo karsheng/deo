@@ -14,6 +14,10 @@ const style = {
 	boxShadow: 'none'
 };
 
+const navButtonStyle = {
+	color: 'white'
+};
+
 class Header extends Component {
 	constructor(props) {
 		super(props);
@@ -74,7 +78,7 @@ class Header extends Component {
 
   renderMenuItems() {
   	return([
-  		<MenuItem key={1}>About</MenuItem>,
+  		<MenuItem key={1}>Events</MenuItem>,
   		<MenuItem key={2}>Results</MenuItem>,
   		<MenuItem key={3}>Contact</MenuItem>
   	]);
@@ -98,9 +102,9 @@ class Header extends Component {
   		// render buttons if screen is not small
   		return(
   			<ToolbarGroup>
-  				<FlatButton>About</FlatButton>
-  				<FlatButton>Results</FlatButton>
-  				<FlatButton>Contact</FlatButton>
+  				<FlatButton style={navButtonStyle} label="Events"></FlatButton>
+  				<FlatButton style={navButtonStyle} label="Results"></FlatButton>
+  				<FlatButton style={navButtonStyle} label="Contact"></FlatButton>
   			</ToolbarGroup>
   		);
   	}
