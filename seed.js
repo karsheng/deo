@@ -133,7 +133,12 @@ createAdmin('admin@deoevents.com', 'qwerty12345')
 						faker.image.imageUrl(),
 						[cats[0], cats[1]],
 						[meals[0], meals[1], meals[2]],
-						true
+						true,
+						{
+							address: 'Collection Venue 1',
+							time: 'June 17th from 9 to 6pm',
+							description: 'Please bring along your IC and registration id'
+						}
 					),
 					updateEvent(
 						adminToken,

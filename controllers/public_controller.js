@@ -15,11 +15,11 @@ module.exports = {
 			.catch(next);
 	},
 	getAllOpenEvents(req, res, next) {
-		Event
-		.find({ open: true })
-		.sort({ datetime: 1 })
-		.then(events => res.json(events))
-		.catch(next);
+		Event.find({ open: true })
+			.populate({ path: 'categories', model: 'category' })
+			.sort({ datetime: 1 })
+			.then(events => res.json(events))
+			.catch(next);
 	},
 	getAssociate(req, res, next) {
 		const { associate_id } = req.params;

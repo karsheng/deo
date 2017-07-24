@@ -11,13 +11,13 @@ import { ToolbarGroup, ToolbarSeparator } from 'material-ui/Toolbar';
 import Popover from 'material-ui/Popover';
 
 const style = {
-	boxShadow: 'none'
+	appBar: {
+		boxShadow: 'none'
+	},
+	navButton: {
+		color: 'white'	
+	}	
 };
-
-const navButtonStyle = {
-	color: 'white'
-};
-
 class Header extends Component {
 	constructor(props) {
 		super(props);
@@ -102,9 +102,9 @@ class Header extends Component {
   		// render buttons if screen is not small
   		return(
   			<ToolbarGroup>
-  				<FlatButton style={navButtonStyle} label="Events"></FlatButton>
-  				<FlatButton style={navButtonStyle} label="Results"></FlatButton>
-  				<FlatButton style={navButtonStyle} label="Contact"></FlatButton>
+  				<FlatButton style={style.navButton} label="Events"></FlatButton>
+  				<FlatButton style={style.navButton} label="Results"></FlatButton>
+  				<FlatButton style={style.navButton} label="Contact"></FlatButton>
   			</ToolbarGroup>
   		);
   	}
@@ -118,6 +118,7 @@ class Header extends Component {
 	  		return(
 	  		<ToolbarGroup>
 	        <FlatButton
+	        	style={style.navButton}
 	          onTouchTap={this.handleTouchTap.bind(this)}
 	          label={'Hi, ' + user.name}
 	        />
@@ -139,9 +140,9 @@ class Header extends Component {
   	} else {
   		return(
 				<ToolbarGroup>
-					<FlatButton containerElement={<Link to="/signin" />}>Log In</FlatButton>
+					<FlatButton style={style.navButton} containerElement={<Link to="/signin" />}>Log In</FlatButton>
 					<ToolbarSeparator />
-					<FlatButton containerElement={<Link to="/signup" />}>Sign Up</FlatButton>
+					<FlatButton style={style.navButton} containerElement={<Link to="/signup" />}>Sign Up</FlatButton>
 				</ToolbarGroup>
   		);
   	}
@@ -151,7 +152,7 @@ class Header extends Component {
 		return (
 			<div>
 				<AppBar
-					style={style}
+					style={style.appBar}
 					title="Runners App"
 					onLeftIconButtonTouchTap={this.handleToggle}
 					iconStyleLeft={this.state.iconStyleLeft}

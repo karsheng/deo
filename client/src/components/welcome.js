@@ -6,23 +6,8 @@ import _ from 'lodash';
 import { Card, CardHeader, CardMedia, CardActions } from 'material-ui/Card';
 import Slider from 'react-slick';
 import Divider from 'material-ui/Divider';
-import { formatDate } from '../helper/';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-
-const containerStyle = {
-	marginBottom: '24px'
-};
-
-const cardActionsStyle = {
-	textAlign: 'center'
-};
-
-const viewEventBtnStyle = {
-	boxShadow: 'none',
-	borderRadius: '0px',
-	height: '48px'
-};
+import EventCard from './event-card';
 
 const settings = {
   dots: true,
@@ -42,34 +27,11 @@ class WelcomePage extends Component {
 	renderEvents() {
 		const events =  _.map(this.props.events, (event) => {
 			if (event.open) {
-
 				return(
-					<div key={event._id} className="col-xs-12 col-sm-4">
-						<Card
-							containerStyle={containerStyle}
-						>
-							<CardHeader
-								title={event.name}
-								subtitle={event.address + ' | ' + formatDate(event.datetime)}
-							>
-							</CardHeader>
-							<CardMedia>
-								<img src={event.imageUrl} alt={event.name} />
-							</CardMedia>
-							<CardActions
-								style={cardActionsStyle}
-							>
-								 <FlatButton
-								 	style={viewEventBtnStyle}
-								 	fullWidth={true}
-								 	secondary={true}
-								 	onTouchTap={() => this.props.history.push(`/event/${event._id}`)}
-								 	label="View Event"
-								 >
-								 </FlatButton>
-							</CardActions>
-						</Card>
-					</div>
+					<EventCard
+						key={event._id}
+						event={event}
+					/>
 				);
 			}
 		});

@@ -10,7 +10,7 @@ export default function(state = {}, action) {
 		case AUTH_USER:
 			return { ...state, error:'', authenticated: true };
 		case UNAUTH_USER:
-			return { ...state, authenticated: false };
+			return { ...state, ...{ authenticated: false, info: {} } };
 		case AUTH_ERROR:
 			return { ...state, error: action.payload };
 		case FETCH_USER_INFO:
