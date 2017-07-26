@@ -21,6 +21,16 @@ module.exports = {
 			.then(events => res.json(events))
 			.catch(next);
 	},
+	getSpecificOpenEvents(req, res, next) {
+		const { type } = req.query
+
+		Event
+			.find({ type, open: true })
+			.populate({ path: 'categories', model: 'category' })
+			.sort({ datetime: 1 })
+			.then(events => res.json(events))
+			.catch(next);
+	},
 	getAssociate(req, res, next) {
 		const { associate_id } = req.params;
 

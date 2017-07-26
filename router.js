@@ -20,6 +20,7 @@ const path = require('path');
 
 module.exports = function(app) {
 	app.get('/api/event/open/all', PublicController.getAllOpenEvents);
+	app.get('/api/event/open', PublicController.getSpecificOpenEvents	);
 	app.get('/api/event/:event_id', PublicController.getEvent);
 	app.get('/api/associate/all', PublicController.getAllAssociates);
 	app.get('/api/associate/:associate_id', PublicController.getAssociate);

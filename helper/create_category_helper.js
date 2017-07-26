@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app  = require('../app');
 
-module.exports = (token, name, price, gender, ageMin, ageMax, participantLimit, event, prize) => {
+module.exports = (token, name, price, gender, ageMin, ageMax, participantLimit, event, prize, type) => {
 	return new Promise((resolve, reject) => {
 		request(app)
 			.post('/api/admin/category')
@@ -14,7 +14,8 @@ module.exports = (token, name, price, gender, ageMin, ageMax, participantLimit, 
 				ageMax,
 				participantLimit,
 				event,
-				prize
+				prize,
+				type
 			})
 			.end((err, res) => {
 				resolve(res.body);

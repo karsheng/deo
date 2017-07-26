@@ -36,12 +36,12 @@ describe('Public Controller', function(done) {
 				])
 				.then(events => {
 					Promise.all([
-						createCategory(adminToken, '5km', 50, true, 21, 48, 1000, events[0], 'RM 100'),
-						createCategory(adminToken, '10km', 60, true, 21, 48, 1000, events[0], 'RM 100'),
-						createCategory(adminToken, 'half-marathon', 70, true, 21, 48, 1000, events[0], 'RM 100'),
-						createCategory(adminToken, 'full-marathon', 80, true, 21, 48, 1000, events[0], 'RM 100'),
-						createCategory(adminToken, '5km', 50, true, 21, 48, 1000, events[1], 'RM 100'),
-						createCategory(adminToken, '10km', 60, true, 21, 48, 1000, events[1], 'RM 100')
+						createCategory(adminToken, '5km', 50, true, 21, 48, 1000, events[0], 'RM 100', 'run'),
+						createCategory(adminToken, '10km', 60, true, 21, 48, 1000, events[0], 'RM 100', 'run'),
+						createCategory(adminToken, 'half-marathon', 70, true, 21, 48, 1000, events[0], 'RM 100', 'run'),
+						createCategory(adminToken, 'full-marathon', 80, true, 21, 48, 1000, events[0], 'RM 100', 'swimming'),
+						createCategory(adminToken, '5km', 50, true, 21, 48, 1000, events[1], 'RM 100', 'swimming'),
+						createCategory(adminToken, '10km', 60, true, 21, 48, 1000, events[1], 'RM 100', 'swimming')
 					])
 					.then(cats => {
 						cat1 = cats[0];
@@ -134,6 +134,7 @@ describe('Public Controller', function(done) {
 				assert(res.body.lat === 3.1862);
 				assert(res.body.collectionInfo[0].address === '1 Newell Road');
 				assert(res.body.resultUrl === 'http:result.com/result');
+				assert(res.body.type[0] === 'run');
 				done();
 			});
 	});
@@ -146,6 +147,22 @@ describe('Public Controller', function(done) {
 				assert(res.body[0].name === 'Test Event 3');
 				assert(res.body[1].name === 'Event 2');
 				done();
+			});
+	});
+
+	it('GET to /api/event/open with query returns all open specific events', done => {
+		request(app)
+			.get('/api/event/open/?type=run')
+			.end((err, res) => {
+				assert(res.body.length === 1);
+				assert(res.body[0].name === 'Test Event 3');
+				request(app)
+					.get('/api/event/open?type=swimming')
+					.end((err, res) => {
+						assert(res.body.length === 1);
+						assert(res.body[0].name === 'Event 2');
+						done();
+					});
 			});
 	});
 

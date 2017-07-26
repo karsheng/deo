@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const CollectionSchema = require('./collection');
+const CollectionSchema = require('./collectionSchema');
 
 const EventSchema = new Schema({
 	name: String,
@@ -22,8 +22,35 @@ const EventSchema = new Schema({
 		type: Boolean
 	},
 	collectionInfo: [CollectionSchema],
-	resultUrl: String
+	resultUrl: String,
+	type: [String]
 });
+
+
+EventSchema.pre('save', function(next) {
+	const event = this;
+	_getEventTypes(event, function(err, types) {
+		if (err) { return next(err); }
+		event.type = types;
+		next();
+	});
+});
+
+function _getEventTypes(event, cb) {
+	const Category = require('./category');
+	let types = [];
+
+	Category.populate(event, { path: 'categories' }, function(err, result) {
+		if (err) { return cb(err); }
+		result.categories.map(cat => {
+			if (types.indexOf(cat.type) === -1) {
+				types.push(cat.type);
+			}
+
+		});
+		return cb(null, types);
+	});
+}
 
 const Event = mongoose.model('event', EventSchema);
 

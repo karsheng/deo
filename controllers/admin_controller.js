@@ -13,7 +13,8 @@ module.exports = {
 			ageMax,
 			participantLimit,
 			event,
-			prize
+			prize,
+			type
 		} = req.body;
 
 		const category = new Category({
@@ -24,7 +25,8 @@ module.exports = {
 			ageMax,
 			participantLimit,
 			event,
-			prize
+			prize,
+			type
 		});
 
 		category.save()
@@ -53,7 +55,6 @@ module.exports = {
 	},
 	updateEvent(req, res, next) {
 		const { event_id } = req.params;
-
 		const { 
 			name,
 			datetime,
@@ -68,28 +69,29 @@ module.exports = {
 			collectionInfo,
 			resultUrl
 		} = req.body;
-
-		Event.findByIdAndUpdate(event_id, 
-			{
-				name,
-				datetime,
-				address,
-				lat,
-				lng,
-				description,
-				imageUrl,
-				categories,
-				meals,
-				open,
-				collectionInfo,
-				resultUrl
-			},
-			{
-				new: true
-			}
-		)
-		.then(returnedEvent => {
-			res.json(returnedEvent);
+		// findByIdAndUpdate doesnt support pre hooks
+		// hence use findById and save instead
+		// pre 'save' hook is used to update event type
+		Event.findById(event_id)
+		.then(event => {
+			event.name = name;
+			event.datetime = datetime;
+			event.address = address;
+			event.lat = lat;
+			event.lng = lng;
+			event.description = description;
+			event.imageUrl = imageUrl;
+			event.categories = categories;
+			event.meals = meals;
+			event.open = open;
+			event.collectionInfo = collectionInfo;
+			event.resultUrl = resultUrl;
+			
+			event.save()
+				.then(result => {
+					res.json(result);
+				})
+				.catch(next);
 		})
 		.catch(next);
 	},
