@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../actions/event_actions';
+import * as actions from '../../actions/event_actions';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -13,8 +13,8 @@ import {
 	CardTitle, CardText
 } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
-import GoogleMap from './google_map';
-import { formatDate } from '../helper/';
+import GoogleMap from '../google_map';
+import { formatDate } from '../../helper/';
 import {
   Table, TableBody,
   TableFooter, TableHeader,

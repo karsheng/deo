@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, CardHeader, CardMedia, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
-import { formatDate } from '../helper/';
+import { formatDate } from '../../helper/';
 import { withRouter } from 'react-router-dom';
 
 const style = {

@@ -7,7 +7,7 @@ import { Card, CardHeader, CardMedia, CardActions } from 'material-ui/Card';
 import Slider from 'react-slick';
 import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
-import EventCard from './event-card';
+import EventCard from './event/event_card';
 
 const settings = {
   dots: true,

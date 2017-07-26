@@ -7,7 +7,7 @@ import Signout from './components/auth/signout';
 import Signup from './components/auth/signup';
 import RequireAuth from './components/auth/require_auth';
 import WelcomePage from './components/welcome';
-import EventPage from './components/event_page';
+import EventPage from './components/event/event_page';
 import CategorySelection from './components/registration/category_selection';
 import ConfirmationPage from './components/registration/confirmation';
 import MealSelection from './components/registration/meal_selection';
