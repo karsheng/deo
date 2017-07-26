@@ -67,7 +67,8 @@ module.exports = {
 			meals,
 			open,
 			collectionInfo,
-			resultUrl
+			resultUrl,
+			stateName
 		} = req.body;
 		// findByIdAndUpdate doesnt support pre hooks
 		// hence use findById and save instead
@@ -86,6 +87,7 @@ module.exports = {
 			event.open = open;
 			event.collectionInfo = collectionInfo;
 			event.resultUrl = resultUrl;
+			event.stateName = stateName;
 			
 			event.save()
 				.then(result => {

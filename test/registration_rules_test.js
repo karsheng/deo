@@ -64,7 +64,8 @@ describe('Registration Rules', function(done) {
 								time: '11th Nov 2017, 12th Nov 2017',
 								description: 'collection description'
 							},
-							'http:result.com/result'
+							'http:result.com/result',
+							'Kuala Lumpur'
 						),
 						updateEvent(
 							adminToken,
@@ -84,7 +85,8 @@ describe('Registration Rules', function(done) {
 								time: '11th Nov 2017, 12th Nov 2017',
 								description: 'collection description'
 							},
-							'http:result.com/result'
+							'http:result.com/result',
+							'Kuala Lumpur'
 						)
 					])
 					.then(updatedEvents => {

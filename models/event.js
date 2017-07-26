@@ -23,7 +23,8 @@ const EventSchema = new Schema({
 	},
 	collectionInfo: [CollectionSchema],
 	resultUrl: String,
-	type: [String]
+	type: [String],
+	stateName: String
 });
 
 
