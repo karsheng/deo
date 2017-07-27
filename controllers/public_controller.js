@@ -22,10 +22,11 @@ module.exports = {
 			.catch(next);
 	},
 	getSpecificOpenEvents(req, res, next) {
-		const { type } = req.query
+		const { type } = req.query;
+		const query = type === 'any' ? { open: true } : { type, open: true };
 
 		Event
-			.find({ type, open: true })
+			.find(query)
 			.populate({ path: 'categories', model: 'category' })
 			.sort({ datetime: 1 })
 			.then(events => res.json(events))

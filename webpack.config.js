@@ -38,7 +38,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify('production')
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
       }
     }),
     new webpack.optimize.CommonsChunkPlugin({
@@ -46,8 +46,8 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: 'client/src/index.html'
-    }),
-    new webpack.optimize.UglifyJsPlugin()
+    })
+    // new webpack.optimize.UglifyJsPlugin()
   ],
   devServer: {
     historyApiFallback: true,

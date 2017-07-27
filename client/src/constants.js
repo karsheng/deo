@@ -1,5 +1,5 @@
 // Change this
-export const ROOT_URL = 'https://deoraces.herokuapp.com';
+export const ROOT_URL = 'http://localhost:3090' //'https://deoraces.herokuapp.com';
 
 export const INTERESTS = [
   '5km',
@@ -247,4 +247,22 @@ export const COUNTRIES = [
   "Yugoslavia",
   "Zambia",
   "Zimbabwe"
+];
+
+export const STATESNAME = [
+  "Kuala Lumpur",
+  "Labuan",
+  "Johor",
+  "Kedah",
+  "Kelantan",
+  "Melaka",
+  "Negeri Sembilan",
+  "Pahang",
+  "Perak",
+  "Perlis",
+  "Penang",
+  "Sabah",
+  "Sarawak",
+  "Selangor",
+  "Terrengganu"
 ];

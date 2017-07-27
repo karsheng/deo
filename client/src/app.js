@@ -8,6 +8,7 @@ import Signup from './components/auth/signup';
 import RequireAuth from './components/auth/require_auth';
 import WelcomePage from './components/welcome';
 import EventPage from './components/event/event_page';
+import EventBrowse from './components/event/event_browse';
 import CategorySelection from './components/registration/category_selection';
 import ConfirmationPage from './components/registration/confirmation';
 import MealSelection from './components/registration/meal_selection';
@@ -28,6 +29,7 @@ export default class App extends Component {
 						<Route path="/registration/checkout/:event_id" component={Checkout} />
 						<Route path="/registration/category/:event_id" component={CategorySelection} />
 						<Route path="/registration/meal/:event_id" component={MealSelection} />
+						<Route path="/event/browse" component={EventBrowse} />
 						<Route path="/event/:_id" component={EventPage} />
 						<Route path="/signin" component={Signin} />
 						<Route path="/signout" component={Signout} />

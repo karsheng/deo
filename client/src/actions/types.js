@@ -6,6 +6,7 @@ export const FETCH_INTERESTS = 'fetch_interests';
 
 export const FETCH_EVENTS = 'fetch_events';
 export const FETCH_EVENT = 'fetch_event';
+export const FETCH_SPECIFIC_EVENTS = 'fetch_specific_events';
 
 export const SELECT_CATEGORY = 'select_category';
 export const SELECT_MEAL = 'select_meal';

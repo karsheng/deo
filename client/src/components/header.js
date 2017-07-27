@@ -78,7 +78,12 @@ class Header extends Component {
 
   renderMenuItems() {
   	return([
-  		<MenuItem key={1}>Events</MenuItem>,
+  		<MenuItem 
+  			key={1}
+  			onTouchTap={() => this.props.history.push('/event/browse')}
+  		>
+  			Events
+  		</MenuItem>,
   		<MenuItem key={2}>Results</MenuItem>,
   		<MenuItem key={3}>Contact</MenuItem>
   	]);
@@ -102,7 +107,11 @@ class Header extends Component {
   		// render buttons if screen is not small
   		return(
   			<ToolbarGroup>
-  				<FlatButton style={style.navButton} label="Events"></FlatButton>
+  				<FlatButton 
+  					style={style.navButton} 
+  					label="Events"
+  					onTouchTap={() => this.props.history.push('/event/browse')} 
+  				/>
   				<FlatButton style={style.navButton} label="Results"></FlatButton>
   				<FlatButton style={style.navButton} label="Contact"></FlatButton>
   			</ToolbarGroup>
