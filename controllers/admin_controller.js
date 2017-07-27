@@ -14,7 +14,8 @@ module.exports = {
 			participantLimit,
 			event,
 			prize,
-			type
+			type,
+			distance
 		} = req.body;
 
 		const category = new Category({
@@ -26,7 +27,8 @@ module.exports = {
 			participantLimit,
 			event,
 			prize,
-			type
+			type,
+			distance
 		});
 
 		category.save()

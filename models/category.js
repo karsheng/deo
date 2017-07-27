@@ -13,7 +13,8 @@ const CategorySchema = new Schema({
 		ref: 'event'
 	},
 	prize: String,
-	type: String
+	type: String,
+	distance: Number
 });
 
 CategorySchema.methods.checkEligibility = function(user, cb) {

@@ -28,10 +28,10 @@ describe('Admin Controller', function(done) {
 			createEvent(adminToken, 'Test Event')
 			.then(e => {
 				Promise.all([
-					createCategory(adminToken, '5km', 50, true, 21, 48, 1000, e, 'RM 100', 'run'),
-					createCategory(adminToken, '10km', 60, true, 21, 48, 1000, e, 'RM 100', 'run'),
-					createCategory(adminToken, 'half-marathon', 70, true, 21, 48, 1000, e, 'RM 100', 'run'),
-					createCategory(adminToken, 'full-marathon', 80, true, 21, 48, 1000, e, 'RM 100', 'run'),
+					createCategory(adminToken, '5km', 50, true, 21, 48, 1000, e, 'RM 100', 'run', 5),
+					createCategory(adminToken, '10km', 60, true, 21, 48, 1000, e, 'RM 100', 'run', 10),
+					createCategory(adminToken, 'half-marathon', 70, true, 21, 48, 1000, e, 'RM 100', 'run', 21),
+					createCategory(adminToken, 'full-marathon', 80, true, 21, 48, 1000, e, 'RM 100', 'run', 42),
 				])
 				.then(cats => {
 					cat1 = cats[0];
@@ -93,7 +93,8 @@ describe('Admin Controller', function(done) {
 				participantLimit: 20,
 				event: event,
 				prize: 'RM 100',
-				type: 'run'
+				type: 'run',
+				distance: 5
 			})
 			.end((err, res) => {
 				Category.findOne({ name: '5km Women' })
@@ -104,6 +105,7 @@ describe('Admin Controller', function(done) {
 					assert(result.event.toString() === event._id.toString());
 					assert(result.prize === 'RM 100');
 					assert(result.type === 'run');
+					assert(result.distance === 5);
 					done();
 				});
 			});

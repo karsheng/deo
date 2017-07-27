@@ -6,8 +6,6 @@ const createMeal = require('./helper/create_meal_helper');
 const updateEvent = require('./helper/update_event_helper');
 const createUser = require('./helper/create_user_helper');
 const createRegistration = require('./helper/create_registration_helper');
-const createPayPalPayment = require('./helper/create_paypal_payment_helper');
-const executePayPalPayment = require('./helper/execute_paypal_payment_helper');
 const faker = require('faker');
 
 
@@ -19,7 +17,8 @@ createAdmin('admin@deoevents.com', 'qwerty12345')
 		createEvent(adminToken, 'Event 3'),
 		createEvent(adminToken, 'Event 4'),
 		createEvent(adminToken, 'Event 5'),
-		createEvent(adminToken, 'Event 6')
+		createEvent(adminToken, 'Event 6'),
+		createEvent(adminToken, 'Swimming Event'),
 	])
 	.then(events => {
 		Promise.all([
@@ -31,7 +30,10 @@ createAdmin('admin@deoevents.com', 'qwerty12345')
 				21,
 				999,
 				1000,
-				events[0]
+				events[0],
+				'RM 100',
+				'run',
+				10
 			),
 			createCategory(
 				adminToken,
@@ -41,59 +43,89 @@ createAdmin('admin@deoevents.com', 'qwerty12345')
 				21,
 				999,
 				1000,
-				events[0]
+				events[0],
+				'RM 200',
+				'run',
+				10
 			),
 			createCategory(
 				adminToken,
-				'10km Female 21 and above',
+				'21km Female 21 and above',
 				50,
 				false,
 				21,
 				999,
 				1000,
-				events[1]
+				events[1],
+				'RM 100',
+				'run',
+				21
 			),
 			createCategory(
 				adminToken,
-				'10km Male 21 and above',
+				'21km Male 21 and above',
 				50,
 				true,
 				21,
 				999,
 				1000,
-				events[2]
+				events[2],
+				'RM 100',
+				'run',
+				21
 			),
 			createCategory(
 				adminToken,
-				'10km Female 21 and above',
+				'42km Female 21 and above',
 				50,
 				false,
 				21,
 				999,
 				1000,
-				events[3]
+				events[3],
+				'RM 100',
+				'run',
+				42
 			),
 			createCategory(
 				adminToken,
-				'10km Male 21 and above',
+				'42km Male 21 and above',
 				50,
 				true,
 				21,
 				999,
 				1000,
-				events[4]
+				events[4],
+				'RM 100',
+				'run',
+				42
 			),
 			createCategory(
 				adminToken,
-				'10km Female 21 and above',
+				'5km Female 21 and above',
 				50,
 				false,
 				21,
 				999,
 				1000,
-				events[5]
+				events[5],
+				'RM 100',
+				'run',
+				5
 			),
-
+			createCategory(
+				adminToken,
+				'5km Male 21 and above',
+				50,
+				true,
+				21,
+				999,
+				1000,
+				events[5],
+				'RM 100',
+				'swimming',
+				5
+			)
 		])
 		.then(cats => {
 			Promise.all([
@@ -138,7 +170,9 @@ createAdmin('admin@deoevents.com', 'qwerty12345')
 							address: 'Collection Venue 1',
 							time: 'June 17th from 9 to 6pm',
 							description: 'Please bring along your IC and registration id'
-						}
+						},
+						'https:result/url',
+						'Kuala Lumpur'
 					),
 					updateEvent(
 						adminToken,
@@ -152,7 +186,14 @@ createAdmin('admin@deoevents.com', 'qwerty12345')
 						faker.image.imageUrl(),
 						[cats[2]],
 						[meals[0], meals[1], meals[2]],
-						true
+						true,
+						{
+							address: 'Collection Venue 1',
+							time: 'June 17th from 9 to 6pm',
+							description: 'Please bring along your IC and registration id'
+						},
+						'https:result/url',
+						'Kuala Lumpur'
 					),
 					updateEvent(
 						adminToken,
@@ -166,7 +207,14 @@ createAdmin('admin@deoevents.com', 'qwerty12345')
 						faker.image.imageUrl(),
 						[cats[3]],
 						[meals[0], meals[1], meals[2]],
-						true
+						true,
+						{
+							address: 'Collection Venue 1',
+							time: 'June 17th from 9 to 6pm',
+							description: 'Please bring along your IC and registration id'
+						},
+						'https:result/url',
+						'Johor'
 					),
 					updateEvent(
 						adminToken,
@@ -180,7 +228,14 @@ createAdmin('admin@deoevents.com', 'qwerty12345')
 						faker.image.imageUrl(),
 						[cats[4]],
 						[meals[0], meals[1], meals[2]],
-						true
+						true,
+						{
+							address: 'Collection Venue 1',
+							time: 'June 17th from 9 to 6pm',
+							description: 'Please bring along your IC and registration id'
+						},
+						'https:result/url',
+						'Johor'
 					),
 					updateEvent(
 						adminToken,
@@ -194,7 +249,14 @@ createAdmin('admin@deoevents.com', 'qwerty12345')
 						faker.image.imageUrl(),
 						[cats[5]],
 						[meals[0], meals[1], meals[2]],
-						true
+						true,
+						{
+							address: 'Collection Venue 1',
+							time: 'June 17th from 9 to 6pm',
+							description: 'Please bring along your IC and registration id'
+						},
+						'https:result/url',
+						'Kuala Lumpur'
 					),
 					updateEvent(
 						adminToken,
@@ -208,7 +270,35 @@ createAdmin('admin@deoevents.com', 'qwerty12345')
 						faker.image.imageUrl(),
 						[cats[6]],
 						[meals[0], meals[1], meals[2]],
-						false
+						false,
+						{
+							address: 'Collection Venue 1',
+							time: 'June 17th from 9 to 6pm',
+							description: 'Please bring along your IC and registration id'
+						},
+						'https:result/url',
+						'Johor'
+					),
+					updateEvent(
+						adminToken,
+						events[6]._id,
+						'Swimming Event',
+						new Date(2017, 9, 9),
+						'Venue 7',
+						3.013,
+						101.325,
+						faker.lorem.paragraphs(),
+						faker.image.imageUrl(),
+						[cats[7]],
+						[meals[0], meals[1], meals[2]],
+						true,
+						{
+							address: 'Collection Venue 1',
+							time: 'June 17th from 9 to 6pm',
+							description: 'Please bring along your IC and registration id'
+						},
+						'https:result/url',
+						'Kuala Lumpur'
 					)
 				])
 				.then(updatedEvents => {
@@ -233,19 +323,8 @@ createAdmin('admin@deoevents.com', 'qwerty12345')
 							cats[0]
 						)
 						.then(reg => {
-							createPayPalPayment(userToken, reg)
-							.then(paypalObj => {
-								executePayPalPayment(
-									userToken,
-									reg,
-									paypalObj.paymentID,
-									'payer_id'
-								)
-								.then(_ => {
-									console.log('done');
-									process.exit();
-								});
-							});
+							console.log('done seeding');
+							process.exit();
 						});
 					});
 				});

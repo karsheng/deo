@@ -37,10 +37,10 @@ describe('User Controller', function(done) {
 				createEvent(adminToken, 'Event 1')
 				.then(e => {
 					Promise.all([
-						createCategory(adminToken, '5km', 50, true, 21, 48, 1000, e, 'RM 100', 'run'),
-						createCategory(adminToken, '10km', 60, true, 21, 48, 1000, e, 'RM 100', 'run'),
-						createCategory(adminToken, 'half-marathon', 70, true, 21, 48, 1000, e, 'RM 100', 'run'),
-						createCategory(adminToken, 'full-marathon', 80, true, 21, 48, 1000, e, 'RM 100', 'run'),
+						createCategory(adminToken, '5km', 50, true, 21, 48, 1000, e, 'RM 100', 'run', 5),
+						createCategory(adminToken, '10km', 60, true, 21, 48, 1000, e, 'RM 100', 'run', 10),
+						createCategory(adminToken, 'half-marathon', 70, true, 21, 48, 1000, e, 'RM 100', 'run', 21),
+						createCategory(adminToken, 'full-marathon', 80, true, 21, 48, 1000, e, 'RM 100', 'run', 42),
 					])
 					.then(cats => {
 						cat1 = cats[0];

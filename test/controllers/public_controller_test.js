@@ -36,12 +36,12 @@ describe('Public Controller', function(done) {
 				])
 				.then(events => {
 					Promise.all([
-						createCategory(adminToken, '5km', 50, true, 21, 48, 1000, events[0], 'RM 100', 'run'),
-						createCategory(adminToken, '10km', 60, true, 21, 48, 1000, events[0], 'RM 100', 'run'),
-						createCategory(adminToken, 'half-marathon', 70, true, 21, 48, 1000, events[0], 'RM 100', 'run'),
-						createCategory(adminToken, 'full-marathon', 80, true, 21, 48, 1000, events[0], 'RM 100', 'swimming'),
-						createCategory(adminToken, '5km', 50, true, 21, 48, 1000, events[1], 'RM 100', 'swimming'),
-						createCategory(adminToken, '10km', 60, true, 21, 48, 1000, events[1], 'RM 100', 'swimming')
+						createCategory(adminToken, '5km', 50, true, 21, 48, 1000, events[0], 'RM 100', 'run', 5),
+						createCategory(adminToken, '10km', 60, true, 21, 48, 1000, events[0], 'RM 100', 'run', 10),
+						createCategory(adminToken, 'half-marathon', 70, true, 21, 48, 1000, events[0], 'RM 100', 'run', 21),
+						createCategory(adminToken, 'full-marathon', 80, true, 21, 48, 1000, events[0], 'RM 100', 'swimming', 42),
+						createCategory(adminToken, '5km', 50, true, 21, 48, 1000, events[1], 'RM 100', 'swimming', 5),
+						createCategory(adminToken, '10km', 60, true, 21, 48, 1000, events[1], 'RM 100', 'swimming', 10)
 					])
 					.then(cats => {
 						cat1 = cats[0];
@@ -155,7 +155,7 @@ describe('Public Controller', function(done) {
 
 	it('GET to /api/event/open with query returns all open specific events', done => {
 		request(app)
-			.get('/api/event/open/?type=run')
+			.get('/api/event/open?type=run')
 			.end((err, res) => {
 				assert(res.body.length === 1);
 				assert(res.body[0].name === 'Test Event 3');

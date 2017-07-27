@@ -36,7 +36,7 @@ describe('Fake Payment Controller', function(done){
 				createEvent(adminToken, 'Event 1')
 				.then(e => {
 					Promise.all([
-						createCategory(adminToken, '5km', 50, true, 21, 48, 1000, e, 'RM 100', 'run')
+						createCategory(adminToken, '5km', 50, true, 21, 48, 1000, e, 'RM 100', 'run', 5)
 					])
 					.then(cats => {
 						cat1 = cats[0];
