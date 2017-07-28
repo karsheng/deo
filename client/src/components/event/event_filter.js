@@ -1,16 +1,23 @@
-import React, { Component } from 'react';
-import SelectField from 'material-ui/SelectField';
-import { connect } from 'react-redux';
-import { fetchSpecificEvents } from '../../actions/event_actions';
-import MenuItem from 'material-ui/MenuItem';
-import { STATESNAME } from '../../constants';
+import React, { Component } from "react";
+import SelectField from "material-ui/SelectField";
+import { connect } from "react-redux";
+import { fetchSpecificEvents } from "../../actions/event_actions";
+import MenuItem from "material-ui/MenuItem";
+import { STATESNAME } from "../../constants";
+
+const style = {
+	selectField: { 
+		maxWidth: '176px',
+		marginRight: '30px' 
+	}
+};
 
 class EventFilter extends Component {
 	handleTypeChange(e, i, val) {
 		let { type } = this.props.state;
 		type = val;
 		this.props.fetchSpecificEvents(type, () => {
-			this.props.setFilter(e, { ...this.props.state, type });	
+			this.props.setFilter(e, { ...this.props.state, type });
 		});
 	}
 
@@ -34,9 +41,10 @@ class EventFilter extends Component {
 
 	render() {
 		const { type, distance, month, stateName } = this.props.state;
-		return(
+		return (
 			<div>
 				<SelectField
+					style={style.selectField}
 					floatingLabelText="Select type"
 					value={type}
 					onChange={this.handleTypeChange.bind(this)}
@@ -49,6 +57,7 @@ class EventFilter extends Component {
 					<MenuItem value="obstacle" primaryText="Obstacle Race" />
 				</SelectField>
 				<SelectField
+					style={style.selectField}
 					floatingLabelText="Select distance"
 					value={distance}
 					onChange={this.handleDistanceChange.bind(this)}
@@ -61,6 +70,7 @@ class EventFilter extends Component {
 					<MenuItem value={9999} primaryText="42km and above" />
 				</SelectField>
 				<SelectField
+					style={style.selectField}
 					floatingLabelText="Select month"
 					value={month}
 					onChange={this.handleMonthChange.bind(this)}
@@ -80,20 +90,21 @@ class EventFilter extends Component {
 					<MenuItem value={11} primaryText="December" />
 				</SelectField>
 				<SelectField
+					style={style.selectField}
 					floatingLabelText="Select state"
 					value={stateName}
 					onChange={this.handleStateNameChange.bind(this)}
 				>
 					<MenuItem value="any" primaryText="Any" />
 					{STATESNAME.map(stateName => {
-							return(
-								<MenuItem
-									key={stateName} 
-									value={stateName}
-									primaryText={stateName}
-								/>
-							);
-						})}	
+						return (
+							<MenuItem
+								key={stateName}
+								value={stateName}
+								primaryText={stateName}
+							/>
+						);
+					})}
 				</SelectField>
 			</div>
 		);

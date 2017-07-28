@@ -33,6 +33,7 @@
     "paypal-rest-sdk": "^1.7.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-google-maps": "^7.1.0",
     "react-redux": "^4.3.0",
     "react-router-dom": "^4.0.0",
     "react-slick": "^0.14.11",

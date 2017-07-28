@@ -24,6 +24,21 @@ export const formatDate = (datetime) => {
   return day + ' ' + monthNames[monthIndex] + ' ' + year;
 };
 
+export const getTime = (datetime) => {
+  const date = new Date(datetime);
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  return formatTime(hours) + ':' + formatTime(minutes);
+
+  function formatTime(i) {
+    if (i < 10) {
+      i = "0" + i;
+    }
+    return i;
+  }
+}
+
 
 export const renderMenuItem = (itemArray) => {
   return itemArray.map(itemValue => {
