@@ -25,7 +25,9 @@ class EventCategoryTable extends Component {
 
 	renderEarlyBirdHeaderColumn(style) {
 		if (this.state.hasEarlyBirdRate) {
-			return <TableHeaderColumn style={style}>Early Bird (RM)</TableHeaderColumn>;
+			return (
+				<TableHeaderColumn style={style}>Early Bird (RM)</TableHeaderColumn>
+			);
 		}
 
 		return null;
@@ -71,26 +73,28 @@ class EventCategoryTable extends Component {
 			},
 			priceColumns: {
 				whiteSpace: "normal",
-				wordWrap: "break-word"	
+				wordWrap: "break-word"
 			}
 		};
 
 		return (
-			<div style={{overflowX: "auto"}}>
-			<Table>
-				<TableHeader adjustForCheckbox={false} displaySelectAll={false}>
-					<TableRow>
-						<TableHeaderColumn style={style.categoryColumn}>
-							Category
-						</TableHeaderColumn>
-						{this.renderEarlyBirdHeaderColumn(style.priceColumns)}
-						<TableHeaderColumn style={style.priceColumns} >Normal (RM)</TableHeaderColumn>
-					</TableRow>
-				</TableHeader>
-				<TableBody displayRowCheckbox={false} showRowHover={true}>
-					{this.renderCategoryRowColumn(style)}
-				</TableBody>
-			</Table>
+			<div style={{ overflowX: "auto" }}>
+				<Table>
+					<TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+						<TableRow>
+							<TableHeaderColumn style={style.categoryColumn}>
+								Category
+							</TableHeaderColumn>
+							{this.renderEarlyBirdHeaderColumn(style.priceColumns)}
+							<TableHeaderColumn style={style.priceColumns}>
+								Normal (RM)
+							</TableHeaderColumn>
+						</TableRow>
+					</TableHeader>
+					<TableBody displayRowCheckbox={false} showRowHover={true}>
+						{this.renderCategoryRowColumn(style)}
+					</TableBody>
+				</Table>
 			</div>
 		);
 	}

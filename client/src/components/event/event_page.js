@@ -17,8 +17,8 @@ import {
 } from "material-ui/Card";
 import RaisedButton from "material-ui/RaisedButton";
 import { formatDate, getTime } from "../../helper/";
-import EventMap from './event_map';
-import EventCategoryTable from './event_category_table';
+import EventMap from "./event_map";
+import EventCategoryTable from "./event_category_table";
 
 const style = {
 	card: {
@@ -44,6 +44,16 @@ class EventPage extends Component {
 
 	renderEventDetails(event) {
 		const time = getTime(event.datetime);
+		const earlyBirdDetails = () => {
+			if (event.earlyBirdEndDate) {
+				return(
+					<p>
+						Early Bird Expiry Date: {formatDate(event.earlyBirdEndDate)} 
+					</p>
+				)
+			}
+			return null;
+		}
 
 		return (
 			<div>
@@ -54,6 +64,7 @@ class EventPage extends Component {
 				<p>
 					Venue: {event.address}
 				</p>
+				{earlyBirdDetails()}
 			</div>
 		);
 	}
@@ -167,10 +178,7 @@ class EventPage extends Component {
 					{this.renderBookingButton(event.address)}
 				</CardActions>
 				<CardMedia>
-					<EventMap 
-						lat={event.lat}
-						lng={event.lng}
-					/>
+					<EventMap lat={event.lat} lng={event.lng} />
 				</CardMedia>
 			</Card>
 		);

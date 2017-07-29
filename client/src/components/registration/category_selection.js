@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { fetchEvent } from '../../actions/event_actions';
-import { selectCategory } from '../../actions/registration_actions';
-import CircularProgress from 'material-ui/CircularProgress';
-import Paper from 'material-ui/Paper';
-import FlatButton from 'material-ui/FlatButton';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { fetchEvent } from "../../actions/event_actions";
+import { selectCategory } from "../../actions/registration_actions";
+import CircularProgress from "material-ui/CircularProgress";
+import Paper from "material-ui/Paper";
+import RaisedButton from "material-ui/RaisedButton";
 
 const style = {
-  height: 200,
-  width: 200,
-  margin: 20,
-  textAlign: 'center',
-  display: 'inline-block',
+	height: 200,
+	width: 200,
+	margin: 20,
+	textAlign: "center",
+	display: "inline-block"
 };
 
 class CategorySelection extends Component {
@@ -20,8 +20,10 @@ class CategorySelection extends Component {
 		super(props);
 		this.state = {
 			zDepths: [],
-			isDisabled: true
-		}
+			isDisabled: true,
+			earlyBirdValid: false,
+			hasEarlyBirdRate: false
+		};
 	}
 
 	selectCategory = (category, i) => {
@@ -30,60 +32,95 @@ class CategorySelection extends Component {
 				return 1;
 			});
 			newZDepths[i] = 5;
-			this.setState({ 
+			this.setState({
 				zDepths: newZDepths,
 				isDisabled: false
 			});
 		});
-	}
+	};
 
 	renderButton(component, isDisabled, buttonText) {
-		return(
-			<FlatButton 
+		return (
+			<RaisedButton
 				disabled={isDisabled}
-				primary={true} 
+				primary={true}
 				containerElement={component}
 			>
 				{buttonText}
-			</FlatButton>
+			</RaisedButton>
 		);
 	}
 
-	componentDidMount() {
-    const { event_id } = this.props.match.params;
-    const { selectedCategory } = this.props;
+	componentWillMount() {
+		const { event_id } = this.props.match.params;
+		const { selectedCategory } = this.props;
 
 		this.props.fetchEvent(event_id, () => {
 			const { categories } = this.props.event;
-			
+
 			const zDepths = categories.map(category => {
-				
 				if (selectedCategory && selectedCategory._id === category._id) {
 					this.setState({ isDisabled: false });
 					return 5;
 				}
-				
 				return 1;
 			});
-			
+
 			this.setState({ zDepths });
+
+			if (this.props.event.earlyBirdEndDate) {
+				this.setState({ hasEarlyBirdRate: true });
+
+				if (new Date(this.props.event.earlyBirdEndDate) > Date.now()) {
+					this.setState({ earlyBirdValid: true });
+				}
+			}
 		});
 	}
 
 	renderCategoryForm(categories) {
+		const { earlyBirdValid, hasEarlyBirdRate } = this.state;
+
+		const textStyle = bool => {
+			return bool ? {} : { textDecoration: "line-through" };
+		};
+		const renderPrice = category => {
+			if (hasEarlyBirdRate) {
+				return (
+					<div>
+						<h5 style={textStyle(earlyBirdValid)}>
+							RM {category.price.earlyBird} (early bird)
+						</h5>
+						<h5 style={textStyle(!earlyBirdValid)}>
+							RM {category.price.normal} (normal)
+						</h5>
+					</div>
+				);
+			} else {
+				return (
+					<h5>
+						RM {category.price.normal}
+					</h5>
+				);
+			}
+		};
+
 		return categories.map((category, i) => {
 			const { zDepths } = this.state;
-			return(
+
+			return (
 				<Paper key={category._id} style={style} zDepth={zDepths[i]}>
-					<div style={{margin: 10}}>
-						<h4>{category.name}</h4>
-						<h5>RM {category.price}</h5>
-						<FlatButton 
+					<div style={{ margin: 10 }}>
+						<h4>
+							{category.name}
+						</h4>
+						{renderPrice(category)}
+						<RaisedButton
 							primary={true}
 							onTouchTap={this.selectCategory.bind(this, category, i)}
 						>
 							Select
-						</FlatButton>
+						</RaisedButton>
 					</div>
 				</Paper>
 			);
@@ -93,43 +130,35 @@ class CategorySelection extends Component {
 	render() {
 		const { event } = this.props;
 		if (!event) {
-			return(
-				<CircularProgress />
-			);
+			return <CircularProgress />;
 		}
 
-		const backButtonLink = (event) => {
-			return(
-				<Link to={"/event/" + event._id}></Link>
-			);
+		const backButtonLink = event => {
+			return <Link to={"/event/" + event._id} />;
 		};
 
-		const nextButtonLink = (event) => {
+		const nextButtonLink = event => {
 			if (this.state.isDisabled) {
-				return 'dummyString';
+				return "dummyString";
 			} else {
-				return(
-					<Link to={"/registration/meal/" + event._id}></Link>
-				);
+				return <Link to={"/registration/meal/" + event._id} />;
 			}
 		};
 
-		return(
+		return (
 			<div>
-				<h2>{event.name}</h2>
+				<h2>
+					{event.name}
+				</h2>
 				<h3>Step 1: Select Category</h3>
 				{this.renderCategoryForm(event.categories)}
 				<br />
-				{this.renderButton(
-					backButtonLink(event), 
-					false,
-					'Back'
-				)}
+				{this.renderButton(backButtonLink(event), false, "Back")}
 				<br />
 				{this.renderButton(
-					nextButtonLink(event), 
+					nextButtonLink(event),
 					this.state.isDisabled,
-					'Next'
+					"Next"
 				)}
 			</div>
 		);
@@ -143,4 +172,6 @@ function mapStateToProps(state, ownProps) {
 	};
 }
 
-export default connect(mapStateToProps, { fetchEvent, selectCategory })(CategorySelection);
+export default connect(mapStateToProps, { fetchEvent, selectCategory })(
+	CategorySelection
+);
