@@ -17,17 +17,8 @@ import {
 } from "material-ui/Card";
 import RaisedButton from "material-ui/RaisedButton";
 import { formatDate, getTime } from "../../helper/";
-import {
-	Table,
-	TableBody,
-	TableFooter,
-	TableHeader,
-	TableHeaderColumn,
-	TableRow,
-	TableRowColumn
-} from "material-ui/Table";
-
 import EventMap from './event_map';
+import EventCategoryTable from './event_category_table';
 
 const style = {
 	card: {
@@ -37,9 +28,6 @@ const style = {
 	cardImg: {
 		maxHeight: "380px",
 		height: "auto"
-	},
-	categoryColumn: {
-		width: "75%"
 	},
 	registerButton: {
 		marginLeft: "8px"
@@ -88,41 +76,6 @@ class EventPage extends Component {
 				</div>
 			);
 		}
-	}
-
-	renderCategoryTable(event) {
-		const categories = event.categories.map(category => {
-			return (
-				<TableRow key={category._id}>
-					<TableRowColumn style={style.categoryColumn}>
-						{category.name}
-					</TableRowColumn>
-					<TableRowColumn>
-						{category.price}
-					</TableRowColumn>
-				</TableRow>
-			);
-		});
-
-		const renderTable = () => {
-			return (
-				<Table>
-					<TableHeader adjustForCheckbox={false} displaySelectAll={false}>
-						<TableRow>
-							<TableHeaderColumn style={style.categoryColumn}>
-								Category
-							</TableHeaderColumn>
-							<TableHeaderColumn>Price (RM)</TableHeaderColumn>
-						</TableRow>
-					</TableHeader>
-					<TableBody displayRowCheckbox={false} showRowHover={true}>
-						{categories}
-					</TableBody>
-				</Table>
-			);
-		};
-		const table = renderTable();
-		return table;
 	}
 
 	renderRegisterButton(event) {
@@ -205,7 +158,7 @@ class EventPage extends Component {
 					{this.renderCollectionInfo(event)}
 					<br />
 					<h3>Categories</h3>
-					{this.renderCategoryTable(event)}
+					<EventCategoryTable event={event} />
 					<br />
 				</CardText>
 				<CardActions>

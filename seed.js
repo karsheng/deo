@@ -1,164 +1,159 @@
-const mongoose = require('mongoose');
-const createAdmin = require('./helper/create_admin_helper');
-const createEvent = require('./helper/create_event_helper');
-const createCategory = require('./helper/create_category_helper');
-const createMeal = require('./helper/create_meal_helper');
-const updateEvent = require('./helper/update_event_helper');
-const createUser = require('./helper/create_user_helper');
-const createRegistration = require('./helper/create_registration_helper');
-const faker = require('faker');
+const mongoose = require("mongoose");
+const createAdmin = require("./helper/create_admin_helper");
+const createEvent = require("./helper/create_event_helper");
+const createCategory = require("./helper/create_category_helper");
+const createMeal = require("./helper/create_meal_helper");
+const updateEvent = require("./helper/update_event_helper");
+const createUser = require("./helper/create_user_helper");
+const createRegistration = require("./helper/create_registration_helper");
+const faker = require("faker");
 
-
-createAdmin('admin@deoevents.com', 'qwerty12345')
-.then(adminToken => {
+createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 	Promise.all([
-		createEvent(adminToken, 'Event 1'),
-		createEvent(adminToken, 'Event 2'),
-		createEvent(adminToken, 'Event 3'),
-		createEvent(adminToken, 'Event 4'),
-		createEvent(adminToken, 'Event 5'),
-		createEvent(adminToken, 'Event 6'),
-		createEvent(adminToken, 'Swimming Event'),
-	])
-	.then(events => {
+		createEvent(adminToken, "Event 1"),
+		createEvent(adminToken, "Event 2"),
+		createEvent(adminToken, "Event 3"),
+		createEvent(adminToken, "Event 4"),
+		createEvent(adminToken, "Event 5"),
+		createEvent(adminToken, "Event 6"),
+		createEvent(adminToken, "Swimming Event")
+	]).then(events => {
 		Promise.all([
 			createCategory(
 				adminToken,
-				'10km Male 21 and above',
-				50,
+				"10km Male 21 and above",
+				{ earlyBird: 50, normal: 60 },
 				true,
 				21,
 				999,
 				1000,
 				events[0],
-				'RM 100',
-				'run',
+				"RM 100",
+				"run",
 				10
 			),
 			createCategory(
 				adminToken,
-				'10km Female 21 and above',
-				50,
+				"10km Female 21 and above",
+				{ earlyBird: 50, normal: 60 },
 				false,
 				21,
 				999,
 				1000,
 				events[0],
-				'RM 200',
-				'run',
+				"RM 200",
+				"run",
 				10
 			),
 			createCategory(
 				adminToken,
-				'21km Female 21 and above',
-				50,
+				"21km Female 21 and above",
+				{ earlyBird: null, normal: 60 },
 				false,
 				21,
 				999,
 				1000,
 				events[1],
-				'RM 100',
-				'run',
+				"RM 100",
+				"run",
 				21
 			),
 			createCategory(
 				adminToken,
-				'21km Male 21 and above',
-				50,
+				"21km Male 21 and above",
+				{ earlyBird: 50, normal: 60 },
 				true,
 				21,
 				999,
 				1000,
 				events[2],
-				'RM 100',
-				'run',
+				"RM 100",
+				"run",
 				21
 			),
 			createCategory(
 				adminToken,
-				'42km Female 21 and above',
-				50,
+				"42km Female 21 and above",
+				{ earlyBird: null, normal: 70 },
 				false,
 				21,
 				999,
 				1000,
 				events[3],
-				'RM 100',
-				'run',
+				"RM 100",
+				"run",
 				42
 			),
 			createCategory(
 				adminToken,
-				'42km Male 21 and above',
-				50,
+				"42km Male 21 and above",
+				{ earlyBird: 50, normal: 60 },
 				true,
 				21,
 				999,
 				1000,
 				events[4],
-				'RM 100',
-				'run',
+				"RM 100",
+				"run",
 				42
 			),
 			createCategory(
 				adminToken,
-				'5km Female 21 and above',
-				50,
+				"5km Female 21 and above",
+				{ earlyBird: 50, normal: 60 },
 				false,
 				21,
 				999,
 				1000,
 				events[5],
-				'RM 100',
-				'run',
+				"RM 100",
+				"run",
 				5
 			),
 			createCategory(
 				adminToken,
-				'5km Male 21 and above',
-				50,
+				"5km Male 21 and above",
+				{ earlyBird: null, normal: 60 },
 				true,
 				21,
 				999,
 				1000,
-				events[5],
-				'RM 100',
-				'swimming',
+				events[6],
+				"RM 100",
+				"swimming",
 				5
 			)
-		])
-		.then(cats => {
+		]).then(cats => {
 			Promise.all([
 				createMeal(
 					adminToken,
-					'Meal 1',
-					9.90,
+					"Meal 1",
+					9.9,
 					faker.lorem.paragraphs(),
 					faker.image.imageUrl()
 				),
 				createMeal(
 					adminToken,
-					'Meal 2',
-					19.90,
+					"Meal 2",
+					19.9,
 					faker.lorem.paragraphs(),
 					faker.image.imageUrl()
 				),
 				createMeal(
 					adminToken,
-					'Meal 3',
-					29.90,
+					"Meal 3",
+					29.9,
 					faker.lorem.paragraphs(),
 					faker.image.imageUrl()
 				)
-			])
-			.then(meals => {
+			]).then(meals => {
 				Promise.all([
 					updateEvent(
 						adminToken,
 						events[0]._id,
-						'Event 1',
+						"Event 1",
 						new Date(2017, 8, 8),
-						'Venue 1',
+						"Venue 1",
 						3.013,
 						101.325,
 						faker.lorem.paragraphs(),
@@ -167,40 +162,42 @@ createAdmin('admin@deoevents.com', 'qwerty12345')
 						[meals[0], meals[1], meals[2]],
 						true,
 						{
-							address: 'Collection Venue 1',
-							time: 'June 17th from 9 to 6pm',
-							description: 'Please bring along your IC and registration id'
+							address: "Collection Venue 1",
+							time: "June 17th from 9 to 6pm",
+							description: "Please bring along your IC and registration id"
 						},
-						'https:result/url',
-						'Kuala Lumpur'
+						"https:result/url",
+						"Kuala Lumpur",
+						Date.now() + 1000 * 60 * 60 * 24 * 5
 					),
 					updateEvent(
 						adminToken,
 						events[1]._id,
-						'Event 2',
+						"Event 2",
 						new Date(2017, 9, 9),
-						'Venue 2',
+						"Venue 2",
 						3.013,
 						101.325,
 						faker.lorem.paragraphs(),
 						faker.image.imageUrl(),
 						[cats[2]],
-						[meals[0], meals[1], meals[2]],
+						[],
 						true,
 						{
-							address: 'Collection Venue 1',
-							time: 'June 17th from 9 to 6pm',
-							description: 'Please bring along your IC and registration id'
+							address: "Collection Venue 1",
+							time: "June 17th from 9 to 6pm",
+							description: "Please bring along your IC and registration id"
 						},
-						'https:result/url',
-						'Kuala Lumpur'
+						"https:result/url",
+						"Kuala Lumpur",
+						null
 					),
 					updateEvent(
 						adminToken,
 						events[2]._id,
-						'Event 3',
+						"Event 3",
 						new Date(2017, 10, 10),
-						'Venue 3',
+						"Venue 3",
 						3.013,
 						101.325,
 						faker.lorem.paragraphs(),
@@ -209,40 +206,42 @@ createAdmin('admin@deoevents.com', 'qwerty12345')
 						[meals[0], meals[1], meals[2]],
 						true,
 						{
-							address: 'Collection Venue 1',
-							time: 'June 17th from 9 to 6pm',
-							description: 'Please bring along your IC and registration id'
+							address: "Collection Venue 1",
+							time: "June 17th from 9 to 6pm",
+							description: "Please bring along your IC and registration id"
 						},
-						'https:result/url',
-						'Johor'
+						"https:result/url",
+						"Johor",
+						Date.now() - 1000 * 60 * 60 * 24 * 5
 					),
 					updateEvent(
 						adminToken,
 						events[3]._id,
-						'Event 4',
+						"Event 4",
 						new Date(2017, 11, 11),
-						'Venue 4',
+						"Venue 4",
 						3.013,
 						101.325,
 						faker.lorem.paragraphs(),
 						faker.image.imageUrl(),
 						[cats[4]],
-						[meals[0], meals[1], meals[2]],
+						[],
 						true,
 						{
-							address: 'Collection Venue 1',
-							time: 'June 17th from 9 to 6pm',
-							description: 'Please bring along your IC and registration id'
+							address: "Collection Venue 1",
+							time: "June 17th from 9 to 6pm",
+							description: "Please bring along your IC and registration id"
 						},
-						'https:result/url',
-						'Johor'
+						"https:result/url",
+						"Johor",
+						null
 					),
 					updateEvent(
 						adminToken,
 						events[4]._id,
-						'Event 5',
+						"Event 5",
 						new Date(2018, 1, 1),
-						'Venue 5',
+						"Venue 5",
 						3.013,
 						101.325,
 						faker.lorem.paragraphs(),
@@ -251,40 +250,42 @@ createAdmin('admin@deoevents.com', 'qwerty12345')
 						[meals[0], meals[1], meals[2]],
 						true,
 						{
-							address: 'Collection Venue 1',
-							time: 'June 17th from 9 to 6pm',
-							description: 'Please bring along your IC and registration id'
+							address: "Collection Venue 1",
+							time: "June 17th from 9 to 6pm",
+							description: "Please bring along your IC and registration id"
 						},
-						'https:result/url',
-						'Kuala Lumpur'
+						"https:result/url",
+						"Kuala Lumpur",
+						Date.now() + 1000 * 60 * 60 * 24 * 5
 					),
 					updateEvent(
 						adminToken,
 						events[5]._id,
-						'Event 6',
+						"Event 6",
 						new Date(2018, 2, 2),
-						'Venue 6',
+						"Venue 6",
 						3.013,
 						101.325,
 						faker.lorem.paragraphs(),
 						faker.image.imageUrl(),
 						[cats[6]],
-						[meals[0], meals[1], meals[2]],
+						[],
 						false,
 						{
-							address: 'Collection Venue 1',
-							time: 'June 17th from 9 to 6pm',
-							description: 'Please bring along your IC and registration id'
+							address: "Collection Venue 1",
+							time: "June 17th from 9 to 6pm",
+							description: "Please bring along your IC and registration id"
 						},
-						'https:result/url',
-						'Johor'
+						"https:result/url",
+						"Johor",
+						Date.now() - 1000 * 60 * 60 * 24 * 5
 					),
 					updateEvent(
 						adminToken,
 						events[6]._id,
-						'Swimming Event',
+						"Swimming Event",
 						new Date(2017, 9, 9),
-						'Venue 7',
+						"Venue 7",
 						3.013,
 						101.325,
 						faker.lorem.paragraphs(),
@@ -293,39 +294,31 @@ createAdmin('admin@deoevents.com', 'qwerty12345')
 						[meals[0], meals[1], meals[2]],
 						true,
 						{
-							address: 'Collection Venue 1',
-							time: 'June 17th from 9 to 6pm',
-							description: 'Please bring along your IC and registration id'
+							address: "Collection Venue 1",
+							time: "June 17th from 9 to 6pm",
+							description: "Please bring along your IC and registration id"
 						},
-						'https:result/url',
-						'Kuala Lumpur'
+						"https:result/url",
+						"Kuala Lumpur",
+						null
 					)
-				])
-				.then(updatedEvents => {
+				]).then(updatedEvents => {
 					createUser(
-						'Gavin Belson',
-						'gavin@hooli.com',
-						'qwerty123',
+						"Gavin Belson",
+						"gavin@hooli.com",
+						"qwerty123",
 						true,
-						'100 Hooli Road',
-						'Palo Alto',
-						'Silicon Valley',
-						'San Francisco',
+						"100 Hooli Road",
+						"Palo Alto",
+						"Silicon Valley",
+						"San Francisco",
 						12345,
-						'U.S.',
-						['5km', '10km', 'Half-marathon', 'Full-marathon'],
+						"U.S.",
+						["5km", "10km", "Half-marathon", "Full-marathon"],
 						new Date(1957, 1, 1)
-					)
-					.then(userToken => {
-						createRegistration(
-							userToken,
-							events[0]._id,
-							cats[0]
-						)
-						.then(reg => {
-							console.log('done seeding');
-							process.exit();
-						});
+					).then(userToken => {
+						console.log("done seeding");
+						process.exit();
 					});
 				});
 			});
