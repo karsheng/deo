@@ -3,7 +3,10 @@ const Schema = mongoose.Schema;
 
 const CategorySchema = new Schema({
 	name: { type: String },
-	price: { type: Number },
+	price: { 
+		earlyBird: Number,
+		normal: Number
+	},
 	gender: { type: Boolean },
 	ageMin: { type: Number },
 	ageMax: { type: Number },
