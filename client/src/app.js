@@ -24,11 +24,11 @@ export default class App extends Component {
 				<Header />
 				<div>
 					<Switch>
-						<Route path="/registration/confirmation/:registration_id" component={ConfirmationPage} />
-						<Route path="/registration/payment/:registration_id" component={Payment} />
-						<Route path="/registration/checkout/:event_id" component={Checkout} />
-						<Route path="/registration/category/:event_id" component={CategorySelection} />
-						<Route path="/registration/meal/:event_id" component={MealSelection} />
+						<Route path="/registration/confirmation/:registration_id" component={RequireAuth(ConfirmationPage)} />
+						<Route path="/registration/payment/:registration_id" component={RequireAuth(Payment)} />
+						<Route path="/registration/checkout/:event_id" component={RequireAuth(Checkout)} />
+						<Route path="/registration/category/:event_id" component={RequireAuth(CategorySelection)} />
+						<Route path="/registration/meal/:event_id" component={RequireAuth(MealSelection)} />
 						<Route path="/event/browse" component={EventBrowse} />
 						<Route path="/event/:_id" component={EventPage} />
 						<Route path="/signin" component={Signin} />

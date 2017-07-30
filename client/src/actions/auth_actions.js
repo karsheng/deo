@@ -4,7 +4,9 @@ import {
 	AUTH_USER,
 	UNAUTH_USER,
 	AUTH_ERROR,
-	FETCH_USER_INFO
+	FETCH_USER_INFO,
+	OPEN_SIGNIN_DIALOG,
+	CLOSE_SIGNIN_DIALOG
 } from './types';
 
 
@@ -121,5 +123,15 @@ export function fetchUserInfo() {
 	}
 }
 
+export function openSigninDialog() {
+	return function(dispatch) {
+		dispatch({ type: OPEN_SIGNIN_DIALOG });
+	}; 
+}
 
+export function closeSigninDialog() {
+	return function(dispatch) {
+		dispatch({ type: CLOSE_SIGNIN_DIALOG });
+	};
+}
 

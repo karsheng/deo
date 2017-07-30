@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from "../../actions/event_actions";
+import { openSigninDialog } from '../../actions/auth_actions';
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import CircularProgress from "material-ui/CircularProgress";
@@ -89,6 +90,14 @@ class EventPage extends Component {
 		}
 	}
 
+	handleRegisterButtonclick() {
+		if (this.props.authenticated) {
+			this.props.history.push("/registration/category/" +  this.props.match.params._id);
+		} else {
+			this.props.openSigninDialog();
+		}
+	}
+
 	renderRegisterButton(event) {
 		if (this.state.registered) {
 			return (
@@ -104,7 +113,7 @@ class EventPage extends Component {
 			<RaisedButton
 				style={style.registerButton}
 				primary={true}
-				containerElement={<Link to={"/registration/category/" + event._id} />}
+				onTouchTap={this.handleRegisterButtonclick.bind(this)}
 				label="Register"
 			/>
 		);
@@ -188,8 +197,9 @@ class EventPage extends Component {
 function mapStateToProps(state, ownProps) {
 	return {
 		event: state.events[ownProps.match.params._id],
-		user: state.auth.info
+		user: state.auth.info,
+		authenticated: state.auth.authenticated
 	};
 }
 
-export default connect(mapStateToProps, actions)(EventPage);
+export default connect(mapStateToProps, { ...actions, openSigninDialog })(EventPage);

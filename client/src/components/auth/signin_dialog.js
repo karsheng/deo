@@ -1,0 +1,103 @@
+import React, { Component } from "react";
+import Dialog from "material-ui/Dialog";
+import { connect } from "react-redux";
+import * as actions from "../../actions/auth_actions";
+import { Field, reduxForm } from "redux-form";
+import TextField from "material-ui/TextField";
+import FlatButton from "material-ui/FlatButton";
+import RaisedButton from "material-ui/RaisedButton";
+import { withRouter } from "react-router-dom";
+
+class SigninDialog extends Component {
+  renderField(field) {
+    const { meta: { touched, error } } = field;
+
+    return (
+      <TextField
+        hintText={field.label}
+        floatingLabelText={field.label}
+        type={field.type}
+        errorText={touched && error}
+        {...field.input}
+      />
+    );
+  }
+
+  handleFormSubmit({ email, password }) {
+    // Need to do something to sign user in
+    this.props.signinUser({ email, password }, () => {
+      this.props.history.push("/");
+      this.props.closeSigninDialog();
+    });
+  }
+
+  renderAlert() {
+    if (this.props.errorMessage) {
+      return (
+        <div className="alert alert-danger">
+          <strong>Opps!</strong> {this.props.errorMessage}
+        </div>
+      );
+    }
+  }
+
+  render() {
+    const {
+      signinDialogOpen,
+      closeSigninDialog,
+      handleSubmit,
+      pristine,
+      reset,
+      submitting
+    } = this.props;
+
+    return (
+      <div>
+        <Dialog
+          title="Sign In"
+          modal={false}
+          open={this.props.signinDialogOpen}
+          onRequestClose={this.props.closeSigninDialog}
+        >
+          <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+            <Field
+              label="Email"
+              name="email"
+              type="text"
+              component={this.renderField}
+            />
+            <br />
+            <Field
+              label="Password"
+              name="password"
+              type="password"
+              component={this.renderField}
+            />
+            <br />
+            {this.renderAlert()}
+            <br />
+            <br />
+            <RaisedButton
+              type="submit"
+              label="Sign In"
+              disabled={pristine || submitting}
+            />
+          </form>
+        </Dialog>
+      </div>
+    );
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    signinDialogOpen: state.auth.signinDialogOpen,
+    errorMessage: state.auth.error,
+    auth: state.auth
+  };
+}
+
+
+export default reduxForm({ form: "signin" })(
+  connect(mapStateToProps, actions)(withRouter(SigninDialog))
+);
