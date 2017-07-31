@@ -78,7 +78,23 @@ xdescribe("PayPal Payment Controller", function(done) {
 							},
 							"http:result.com/result",
 							"Kuala Lumpur",
-							new Date(2017, 1, 1)
+							new Date(2017, 1, 1),
+							new Date(1988, 1, 3),
+							[
+								{
+									name: "Fictional Sports Brand",
+									email: "Fictional@sportsbrand.com",
+									website: "fictionalsportsbrand.com",
+									socialMedia: {
+										facebook: "facebook.com/fictionalsportsbrand",
+										twitter: "twitter.com/fictionalsportsbrand",
+										instagram: "instagram.com/fictionalsportsbrand",
+										youtube: "youtube.com/fictionalsportsbrand",
+										snapchat: "@fictionalsportsbrand",
+										pinterest: "@fictionalsportsbrand"
+									}
+								}
+							]
 						).then(updatedEvent => {
 							event = updatedEvent;
 							createUser(
@@ -93,8 +109,7 @@ xdescribe("PayPal Payment Controller", function(done) {
 								45720,
 								"U.S.",
 								["5km", "10km", "Half-marathon", "Full-marathon"],
-								new Date(1988, 1, 2),
-								new Date(1988, 1, 3)
+								new Date(1988, 1, 2)
 							).then(ut => {
 								userToken = ut;
 								done();

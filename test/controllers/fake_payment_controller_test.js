@@ -76,12 +76,29 @@ describe("Fake Payment Controller", function(done) {
 							{
 								address: "1 Newell Road",
 								time: "11th Nov 2017, 12th Nov 2017",
-								description: "collection description"
+								description: "collection description",
+								lat: 3.11,
+								lng: 101
 							},
 							"http:result.com/result",
 							"Kuala Lumpur",
 							new Date(2017, 1, 1),
-							Date.now() + 1000 * 60 * 60 * 24 * 10
+							Date.now() + 1000 * 60 * 60 * 24 * 10,
+							[
+								{
+									name: "Fictional Sports Brand",
+									email: "Fictional@sportsbrand.com",
+									website: "fictionalsportsbrand.com",
+									socialMedia: {
+										facebook: "facebook.com/fictionalsportsbrand",
+										twitter: "twitter.com/fictionalsportsbrand",
+										instagram: "instagram.com/fictionalsportsbrand",
+										youtube: "youtube.com/fictionalsportsbrand",
+										snapchat: "@fictionalsportsbrand",
+										pinterest: "@fictionalsportsbrand"
+									}
+								}
+							]
 						).then(updatedEvent => {
 							event = updatedEvent;
 							createUser(
@@ -111,7 +128,6 @@ describe("Fake Payment Controller", function(done) {
 	it("POST to /api/fakepayment/:registration_id", done => {
 		const orders = [{ meal: meal1, quantity: 1 }, { meal: meal2, quantity: 1 }];
 		createRegistration(userToken, event._id, cat1, orders).then(reg => {
-			console.log(reg);
 			assert(reg.paid === false);
 			request(app)
 				.post(`/api/fakepayment/${reg._id}`)

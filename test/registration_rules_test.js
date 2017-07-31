@@ -147,12 +147,29 @@ describe("Registration Rules", function(done) {
 							{
 								address: "1 Newell Road",
 								time: "11th Nov 2017, 12th Nov 2017",
-								description: "collection description"
+								description: "collection description",
+								lat: 3.11,
+								lng: 101
 							},
 							"http:result.com/result",
 							"Kuala Lumpur",
 							Date.now() - 1000 * 60 * 60 * 24 * 3,
-							Date.now() + 1000 * 60 * 60 * 24 * 30
+							Date.now() + 1000 * 60 * 60 * 24 * 30,
+							[
+								{
+									name: "Fictional Sports Brand",
+									email: "Fictional@sportsbrand.com",
+									website: "fictionalsportsbrand.com",
+									socialMedia: {
+										facebook: "facebook.com/fictionalsportsbrand",
+										twitter: "twitter.com/fictionalsportsbrand",
+										instagram: "instagram.com/fictionalsportsbrand",
+										youtube: "youtube.com/fictionalsportsbrand",
+										snapchat: "@fictionalsportsbrand",
+										pinterest: "@fictionalsportsbrand"
+									}
+								}
+							]
 						),
 						updateEvent(
 							adminToken,
@@ -170,12 +187,29 @@ describe("Registration Rules", function(done) {
 							{
 								address: "1 Newell Road",
 								time: "11th Nov 2017, 12th Nov 2017",
-								description: "collection description"
+								description: "collection description",
+								lat: 3.11,
+								lng: 101
 							},
 							"http:result.com/result",
 							"Kuala Lumpur",
 							Date.now() - 1000 * 60 * 60 * 24 * 30,
-							Date.now() - 1000 * 60 * 60 * 24 * 15
+							Date.now() - 1000 * 60 * 60 * 24 * 15,
+							[
+								{
+									name: "Fictional Sports Brand",
+									email: "Fictional@sportsbrand.com",
+									website: "fictionalsportsbrand.com",
+									socialMedia: {
+										facebook: "facebook.com/fictionalsportsbrand",
+										twitter: "twitter.com/fictionalsportsbrand",
+										instagram: "instagram.com/fictionalsportsbrand",
+										youtube: "youtube.com/fictionalsportsbrand",
+										snapchat: "@fictionalsportsbrand",
+										pinterest: "@fictionalsportsbrand"
+									}
+								}
+							]
 						),
 						updateEvent(
 							adminToken,
@@ -193,12 +227,29 @@ describe("Registration Rules", function(done) {
 							{
 								address: "1 Newell Road",
 								time: "11th Nov 2017, 12th Nov 2017",
-								description: "collection description"
+								description: "collection description",
+								lat: 3.11,
+								lng: 101
 							},
 							"http:result.com/result",
 							"Kuala Lumpur",
 							Date.now() - 1000 * 60 * 60 * 24 * 30,
-							Date.now() - 1000 * 60 * 60 * 24 * 15
+							Date.now() - 1000 * 60 * 60 * 24 * 15,
+							[
+								{
+									name: "Fictional Sports Brand",
+									email: "Fictional@sportsbrand.com",
+									website: "fictionalsportsbrand.com",
+									socialMedia: {
+										facebook: "facebook.com/fictionalsportsbrand",
+										twitter: "twitter.com/fictionalsportsbrand",
+										instagram: "instagram.com/fictionalsportsbrand",
+										youtube: "youtube.com/fictionalsportsbrand",
+										snapchat: "@fictionalsportsbrand",
+										pinterest: "@fictionalsportsbrand"
+									}
+								}
+							]
 						)
 					]).then(updatedEvents => {
 						event1 = updatedEvents[0];
@@ -333,7 +384,7 @@ describe("Registration Rules", function(done) {
 				done();
 			});
 	});
-	
+
 	it("Returns error if user tries to register for an event that is already passed registration deadline", done => {
 		request(app)
 			.post(`/api/event/register/${event3._id}`)

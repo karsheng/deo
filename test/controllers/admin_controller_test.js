@@ -126,12 +126,29 @@ describe("Admin Controller", function(done) {
 							{
 								address: "1 Newell Road",
 								time: "11th Nov 2017, 12th Nov 2017",
-								description: "collection description"
+								description: "collection description",
+								lat: 3.1,
+								lng: 100
 							},
 							"http:result.com/result",
 							"Kuala Lumpur",
 							new Date(2017, 1, 1),
-							new Date(2017, 2, 2)
+							new Date(2017, 2, 2),
+							[
+								{
+									name: "Fictional Sports Brand",
+									email: "Fictional@sportsbrand.com",
+									website: "fictionalsportsbrand.com",
+									socialMedia: {
+										facebook: "facebook.com/fictionalsportsbrand",
+										twitter: "twitter.com/fictionalsportsbrand",
+										instagram: "instagram.com/fictionalsportsbrand",
+										youtube: "youtube.com/fictionalsportsbrand",
+										snapchat: "@fictionalsportsbrand",
+										pinterest: "@fictionalsportsbrand"
+									}
+								}
+							]
 						).then(updatedEvent => {
 							event = updatedEvent;
 							done();
@@ -219,13 +236,30 @@ describe("Admin Controller", function(done) {
 					{
 						address: "1 Newell Road",
 						time: "11 Nov 2017, 12 Nov 2017",
-						description: "Collection description"
+						description: "Collection description",
+						lat: 3.11,
+						lng: 101
 					}
 				],
 				resultUrl: "http:result.com/result",
 				stateName: "Kuala Lumpur",
 				earlyBirdEndDate: new Date(2017, 1, 1),
-				registrationDeadline: new Date(2018, 2, 2)
+				registrationDeadline: new Date(2018, 2, 2),
+				organizer: [
+					{
+						name: "Fictional Sports Brand",
+						email: "Fictional@sportsbrand.com",
+						website: "fictionalsportsbrand.com",
+						socialMedia: {
+							facebook: "facebook.com/fictionalsportsbrand",
+							twitter: "twitter.com/fictionalsportsbrand",
+							instagram: "instagram.com/fictionalsportsbrand",
+							youtube: "youtube.com/fictionalsportsbrand",
+							snapchat: "@fictionalsportsbrand",
+							pinterest: "@fictionalsportsbrand"
+						}
+					}
+				]
 			})
 			.end((err, res) => {
 				Event.findOne({ name: "Changed Event Name" }).then(e => {
@@ -237,10 +271,13 @@ describe("Admin Controller", function(done) {
 					assert(e.meals.length === 2);
 					assert(e.open === false);
 					assert(e.collectionInfo[0].address === "1 Newell Road");
+					assert(e.collectionInfo[0].lat === 3.11);
 					assert(e.resultUrl === "http:result.com/result");
 					assert(e.stateName === "Kuala Lumpur");
 					assert(new Date(e.earlyBirdEndDate).getYear() === 117);
 					assert(new Date(e.registrationDeadline).getYear() === 118);
+					assert(e.organizer[0].name === "Fictional Sports Brand");
+					assert(e.organizer[0].socialMedia.facebook === "facebook.com/fictionalsportsbrand");
 					done();
 				});
 			});

@@ -4,7 +4,9 @@ const Schema = mongoose.Schema;
 const CollectionSchema = new Schema({
 	address: String,
 	time: String,
-	description: String
+	description: String,
+	lat: Number,
+	lng: Number
 });
 
 module.exports = CollectionSchema;

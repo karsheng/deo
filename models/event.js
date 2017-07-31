@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const CollectionSchema = require("./collectionSchema");
+const CollectionSchema = require("./collection_schema");
+const OrganizerSchema = require("./organizer_schema");
 
 const EventSchema = new Schema({
 	name: String,
@@ -30,7 +31,8 @@ const EventSchema = new Schema({
 	type: [String],
 	stateName: String,
 	earlyBirdEndDate: Date,
-	registrationDeadline: Date
+	registrationDeadline: Date,
+	organizer: [OrganizerSchema]
 });
 
 EventSchema.pre("save", function(next) {

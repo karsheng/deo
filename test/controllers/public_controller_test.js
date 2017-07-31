@@ -153,12 +153,29 @@ describe("Public Controller", function(done) {
 								{
 									address: "1 Newell Road",
 									time: "11th Nov 2017, 12th Nov 2017",
-									description: "collection description"
+									description: "collection description",
+									lat: 3.11,
+									lng: 101
 								},
 								"http:result.com/result",
 								"Kuala Lumpur",
 								new Date(2017, 1, 1),
-								new Date(2018, 2, 2)
+								new Date(2018, 2, 2),
+								[
+									{
+										name: "Fictional Sports Brand",
+										email: "Fictional@sportsbrand.com",
+										website: "fictionalsportsbrand.com",
+										socialMedia: {
+											facebook: "facebook.com/fictionalsportsbrand",
+											twitter: "twitter.com/fictionalsportsbrand",
+											instagram: "instagram.com/fictionalsportsbrand",
+											youtube: "youtube.com/fictionalsportsbrand",
+											snapchat: "@fictionalsportsbrand",
+											pinterest: "@fictionalsportsbrand"
+										}
+									}
+								]
 							),
 							updateEvent(
 								adminToken,
@@ -176,12 +193,29 @@ describe("Public Controller", function(done) {
 								{
 									address: "1 Newell Road",
 									time: "11th Nov 2017, 12th Nov 2017",
-									description: "collection description"
+									description: "collection description",
+									lat: 3.11,
+									lng: 101
 								},
 								"http:result.com/result",
 								"Kuala Lumpur",
 								new Date(2017, 1, 1),
-								new Date(2018, 2, 2)
+								new Date(2018, 2, 2),
+								[
+									{
+										name: "Fictional Sports Brand",
+										email: "Fictional@sportsbrand.com",
+										website: "fictionalsportsbrand.com",
+										socialMedia: {
+											facebook: "facebook.com/fictionalsportsbrand",
+											twitter: "twitter.com/fictionalsportsbrand",
+											instagram: "instagram.com/fictionalsportsbrand",
+											youtube: "youtube.com/fictionalsportsbrand",
+											snapchat: "@fictionalsportsbrand",
+											pinterest: "@fictionalsportsbrand"
+										}
+									}
+								]
 							),
 							updateEvent(
 								adminToken,
@@ -199,12 +233,29 @@ describe("Public Controller", function(done) {
 								{
 									address: "1 Road",
 									time: "11th Nov 2017, 12th Nov 2017",
-									description: "collection description"
+									description: "collection description",
+									lat: 3.11,
+									lng: 101
 								},
 								"http:result.com/result",
 								"Kuala Lumpur",
 								new Date(2017, 1, 1),
-								new Date(2018, 2, 2)
+								new Date(2018, 2, 2),
+								[
+									{
+										name: "Fictional Sports Brand",
+										email: "Fictional@sportsbrand.com",
+										website: "fictionalsportsbrand.com",
+										socialMedia: {
+											facebook: "facebook.com/fictionalsportsbrand",
+											twitter: "twitter.com/fictionalsportsbrand",
+											instagram: "instagram.com/fictionalsportsbrand",
+											youtube: "youtube.com/fictionalsportsbrand",
+											snapchat: "@fictionalsportsbrand",
+											pinterest: "@fictionalsportsbrand"
+										}
+									}
+								]
 							)
 						]).then(updatedEvents => {
 							event1 = updatedEvents[0];
@@ -225,10 +276,12 @@ describe("Public Controller", function(done) {
 			assert(res.body.categories[0].name === "5km");
 			assert(res.body.lat === 3.1862);
 			assert(res.body.collectionInfo[0].address === "1 Newell Road");
+			assert(res.body.collectionInfo[0].lng === 101);
 			assert(res.body.resultUrl === "http:result.com/result");
 			assert(res.body.type[0] === "run");
 			assert(new Date(res.body.earlyBirdEndDate).getYear() === 117);
 			assert(new Date(res.body.registrationDeadline).getYear() === 118);
+			assert(res.body.organizer[0].name === 'Fictional Sports Brand');
 			done();
 		});
 	});

@@ -18,7 +18,8 @@ module.exports = (
 	resultUrl,
 	stateName,
 	earlyBirdEndDate,
-	registrationDeadline
+	registrationDeadline,
+	organizer
 ) => {
 	return new Promise((resolve, reject) => {
 		request(app)
@@ -39,7 +40,8 @@ module.exports = (
 				resultUrl,
 				stateName,
 				earlyBirdEndDate,
-				registrationDeadline
+				registrationDeadline,
+				organizer
 			})
 			.end((err, res) => {
 				resolve(res.body);
