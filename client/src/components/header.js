@@ -10,7 +10,8 @@ import withWidth, { SMALL } from "material-ui/utils/withWidth";
 import { ToolbarGroup, ToolbarSeparator } from "material-ui/Toolbar";
 import Popover from "material-ui/Popover";
 import SigninDialog from "./auth/signin_dialog";
-import { openSigninDialog } from "../actions/auth_actions";
+import SignupDialog from "./auth/signup_dialog";
+import { openSigninDialog, openSignupDialog } from "../actions/auth_actions";
 
 const style = {
   appBar: {
@@ -169,7 +170,7 @@ class Header extends Component {
           <ToolbarSeparator />
           <FlatButton
             style={style.navButton}
-            containerElement={<Link to="/signup" />}
+            onTouchTap={this.props.openSignupDialog}
           >
             Sign Up
           </FlatButton>
@@ -192,6 +193,7 @@ class Header extends Component {
           {this.renderUserLink()}
         </AppBar>
         <SigninDialog />
+        <SignupDialog />
       </div>
     );
   }
@@ -205,5 +207,5 @@ function mapStateToProps(state) {
 }
 
 export default withWidth()(
-  connect(mapStateToProps, { openSigninDialog })(withRouter(Header))
+  connect(mapStateToProps, { openSigninDialog, openSignupDialog })(withRouter(Header))
 );

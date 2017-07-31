@@ -6,7 +6,7 @@ import { Field, reduxForm } from "redux-form";
 import TextField from "material-ui/TextField";
 import FlatButton from "material-ui/FlatButton";
 import RaisedButton from "material-ui/RaisedButton";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 
 class SigninDialog extends Component {
   renderField(field) {
@@ -39,6 +39,11 @@ class SigninDialog extends Component {
         </div>
       );
     }
+  }
+
+  handleFormSwitch() {
+    this.props.closeSigninDialog();
+    this.props.openSignupDialog();
   }
 
   render() {
@@ -83,6 +88,12 @@ class SigninDialog extends Component {
               disabled={pristine || submitting}
             />
           </form>
+          <br />
+          <h5>
+            Not a member? <a onClick={this.handleFormSwitch.bind(this)}>Sign up here!</a>
+          </h5>
+          <br />
+          <br />
         </Dialog>
       </div>
     );
@@ -92,11 +103,9 @@ class SigninDialog extends Component {
 function mapStateToProps(state) {
   return {
     signinDialogOpen: state.auth.signinDialogOpen,
-    errorMessage: state.auth.error,
-    auth: state.auth
+    errorMessage: state.auth.error
   };
 }
-
 
 export default reduxForm({ form: "signin" })(
   connect(mapStateToProps, actions)(withRouter(SigninDialog))

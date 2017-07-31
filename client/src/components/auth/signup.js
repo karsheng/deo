@@ -169,7 +169,7 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   validate,
-  form: 'signup'
+  form: 'signupold'
 })(
   connect(mapStateToProps, actions)(Signup)
 );
