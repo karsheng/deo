@@ -168,7 +168,8 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						},
 						"https:result/url",
 						"Kuala Lumpur",
-						Date.now() + 1000 * 60 * 60 * 24 * 5
+						Date.now() + 1000 * 60 * 60 * 24 * 5,
+						Date.now() + 1000 * 60 * 60 * 24 * 50
 					),
 					updateEvent(
 						adminToken,
@@ -212,7 +213,8 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						},
 						"https:result/url",
 						"Johor",
-						Date.now() - 1000 * 60 * 60 * 24 * 5
+						Date.now() - 1000 * 60 * 60 * 24 * 5,
+						Date.now() + 1000 * 60 * 60 * 24 * 50
 					),
 					updateEvent(
 						adminToken,
@@ -256,7 +258,8 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						},
 						"https:result/url",
 						"Kuala Lumpur",
-						Date.now() + 1000 * 60 * 60 * 24 * 5
+						Date.now() + 1000 * 60 * 60 * 24 * 5,
+						Date.now() + 1000 * 60 * 60 * 24 * 50
 					),
 					updateEvent(
 						adminToken,
@@ -278,7 +281,8 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						},
 						"https:result/url",
 						"Johor",
-						Date.now() - 1000 * 60 * 60 * 24 * 5
+						Date.now() - 1000 * 60 * 60 * 24 * 5,
+						Date.now() + 1000 * 60 * 60 * 24 * 50
 					),
 					updateEvent(
 						adminToken,
@@ -300,7 +304,8 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						},
 						"https:result/url",
 						"Kuala Lumpur",
-						null
+						null,
+						Date.now() + 1000 * 60 * 60 * 24 * 30
 					)
 				]).then(updatedEvents => {
 					createUser(

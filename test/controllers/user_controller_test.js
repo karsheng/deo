@@ -129,7 +129,9 @@ describe	("User Controller", function(done) {
 							},
 							"http:result.com/result",
 							"Kuala Lumpur",
-							Date.now() - 1000 * 60 * 60 * 24 * 3
+							Date.now() - 1000 * 60 * 60 * 24 * 3,
+							Date.now() + 1000 * 60 * 60 * 24 * 30
+							
 						).then(updatedEvent => {
 							event = updatedEvent;
 							createUser(

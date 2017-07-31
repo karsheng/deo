@@ -80,7 +80,8 @@ describe("Fake Payment Controller", function(done) {
 							},
 							"http:result.com/result",
 							"Kuala Lumpur",
-							new Date(2017, 1, 1)
+							new Date(2017, 1, 1),
+							Date.now() + 1000 * 60 * 60 * 24 * 10
 						).then(updatedEvent => {
 							event = updatedEvent;
 							createUser(
@@ -110,6 +111,7 @@ describe("Fake Payment Controller", function(done) {
 	it("POST to /api/fakepayment/:registration_id", done => {
 		const orders = [{ meal: meal1, quantity: 1 }, { meal: meal2, quantity: 1 }];
 		createRegistration(userToken, event._id, cat1, orders).then(reg => {
+			console.log(reg);
 			assert(reg.paid === false);
 			request(app)
 				.post(`/api/fakepayment/${reg._id}`)

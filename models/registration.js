@@ -33,7 +33,7 @@ RegistrationSchema.statics.checkStatus = function(user, category, cb) {
 	this.find({ category, paid: true }).exec(function(err, regs) {
 		if (err) return cb(err);
 
-		if (regs.length < category.participantLimit && category.event.open) {
+		if (regs.length < category.participantLimit && category.event.open && category.event.registrationDeadline > Date.now() ) {
 			return cb(null, true);
 		} else {
 			return cb(null, false);

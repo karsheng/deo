@@ -157,7 +157,8 @@ describe("Public Controller", function(done) {
 								},
 								"http:result.com/result",
 								"Kuala Lumpur",
-								new Date(2017, 1, 1)
+								new Date(2017, 1, 1),
+								new Date(2018, 2, 2)
 							),
 							updateEvent(
 								adminToken,
@@ -179,7 +180,8 @@ describe("Public Controller", function(done) {
 								},
 								"http:result.com/result",
 								"Kuala Lumpur",
-								new Date(2017, 1, 1)
+								new Date(2017, 1, 1),
+								new Date(2018, 2, 2)
 							),
 							updateEvent(
 								adminToken,
@@ -201,7 +203,8 @@ describe("Public Controller", function(done) {
 								},
 								"http:result.com/result",
 								"Kuala Lumpur",
-								new Date(2017, 1, 1)
+								new Date(2017, 1, 1),
+								new Date(2018, 2, 2)
 							)
 						]).then(updatedEvents => {
 							event1 = updatedEvents[0];
@@ -225,6 +228,7 @@ describe("Public Controller", function(done) {
 			assert(res.body.resultUrl === "http:result.com/result");
 			assert(res.body.type[0] === "run");
 			assert(new Date(res.body.earlyBirdEndDate).getYear() === 117);
+			assert(new Date(res.body.registrationDeadline).getYear() === 118);
 			done();
 		});
 	});

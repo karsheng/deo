@@ -29,7 +29,8 @@ const EventSchema = new Schema({
 	resultUrl: String,
 	type: [String],
 	stateName: String,
-	earlyBirdEndDate: Date
+	earlyBirdEndDate: Date,
+	registrationDeadline: Date
 });
 
 EventSchema.pre("save", function(next) {

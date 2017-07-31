@@ -130,7 +130,8 @@ describe("Admin Controller", function(done) {
 							},
 							"http:result.com/result",
 							"Kuala Lumpur",
-							new Date(2017, 1, 1)
+							new Date(2017, 1, 1),
+							new Date(2017, 2, 2)
 						).then(updatedEvent => {
 							event = updatedEvent;
 							done();
@@ -223,7 +224,8 @@ describe("Admin Controller", function(done) {
 				],
 				resultUrl: "http:result.com/result",
 				stateName: "Kuala Lumpur",
-				earlyBirdEndDate: new Date(2017, 1, 1)
+				earlyBirdEndDate: new Date(2017, 1, 1),
+				registrationDeadline: new Date(2018, 2, 2)
 			})
 			.end((err, res) => {
 				Event.findOne({ name: "Changed Event Name" }).then(e => {
@@ -238,6 +240,7 @@ describe("Admin Controller", function(done) {
 					assert(e.resultUrl === "http:result.com/result");
 					assert(e.stateName === "Kuala Lumpur");
 					assert(new Date(e.earlyBirdEndDate).getYear() === 117);
+					assert(new Date(e.registrationDeadline).getYear() === 118);
 					done();
 				});
 			});

@@ -93,7 +93,8 @@ xdescribe("PayPal Payment Controller", function(done) {
 								45720,
 								"U.S.",
 								["5km", "10km", "Half-marathon", "Full-marathon"],
-								new Date(1988, 1, 2)
+								new Date(1988, 1, 2),
+								new Date(1988, 1, 3)
 							).then(ut => {
 								userToken = ut;
 								done();

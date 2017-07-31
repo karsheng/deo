@@ -71,7 +71,8 @@ module.exports = {
 			collectionInfo,
 			resultUrl,
 			stateName,
-			earlyBirdEndDate
+			earlyBirdEndDate,
+			registrationDeadline
 		} = req.body;
 		// findByIdAndUpdate doesnt support pre hooks
 		// hence use findById and save instead
@@ -92,6 +93,7 @@ module.exports = {
 			event.resultUrl = resultUrl;
 			event.stateName = stateName;
 			event.earlyBirdEndDate = earlyBirdEndDate;
+			event.registrationDeadline = registrationDeadline;
 			
 			event.save()
 				.then(result => {

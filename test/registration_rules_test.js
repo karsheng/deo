@@ -16,17 +16,19 @@ const Registration = mongoose.model("registration");
 
 describe("Registration Rules", function(done) {
 	this.timeout(20000);
-	var event1, event2;
+	var event1, event2, event3;
 	var adminToken, userToken1, userToken2;
 	var cat1, cat2, cat3, cat4, cat6;
 	var cat5;
+	var cat31;
 
 	beforeEach(done => {
 		createAdmin("admin@deo.com", "qwerty123").then(at => {
 			adminToken = at;
 			Promise.all([
 				createEvent(adminToken, "Event 1"),
-				createEvent(adminToken, "Event 2")
+				createEvent(adminToken, "Event 2"),
+				createEvent(adminToken, "Event 3")
 			]).then(events => {
 				Promise.all([
 					createCategory(
@@ -106,6 +108,19 @@ describe("Registration Rules", function(done) {
 						"RM 100",
 						"run",
 						10
+					),
+					createCategory(
+						adminToken,
+						"10km Male 21 and above (open)",
+						{ earlyBird: null, normal: 50 },
+						true,
+						21,
+						999,
+						1000,
+						events[2],
+						"RM 100",
+						"run",
+						10
 					)
 				]).then(cats => {
 					cat1 = cats[0];
@@ -114,6 +129,7 @@ describe("Registration Rules", function(done) {
 					cat4 = cats[3];
 					cat5 = cats[4];
 					cat6 = cats[5];
+					cat31 = cats[6];
 					Promise.all([
 						updateEvent(
 							adminToken,
@@ -135,7 +151,8 @@ describe("Registration Rules", function(done) {
 							},
 							"http:result.com/result",
 							"Kuala Lumpur",
-							new Date(2017, 1, 1)
+							Date.now() - 1000 * 60 * 60 * 24 * 3,
+							Date.now() + 1000 * 60 * 60 * 24 * 30
 						),
 						updateEvent(
 							adminToken,
@@ -157,11 +174,36 @@ describe("Registration Rules", function(done) {
 							},
 							"http:result.com/result",
 							"Kuala Lumpur",
-							new Date(2017, 1, 1)
+							Date.now() - 1000 * 60 * 60 * 24 * 30,
+							Date.now() - 1000 * 60 * 60 * 24 * 15
+						),
+						updateEvent(
+							adminToken,
+							events[2]._id,
+							"Test Event 3",
+							new Date().getTime(),
+							"Test Location",
+							3.123,
+							101.123,
+							faker.lorem.paragraphs(),
+							faker.image.imageUrl(),
+							[cat5],
+							[],
+							true,
+							{
+								address: "1 Newell Road",
+								time: "11th Nov 2017, 12th Nov 2017",
+								description: "collection description"
+							},
+							"http:result.com/result",
+							"Kuala Lumpur",
+							Date.now() - 1000 * 60 * 60 * 24 * 30,
+							Date.now() - 1000 * 60 * 60 * 24 * 15
 						)
 					]).then(updatedEvents => {
 						event1 = updatedEvents[0];
 						event2 = updatedEvents[1];
+						event3 = updatedEvents[2];
 						Promise.all([
 							createUser(
 								"Gavin Belson",
@@ -286,6 +328,17 @@ describe("Registration Rules", function(done) {
 			.post(`/api/event/register/${event2._id}`)
 			.set("authorization", userToken2)
 			.send({ category: cat5 })
+			.end((err, res) => {
+				assert(res.body.message === "Registration for this category is closed");
+				done();
+			});
+	});
+	
+	it("Returns error if user tries to register for an event that is already passed registration deadline", done => {
+		request(app)
+			.post(`/api/event/register/${event3._id}`)
+			.set("authorization", userToken2)
+			.send({ category: cat31 })
 			.end((err, res) => {
 				assert(res.body.message === "Registration for this category is closed");
 				done();
