@@ -1,16 +1,17 @@
 const Registration = require('../models/registration');
 const Category = require('../models/category');
+const Participant = require('../models/participant');
 
-function checkRegistrationEligibity(user, category, next, cb) {
+function checkRegistrationEligibity(participant, category, next, cb) {
 	Category.findById(category._id)
 		.populate({ path: 'event', model: 'event' })
 		.then(category => {
-			Registration.checkStatus(user, category, function(err, isOpen) {
+			Registration.checkStatus(category, function(err, isOpen) {
 				if (err) return next(err);
 				if (isOpen) {
-					category.checkEligibility(user, function(isEligible) {
+					category.checkEligibility(participant, function(isEligible) {
 						if (isEligible) return cb(null, true);
-						return cb({ message: 'You cannot register for this category' }, false);
+						return cb({ message: 'Not allowed to register for this category' }, false);
 					});
 				} else {
 					return cb({ message: 'Registration for this category is closed' }, false);
@@ -30,6 +31,7 @@ module.exports = {
 		.populate({ path: 'category', model: 'category' })
 		.populate({ path: 'orders.meal', model: 'meal' })
 		.populate({ path: 'event', model: 'event' })
+		.populate({ path: 'participant', model: 'participant' })
 		.then(reg => {
 			res.json(reg);
 		})
@@ -38,42 +40,28 @@ module.exports = {
 	registerForEvent(req, res, next) {
 		const { event_id } = req.params;
 		const { user } = req;
-		const { category, orders } = req.body;
+		const { category, orders, participant, registerForSelf } = req.body;
 
-		checkRegistrationEligibity(user, category, next, function(errMessage, isEligible) {
+		checkRegistrationEligibity(participant, category, next, function(errMessage, isEligible) {
 			if (isEligible) {
-				// check if user already registered
-				Registration.findOne({
-					user,
-					event: event_id,
-				})
-				.then(existingReg => {
-					// if user not registered, create new registration
-					if (!existingReg) {
-						const registration = new Registration({
-							user: req.user._id,
+				// TODO: Check waiver declaration
+				const p = new Participant(participant);
+				const registration = new Registration({
+							user: user._id,
 							event: event_id,
 							category,
-							orders
+							orders,
+							participant: p,
+							registerForSelf
 						});
-
-						registration.save()
-							.then(reg => res.json(reg))
-							.catch(next);
-					} else {
-						// if user registered and paid, return error
-						if (existingReg.paid) return res.status(422).send({ message: 'User already registered' });
-						
-						// if user registered, update existing registration
-						existingReg.category = category;
-						existingReg.orders = orders;
-
-						existingReg.save()
-							.then(reg => res.json(reg))
-							.catch(next);
-					}
-				})
+				p.registration = registration._id;
+				Promise.all([
+					p.save(),
+					registration.save()
+				])
+				.then(results => res.json(results[1]))
 				.catch(next);
+				
 			} else {
 				res.status(422).send(errMessage);
 			}

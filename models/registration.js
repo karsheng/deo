@@ -24,12 +24,20 @@ const RegistrationSchema = new Schema(
 		paid: {
 			type: Boolean,
 			default: false
+		},
+		registerForSelf: {
+			type: Boolean,
+			default: false
+		},
+		participant: {
+			type: Schema.Types.ObjectId,
+			ref: "participant"
 		}
 	},
 	{ timestamps: { createdAt: "timeRegistered" } }
 );
 
-RegistrationSchema.statics.checkStatus = function(user, category, cb) {
+RegistrationSchema.statics.checkStatus = function(category, cb) {
 	this.find({ category, paid: true }).exec(function(err, regs) {
 		if (err) return cb(err);
 

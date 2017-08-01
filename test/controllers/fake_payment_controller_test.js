@@ -20,7 +20,31 @@ describe("Fake Payment Controller", function(done) {
 	var cat1;
 	var meal1, meal2;
 	var event;
-
+	const participant = {
+			fullName: "Gavin Belson",
+			identityNumber: "1234567",
+			nationality: "U.S.",
+			countryOfResidence: "U.S.",
+			gender: true,
+			dateOfBirth: new Date(1988, 1, 2),
+			email: "gavin@hooli.com",
+			phone: "1234567890",
+			postcode: "45720",
+			city: "San Francisco",
+			state: "California",
+			emergencyContact: {
+				name: "Richard Hendricks",
+				relationship: "friend",
+				phone: "1234567890"
+			},
+			medicalCondition: {
+				yes: true,
+				description: "High colestrol because of the blood boy"
+			},
+			apparelSize: "L",
+			waiverDeclaration: true
+		};
+		
 	beforeEach(done => {
 		createAdmin("karshenglee@gmail.com", "qwerty123").then(token => {
 			adminToken = token;
@@ -127,7 +151,7 @@ describe("Fake Payment Controller", function(done) {
 
 	it("POST to /api/fakepayment/:registration_id", done => {
 		const orders = [{ meal: meal1, quantity: 1 }, { meal: meal2, quantity: 1 }];
-		createRegistration(userToken, event._id, cat1, orders).then(reg => {
+		createRegistration(userToken, event._id, cat1, orders, participant, true).then(reg => {
 			assert(reg.paid === false);
 			request(app)
 				.post(`/api/fakepayment/${reg._id}`)
@@ -144,7 +168,7 @@ describe("Fake Payment Controller", function(done) {
 
 	it("disallows repeated payment", done => {
 		const orders = [{ meal: meal1, quantity: 1 }];
-		createRegistration(userToken, event._id, cat1, orders).then(reg => {
+		createRegistration(userToken, event._id, cat1, orders, participant, true).then(reg => {
 			executeFakePayment(userToken, reg).then(result1 => {
 				assert(result1.registration.toString() === reg._id.toString());
 				executeFakePayment(userToken, reg).then(result2 => {

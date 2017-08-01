@@ -8,8 +8,7 @@ const createEvent = require("../helper/create_event_helper");
 const createCategory = require("../helper/create_category_helper");
 const createRegistration = require("../helper/create_registration_helper");
 const updateEvent = require("../helper/update_event_helper");
-const createPayPalPayment = require("../helper/create_paypal_payment_helper");
-const executePayPalPayment = require("../helper/execute_paypal_payment_helper");
+const executeFakePayment = require("../helper/fake_payment_execute_helper");
 const mongoose = require("mongoose");
 const User = mongoose.model("user");
 const Registration = mongoose.model("registration");
@@ -21,6 +20,55 @@ describe("Registration Rules", function(done) {
 	var cat1, cat2, cat3, cat4, cat6;
 	var cat5;
 	var cat31;
+	const participant1 = {
+		fullName: "Gavin Belson",
+		identityNumber: "1234567",
+		nationality: "U.S.",
+		countryOfResidence: "U.S.",
+		gender: true,
+		dateOfBirth: new Date(1957, 1, 2),
+		email: "gavin@hooli.com",
+		phone: "1234567890",
+		postcode: "45720",
+		city: "San Francisco",
+		state: "California",
+		emergencyContact: {
+			name: "Richard Hendricks",
+			relationship: "friend",
+			phone: "1234567890"
+		},
+		medicalCondition: {
+			yes: true,
+			description: "High colestrol because of the blood boy"
+		},
+		apparelSize: "L",
+		waiverDeclaration: true
+	};
+	
+	const participant2 = {
+		fullName: "Jared Donald Dunn",
+		identityNumber: "7654321",
+		nationality: "U.S.",
+		countryOfResidence: "U.S.",
+		gender: true,
+		dateOfBirth: new Date(1988, 1, 2),
+		email: "jared@piedpiper.com",
+		phone: "0987654321",
+		postcode: "99999",
+		city: "San Francisco",
+		state: "California",
+		emergencyContact: {
+			name: "Richard Hendricks",
+			relationship: "soulmate",
+			phone: "2347389457"
+		},
+		medicalCondition: {
+			yes: true,
+			description: "Depression"
+		},
+		apparelSize: "M",
+		waiverDeclaration: true
+	};
 
 	beforeEach(done => {
 		createAdmin("admin@deo.com", "qwerty123").then(at => {
@@ -300,12 +348,14 @@ describe("Registration Rules", function(done) {
 			.post(`/api/event/register/${event1._id}`)
 			.set("authorization", userToken1)
 			.send({
-				category: cat1
+				category: cat1,
+				participant: participant1,
+				registerForSelf: true
 			})
 			.end((err, res) => {
-				// user born in 1957, age limit is 21 to 48
+				// participant born in 1957, age limit is 21 to 48
 				// return error
-				assert(res.body.message === "You cannot register for this category");
+				assert(res.body.message === "Not allowed to register for this category");
 				done();
 			});
 	});
@@ -315,62 +365,41 @@ describe("Registration Rules", function(done) {
 			.post(`/api/event/register/${event1._id}`)
 			.set("authorization", userToken1)
 			.send({
-				category: cat2
+				category: cat2,
+				participant: participant2,
+				registerForSelf: false
+				
 			})
 			.end((err, res) => {
-				// user is male, cat2 is for female
+				// participant is male, cat2 is for female
 				// return error
-				assert(res.body.message === "You cannot register for this category");
+				assert(res.body.message === "Not allowed to register for this category");
 				done();
 			});
 	});
 
-	it("Updates registration if user tries to register to the same event more than once", done => {
-		createRegistration(userToken1, event1._id, cat3).then(reg => {
-			request(app)
-				.post(`/api/event/register/${event1._id}`)
-				.set("authorization", userToken1)
-				.send({
-					category: cat6
-				})
-				.end((err, res) => {
-					Registration.findById(reg._id)
-						.populate({ path: "category", model: "category" })
-						.then(result => {
-							assert(result.category.name === "10km Male 21 and above (open)");
-							done();
-						});
-				});
-		});
-	});
-
-	xit(
-		"Returns error if user tries to register for an event and the participantLimit is met",
-		done => {
-			createRegistration(userToken1, event1._id, cat4).then(registration => {
-				createPayPalPayment(userToken1, registration).then(paypalObj => {
-					executePayPalPayment(
-						userToken1,
-						registration,
-						paypalObj.paymentID,
-						"payer_id"
-					).then(payment => {
-						request(app)
-							.post(`/api/event/register/${event1._id}`)
-							.set("authorization", userToken2)
-							.send({
-								category: cat4
-							})
-							.end((err, res) => {
-								assert(
-									res.body.message ===
-										"Registration for this category is closed"
-								);
-								done();
-							});
+	it("Returns error if user tries to register for an event and the participantLimit is met", done => {
+		createRegistration(userToken1, event1._id, cat4, [], participant1, true).then(registration => {
+			executeFakePayment(userToken1, registration)
+			.then(payment => {
+				request(app)
+					.post(`/api/event/register/${event1._id}`)
+					.set("authorization", userToken2)
+					.send({
+						category: cat4,
+						participant: participant2,
+						registerForSelf: true
+					})
+					.end((err, res) => {
+						assert(
+							res.body.message ===
+								"Registration for this category is closed"
+						);
+						done();
 					});
-				});
 			});
+				
+		});
 		}
 	);
 
@@ -378,7 +407,7 @@ describe("Registration Rules", function(done) {
 		request(app)
 			.post(`/api/event/register/${event2._id}`)
 			.set("authorization", userToken2)
-			.send({ category: cat5 })
+			.send({ category: cat5, participant: participant2, registerForSelf: false })
 			.end((err, res) => {
 				assert(res.body.message === "Registration for this category is closed");
 				done();

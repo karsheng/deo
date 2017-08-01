@@ -164,7 +164,9 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						{
 							address: "Collection Venue 1",
 							time: "June 17th from 9 to 6pm",
-							description: "Please bring along your IC and registration id"
+							description: "Please bring along your IC and registration id",
+							lat: 9,
+							lng: 108
 						},
 						"https:result/url",
 						"Kuala Lumpur",
@@ -187,11 +189,14 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						{
 							address: "Collection Venue 1",
 							time: "June 17th from 9 to 6pm",
-							description: "Please bring along your IC and registration id"
+							description: "Please bring along your IC and registration id",
+							lat: 9,
+							lng: 108
 						},
 						"https:result/url",
 						"Kuala Lumpur",
-						null
+						null,
+						Date.now() + 1000 * 60 * 60 * 24 * 50
 					),
 					updateEvent(
 						adminToken,
@@ -209,7 +214,9 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						{
 							address: "Collection Venue 1",
 							time: "June 17th from 9 to 6pm",
-							description: "Please bring along your IC and registration id"
+							description: "Please bring along your IC and registration id",
+							lat: 9,
+							lng: 108
 						},
 						"https:result/url",
 						"Johor",
@@ -232,11 +239,14 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						{
 							address: "Collection Venue 1",
 							time: "June 17th from 9 to 6pm",
-							description: "Please bring along your IC and registration id"
+							description: "Please bring along your IC and registration id",
+							lat: 9,
+							lng: 108
 						},
 						"https:result/url",
 						"Johor",
-						null
+						null,
+						Date.now() + 1000 * 60 * 60 * 24 * 50
 					),
 					updateEvent(
 						adminToken,
@@ -254,7 +264,9 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						{
 							address: "Collection Venue 1",
 							time: "June 17th from 9 to 6pm",
-							description: "Please bring along your IC and registration id"
+							description: "Please bring along your IC and registration id",
+							lat: 9,
+							lng: 108
 						},
 						"https:result/url",
 						"Kuala Lumpur",
@@ -277,7 +289,9 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						{
 							address: "Collection Venue 1",
 							time: "June 17th from 9 to 6pm",
-							description: "Please bring along your IC and registration id"
+							description: "Please bring along your IC and registration id",
+							lat: 9,
+							lng: 108
 						},
 						"https:result/url",
 						"Johor",
@@ -300,7 +314,9 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						{
 							address: "Collection Venue 1",
 							time: "June 17th from 9 to 6pm",
-							description: "Please bring along your IC and registration id"
+							description: "Please bring along your IC and registration id",
+							lat: 9,
+							lng: 108
 						},
 						"https:result/url",
 						"Kuala Lumpur",

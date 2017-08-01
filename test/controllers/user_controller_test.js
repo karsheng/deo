@@ -176,7 +176,32 @@ describe("User Controller", function(done) {
 
 	it("GET to /api/registration/:event_id retrieves registration info", done => {
 		const orders = [{ meal: meal1, quantity: 1 }, { meal: meal2, quantity: 2 }];
-		createRegistration(userToken, event._id, cat1, orders).then(reg => {
+		const participant = {
+			fullName: "Gavin Belson",
+			identityNumber: "1234567",
+			nationality: "U.S.",
+			countryOfResidence: "U.S.",
+			gender: true,
+			dateOfBirth: new Date(1988, 1, 2),
+			email: "gavin@hooli.com",
+			phone: "1234567890",
+			postcode: "45720",
+			city: "San Francisco",
+			state: "California",
+			emergencyContact: {
+				name: "Richard Hendricks",
+				relationship: "friend",
+				phone: "1234567890"
+			},
+			medicalCondition: {
+				yes: true,
+				description: "High colestrol because of the blood boy"
+			},
+			apparelSize: "L",
+			waiverDeclaration: true
+		};
+		
+		createRegistration(userToken, event._id, cat1, orders, participant, true).then(reg => {
 			request(app)
 				.get(`/api/registration/${reg._id}`)
 				.set("authorization", userToken)
@@ -185,17 +210,45 @@ describe("User Controller", function(done) {
 					assert(res.body.orders.length === 2);
 					// eligible for earlybird
 					assert(res.body.totalBill === 95);
+					assert(res.body.participant.registration.toString() === reg._id.toString());
+					assert(res.body.participant.fullName === 'Gavin Belson');
 					done();
 				});
 		});
 	});
 
 	it("POST to /api/event/register/:event_id creates a registration", done => {
+		const participant = {
+			fullName: "Gavin Belson",
+			identityNumber: "1234567",
+			nationality: "U.S.",
+			countryOfResidence: "U.S.",
+			gender: true,
+			dateOfBirth: new Date(1988, 1, 2),
+			email: "gavin@hooli.com",
+			phone: "1234567890",
+			postcode: "45720",
+			city: "San Francisco",
+			state: "California",
+			emergencyContact: {
+				name: "Richard Hendricks",
+				relationship: "friend",
+				phone: "1234567890"
+			},
+			medicalCondition: {
+				yes: true,
+				description: "High colestrol because of the blood boy"
+			},
+			apparelSize: "L",
+			waiverDeclaration: true
+		};
 		request(app)
 			.post(`/api/event/register/${event._id}`)
 			.send({
 				category: cat1,
-				orders: [{ meal: meal1, quantity: 1 }, { meal: meal2, quantity: 2 }]
+				orders: [{ meal: meal1, quantity: 1 }, { meal: meal2, quantity: 2 }],
+				participant,
+				registerForSelf: true
 			})
 			.set("authorization", userToken)
 			.end((err, res) => {
@@ -203,12 +256,15 @@ describe("User Controller", function(done) {
 					.populate({ path: "user", model: "user" })
 					.populate({ path: "event", model: "event" })
 					.populate({ path: "category", model: "category" })
+					.populate({ path: "participant", model: "participant" })
 					.then(reg => {
 						assert(reg.totalBill === 95);
 						assert(reg.event.name === "Event 1");
 						assert(reg.user.name === "Gavin Belson");
 						assert(reg.category.name === "5km");
 						assert(reg.paid === false);
+						assert(reg.registerForSelf === true);
+						assert(reg.participant.fullName === 'Gavin Belson');
 						done();
 					});
 			});

@@ -20,19 +20,18 @@ const CategorySchema = new Schema({
 	distance: Number
 });
 
-CategorySchema.methods.checkEligibility = function(user, cb) {
+CategorySchema.methods.checkEligibility = function(participant, cb) {
 	const category = this;
-	const age = _calculateAge(user.dateOfBirth);
-
-	if (age >= category.ageMin && age <= category.ageMax && user.gender === category.gender) {
+	const age = _calculateAge(participant.dateOfBirth);
+	if (age >= category.ageMin && age <= category.ageMax && participant.gender === category.gender) {
 		return cb(true);
 	}
 
 	return cb(false);
 }
 
-function _calculateAge(birthday) { 
-  const ageDifMs = Date.now() - birthday.getTime();
+function _calculateAge(birthday) {
+  const ageDifMs = Date.now() - new Date(birthday);
   const ageDate = new Date(ageDifMs);
   return Math.abs(ageDate.getUTCFullYear() - 1970);
 }

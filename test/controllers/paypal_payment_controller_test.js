@@ -18,6 +18,30 @@ xdescribe("PayPal Payment Controller", function(done) {
 	var cat1;
 	var meal1, meal2;
 	var event;
+	const participant = {
+		fullName: "Gavin Belson",
+		identityNumber: "1234567",
+		nationality: "U.S.",
+		countryOfResidence: "U.S.",
+		gender: true,
+		dateOfBirth: new Date(1988, 1, 2),
+		email: "gavin@hooli.com",
+		phone: "1234567890",
+		postcode: "45720",
+		city: "San Francisco",
+		state: "California",
+		emergencyContact: {
+			name: "Richard Hendricks",
+			relationship: "friend",
+			phone: "1234567890"
+		},
+		medicalCondition: {
+			yes: true,
+			description: "High colestrol because of the blood boy"
+		},
+		apparelSize: "L",
+		waiverDeclaration: true
+	};
 
 	beforeEach(done => {
 		createAdmin("karshenglee@gmail.com", "qwerty123").then(token => {
@@ -127,7 +151,9 @@ xdescribe("PayPal Payment Controller", function(done) {
 			userToken,
 			event._id,
 			cat1,
-			orders
+			orders,
+			participant,
+			true
 		).then(registration => {
 			request(app)
 				.post(`/api/paypal/create-payment/${registration._id}`)
@@ -146,7 +172,9 @@ xdescribe("PayPal Payment Controller", function(done) {
 			userToken,
 			event._id,
 			cat1,
-			orders
+			orders,
+			participant,
+			true
 		).then(registration => {
 			createPayPalPayment(userToken, registration).then(paypalObj => {
 				request(app)
