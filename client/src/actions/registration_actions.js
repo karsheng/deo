@@ -15,7 +15,7 @@ export function selectCategory(category, cb) {
 			type: SELECT_CATEGORY,
 			payload: category
 		});
-		cb();
+		if (cb) cb();
 	};
 }
 

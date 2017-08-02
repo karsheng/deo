@@ -9,6 +9,7 @@ export const INTERESTS = [
 ];
 
 export const COUNTRIES = [
+  "Malaysia",
 	"Afghanistan",
   "Albania",
   "Algeria",
@@ -138,7 +139,6 @@ export const COUNTRIES = [
   "Macedonia",
   "Madagascar",
   "Malawi",
-  "Malaysia",
   "Maldives",
   "Mali",
   "Malta",

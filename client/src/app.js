@@ -9,6 +9,7 @@ import RequireAuth from './components/auth/require_auth';
 import WelcomePage from './components/welcome';
 import EventPage from './components/event/event_page';
 import EventBrowse from './components/event/event_browse';
+import ParticipantForm from './components/registration/participant_form';
 import CategorySelection from './components/registration/category_selection';
 import ConfirmationPage from './components/registration/confirmation';
 import MealSelection from './components/registration/meal_selection';
@@ -25,9 +26,10 @@ export default class App extends Component {
 				<div>
 					<Switch>
 						<Route path="/registration/confirmation/:registration_id" component={RequireAuth(ConfirmationPage)} />
-						<Route path="/registration/payment/:registration_id" component={RequireAuth(Payment)} />
-						<Route path="/registration/checkout/:event_id" component={RequireAuth(Checkout)} />
+						<Route path="/registration/participant/:event_id" component={RequireAuth(ParticipantForm)} />
 						<Route path="/registration/category/:event_id" component={RequireAuth(CategorySelection)} />
+						<Route path="/registration/checkout/:event_id" component={RequireAuth(Checkout)} />
+						<Route path="/registration/payment/:registration_id" component={RequireAuth(Payment)} />
 						<Route path="/registration/meal/:event_id" component={RequireAuth(MealSelection)} />
 						<Route path="/event/browse" component={EventBrowse} />
 						<Route path="/event/:_id" component={EventPage} />

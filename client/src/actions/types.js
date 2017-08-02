@@ -19,3 +19,5 @@ export const RESET_MEAL_SELECTION = 'reset_meal_selection';
 export const SET_TOTAL_PRICE = 'set_total_price';
 export const CREATE_REGISTRATION = 'create_registration';
 export const FETCH_REGISTRATION_INFO = 'fetch_registration_info';
+
+export const UPDATE_PARTICIPANT_INFO = 'update_participant_info';

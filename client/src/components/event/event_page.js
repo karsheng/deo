@@ -65,6 +65,9 @@ class EventPage extends Component {
 				<p>
 					Venue: {event.address}
 				</p>
+				<p>
+					Registration Deadline: {formatDate(event.registrationDeadline)}
+				</p>
 				{earlyBirdDetails()}
 			</div>
 		);
@@ -72,12 +75,13 @@ class EventPage extends Component {
 
 	renderCollectionInfo(event) {
 		if (event.collectionInfo) {
+			// TODO: make this map array
 			const collection = event.collectionInfo[0];
 			return (
 				<div>
 					<h3>Collection Info</h3>
 					<p>
-						Location: {collection.address}
+						Location: <Link to={`https://www.google.com/maps?q=${collection.lat},${collection.lng}`} target="_blank">{collection.address}</Link>
 					</p>
 					<p>
 						Date & Time: {collection.time}
@@ -92,7 +96,7 @@ class EventPage extends Component {
 
 	handleRegisterButtonclick() {
 		if (this.props.authenticated) {
-			this.props.history.push("/registration/category/" +  this.props.match.params._id);
+			this.props.history.push("/registration/participant/" +  this.props.match.params._id);
 		} else {
 			this.props.openSigninDialog();
 		}
@@ -173,7 +177,6 @@ class EventPage extends Component {
 				<CardTitle title={event.name} />
 				<CardText>
 					{this.renderEventDetails(event)}
-					<p>Registration deadline: Today</p>
 					<br />
 					{this.renderCollectionInfo(event)}
 					<br />
