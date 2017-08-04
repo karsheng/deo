@@ -111,3 +111,60 @@ function renderErrorText(touched, error) {
     return (error);
   }
 }
+
+export const participantFormCompleted = (participant) => {
+  const {
+    registerForSelf,
+    fullName,
+    email,
+    identityNumber,
+    gender,
+    nationality,
+    countryOfResidence,
+    phone,
+    postcode,
+    apparelSize,
+    dateOfBirth,
+    emergencyContact,
+    medicalCondition
+  } = participant;
+
+  let medicalConditionCheck = false;
+  if (medicalCondition) {
+    if (medicalCondition.yes === true) {
+      if (medicalCondition.description) {
+        medicalConditionCheck = true  
+      }
+    } else {
+      medicalConditionCheck = true
+    }
+  }
+
+  const genderCheck = gender !== undefined ? true : false;
+  const registerForSelfCheck = registerForSelf !== undefined ? true : false;
+
+  return (
+    registerForSelfCheck &&
+    fullName &&
+    email &&
+    identityNumber &&
+    genderCheck &&
+    nationality &&
+    countryOfResidence &&
+    phone &&
+    postcode &&
+    apparelSize &&
+    dateOfBirth &&
+    emergencyContact.name &&
+    emergencyContact.relationship &&
+    emergencyContact.phone && 
+    medicalConditionCheck
+  );
+}
+
+
+export const calculateAge = (dateOfBirth) => {
+  const ageDifMs = Date.now() - new Date(dateOfBirth);
+  const ageDate = new Date(ageDifMs);
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+}

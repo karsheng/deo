@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import RaisedButton from "material-ui/RaisedButton";
 import { RadioButton } from "material-ui/RadioButton";
 import { connect } from "react-redux";
-import * as actions from "../../actions/participant_actions";
+import * as participant_actions from "../../actions/participant_actions";
+import { fetchEvent } from "../../actions/event_actions";
 import { COUNTRIES } from "../../constants";
+import CircularProgress from "material-ui/CircularProgress";
 import {
 	renderMenuItem,
 	renderRadioGroup,
@@ -16,11 +18,16 @@ import {
 
 const style = {
 	backBtn: {
-		marginRight: '24px'
+		marginRight: "24px"
 	}
-}
+};
 
 class ParticipantForm extends Component {
+	componentWillMount() {
+		const { event_id } = this.props.match.params;
+		this.props.fetchEvent(event_id, () => {});
+	}
+
 	handleFormSubmit(formProps) {
 		const participant = { ...formProps };
 		const { event_id } = this.props.match.params;
@@ -30,14 +37,19 @@ class ParticipantForm extends Component {
 			phone: formProps.emergencyContactPhone
 		};
 
-		participant.gender = formProps.gender === "male" ? true : false;
-		participant.medicalCondition = {
-			yes: formProps.medicalCondition === "yes" ? true : false,
-			description: formProps.medicalConditionDescription
-		};
+		if (formProps.male) {
+			participant.gender = formProps.male === "male" ? true : false;
+		}
 
-		participant.registerForSelf =
-			formProps.registerForSelf === "yes" ? true : false;
+		if (participant.withMedicalCondition) {
+			participant.medicalCondition = {
+				yes: formProps.withMedicalCondition === "yes" ? true : false,
+				description: formProps.medicalConditionDescription
+			};
+		}
+		if (formProps.self) {
+			participant.registerForSelf = formProps.self === "yes" ? true : false;
+		}
 
 		this.props.updateParticipantInfo(participant);
 		this.props.history.push(`/registration/category/${event_id}`);
@@ -54,16 +66,20 @@ class ParticipantForm extends Component {
 	}
 
 	render() {
-		const { handleSubmit, pristine, reset, submitting } = this.props;
+		const { event, handleSubmit, reset, submitting } = this.props;
 		// TODO: change apparel size to dropdown list
 		// TODO: change medical condition description to textarea
-		// TODO: fixed autocomplete issue
+		if (!event) {	
+			return <CircularProgress />;
+		}
+
 		return (
 			<div>
 				<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+					<h2>{event.name}</h2>
 					<h3>Step 1: Participant Info</h3>
 					<p>Are you registering for yourself?</p>
-					<Field name="registerForSelf" component={renderRadioGroup}>
+					<Field name="self" component={renderRadioGroup}>
 						<RadioButton value="yes" label="yes" />
 						<RadioButton value="others" label="others" />
 					</Field>
@@ -89,7 +105,8 @@ class ParticipantForm extends Component {
 						component={renderField}
 					/>
 					<br />
-					<Field name="gender" component={renderRadioGroup}>
+					<p>Gender:</p>
+					<Field name="male" component={renderRadioGroup}>
 						<RadioButton value="male" label="male" />
 						<RadioButton value="female" label="female" />
 					</Field>
@@ -161,7 +178,7 @@ class ParticipantForm extends Component {
 					/>
 					<br />
 					<h3>Medical Condition</h3>
-					<Field name="medicalCondition" component={renderRadioGroup}>
+					<Field name="withMedicalCondition" component={renderRadioGroup}>
 						<RadioButton value="yes" label="yes" />
 						<RadioButton value="no" label="no" />
 					</Field>
@@ -176,16 +193,18 @@ class ParticipantForm extends Component {
 					{this.renderAlert()}
 					<br />
 					<RaisedButton
-						type="submit"
 						label="Back"
 						secondary={true}
 						style={style.backBtn}
-						onTouchTap={() => this.props.history.push(`/event/${this.props.match.params.event_id}`)}
+						onTouchTap={() =>
+							this.props.history.push(
+								`/event/${this.props.match.params.event_id}`
+							)}
 					/>
 					<RaisedButton
 						type="submit"
 						label="Next"
-						disabled={pristine || submitting}
+						disabled={submitting}
 						primary={true}
 					/>
 				</form>
@@ -197,9 +216,8 @@ class ParticipantForm extends Component {
 function validate(formProps) {
 	const errors = {};
 
-	if (!formProps.registerForSelf) {
-		errors.registerForSelf =
-			"Please tell us if you're registering for yourself or others";
+	if (!formProps.self) {
+		errors.self = "Please tell us if you're registering for yourself or others";
 	}
 
 	if (!formProps.fullName) {
@@ -221,8 +239,8 @@ function validate(formProps) {
 		errors.identityNumber = "Please enter the identity number of participant";
 	}
 
-	if (!formProps.gender) {
-		errors.gender = "Please select the gender of the participant";
+	if (!formProps.male) {
+		errors.male = "Please select the gender of the participant";
 	}
 
 	if (!formProps.nationality) {
@@ -265,12 +283,12 @@ function validate(formProps) {
 			"Please enter the relationship of the emergency contact and the participant";
 	}
 
-	if (!formProps.medicalCondition) {
-		errors.medicalCondition = "Please select one";
+	if (!formProps.withMedicalCondition) {
+		errors.withMedicalCondition = "Please select one";
 	}
 
 	if (
-		formProps.medicalCondition === "yes" &&
+		formProps.withMedicalCondition === "yes" &&
 		!formProps.medicalConditionDescription
 	) {
 		errors.medicalConditionDescription =
@@ -280,13 +298,14 @@ function validate(formProps) {
 	return errors;
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
 	return {
+		event: state.events[ownProps.match.params.event_id],
 		initialValues: state.participant
 	};
 }
 
-export default connect(mapStateToProps, actions)(
+export default connect(mapStateToProps, { ...participant_actions, fetchEvent })(
 	reduxForm({
 		validate,
 		form: "participant"

@@ -5,6 +5,15 @@ import CircularProgress from "material-ui/CircularProgress";
 import { fetchEvent } from "../../actions/event_actions";
 import _ from 'lodash';
 import { selectCategory } from '../../actions/registration_actions';
+import { participantFormCompleted } from '../../helper/';
+import RaisedButton from 'material-ui/RaisedButton';
+import { calculateAge } from '../../helper/';
+
+const style = {
+	backBtn: {
+		marginRight: '24px'
+	}
+}
 
 class CategorySelection extends Component {
 	constructor(props) {
@@ -17,14 +26,18 @@ class CategorySelection extends Component {
 
 	componentWillMount() {
 		const { event_id } = this.props.match.params;
-		const { selectedCategory } = this.props;
+		const { selectedCategory, participant } = this.props;
+		if (!participantFormCompleted(participant)) return this.props.history.push(`/registration/participant/${event_id}`);
+
 		this.props.fetchEvent(event_id, () => {
 			const { categories } = this.props.event;
 			const selection = _.reduce(categories, function(result, val, key) {
 				result[val._id] = false;
 				return result;
 			}, {});
-			if (selectedCategory) selection[selectedCategory._id] = true;
+			// check if any category was previously selected
+			// if yes, pre select the category
+			if (selectedCategory && selectedCategory.event === event_id) selection[selectedCategory._id] = true;
 			this.setState({ selection });
 
 			const { earlyBirdEndDate } = this.props.event;
@@ -35,7 +48,9 @@ class CategorySelection extends Component {
 		});
 	}
 
-	renderCategoryCard(categories) {
+	renderCategoryCard(categories, participant) {
+		const participantAge = calculateAge(participant.dateOfBirth);
+
 		return categories.map(category => {
 			return(
 				<CategoryCard
@@ -44,6 +59,8 @@ class CategorySelection extends Component {
 					selected={this.state.selection[category._id]}
 					setSelectedCategory={this.setSelectedCategory.bind(this)}
 					earlyBirdValid={this.state.earlyBirdValid}
+					participantAge={participantAge}
+					participantGender={participant.gender}
 				/>
 			);
 		});
@@ -63,18 +80,36 @@ class CategorySelection extends Component {
 	}
 
 	render() {
-		const { event } = this.props;
-		
+		const { event, participant } = this.props;
+		// disable next button if no category was selected
+		const disabled = !Object.values(this.state.selection).includes(true);
 		if (!event) {	
 			return <CircularProgress />;
 		}
 
 		return(
 			<div>
-				<div className="col-xs-12 col-md-8">
-					<h3>Category Selection</h3>
-					{this.renderCategoryCard(event.categories)}
+				<div>
+					<h2>{event.name}</h2>
+					<h3>Step 2: Category Selection</h3>
+					<h4>Participant Details</h4>
+					<p>Name: {participant.fullName}</p>
+					<p>Age: {calculateAge(participant.dateOfBirth)}</p>
+					<p>Gender: {participant.gender ? "Male" : "Female"}</p>
+					{this.renderCategoryCard(event.categories, participant)}
 				</div>
+				<RaisedButton 
+					label="Back"
+					secondary={true}
+					style={style.backBtn}
+					onTouchTap={() => this.props.history.push(`/registration/participant/${event._id}`)}
+				/>
+				<RaisedButton 
+					label="Next"
+					primary={true}
+					disabled={disabled}
+					onTouchTap={() => this.props.history.push(`/registration/meal/${event._id}`)}
+				/>
 			</div>
 		);
 	}
@@ -84,6 +119,7 @@ function mapStateToProps(state, ownProps) {
 	return {
 		event: state.events[ownProps.match.params.event_id],
 		selectedCategory: state.registration.selectedCategory,
+		participant: state.participant
 	};
 }
 
