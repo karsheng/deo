@@ -59,7 +59,7 @@ RegistrationSchema.pre("save", function(next) {
 		Event.populate(reg, { path: "event" }, function(err, reg) {
 			if (
 				reg.event.earlyBirdEndDate &&
-				reg.event.earlyBirdEndDate < Date.now()
+				reg.event.earlyBirdEndDate > Date.now()
 			) {
 				reg_bill += reg.category.price.earlyBird;
 			} else {

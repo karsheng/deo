@@ -14,12 +14,6 @@ const style = {
 }
 
 class MealSelection extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-		}
-	}
-
 
 	componentWillMount() {
 		const { selectedCategory, selectedMeals } = this.props;
@@ -29,7 +23,7 @@ class MealSelection extends Component {
 		if (selectedCategory.event !== event_id) return this.props.history.push(`/event/${event_id}`);
 		// if selectedMeals' event is not equal to event_id
 		// set selectedMeals to {} with resetMealSelection action
-		if (!_.findKey(selectedMeals, {event: event_id})) this.props.resetMealSelection();
+		if (!_.findKey(selectedMeals, { event: event_id })) this.props.resetMealSelection();
 	}
 
 	renderMealForm(event) {
@@ -73,8 +67,6 @@ class MealSelection extends Component {
 				/>
 			</div>
 		);
-
-
 	}
 }
 

@@ -56,7 +56,7 @@ export function setTotalPrice(totalPrice) {
 	};
 }
 
-export function createRegistration({ event, category, orders }, cb) {
+export function createRegistration({ event, category, orders, participant, registerForSelf }, cb) {
 	const token = localStorage.getItem('deotoken');
 	
 	let config = {
@@ -65,7 +65,7 @@ export function createRegistration({ event, category, orders }, cb) {
 	return function(dispatch) {
 		axios.post(
 			`${ROOT_URL}/api/event/register/${event._id}`,
-			{ category, orders },
+			{ category, orders, participant, registerForSelf },
 			config
 		)
 		.then(response => {

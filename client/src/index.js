@@ -24,7 +24,6 @@ const store = createStoreWithMiddleware(reducers);
 const token = localStorage.getItem('deotoken');
 
 if (token) {
-  store.dispatch({ type: AUTH_USER });
   let config = {
     headers: { authorization: token }
   };
@@ -34,12 +33,14 @@ if (token) {
   )
   .then(response => {
     store.dispatch({
-    type: FETCH_USER_INFO,
-    payload: response.data
-  });  
+      type: FETCH_USER_INFO,
+      payload: response.data
+    });
+    store.dispatch({ type: AUTH_USER });  
   })
   .catch(err => {
     console.log(err);
+    localStorage.removeItem('deotoken');
   });
 
 }
