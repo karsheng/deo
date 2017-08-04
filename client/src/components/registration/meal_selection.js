@@ -2,23 +2,24 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import CircularProgress from 'material-ui/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import MealCard from './meal_card';
 import _ from 'lodash';
 import { resetMealSelection } from '../../actions/registration_actions';
 
-class MealSelection extends Component {
-
-	renderButton(component, buttonText) {
-		return(
-			<FlatButton 
-				primary={true} 
-				containerElement={component}
-			>
-				{buttonText}
-			</FlatButton>
-		);
+const style = {
+	backBtn: {
+		marginRight: '24px'
 	}
+}
+
+class MealSelection extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+		}
+	}
+
 
 	componentWillMount() {
 		const { selectedCategory, selectedMeals } = this.props;
@@ -51,18 +52,6 @@ class MealSelection extends Component {
 			);
 		}
 
-		const backButtonLink = (event) => {
-			return(
-				<Link to={"/registration/category/" + event._id}></Link>
-			);
-		};
-		
-		const nextButtonLink = (event) => {
-			return(
-				<Link to={"/registration/checkout/" + event._id}></Link>
-			);
-		};
-
 		return(
 			<div>
 				<h2>{event.name}</h2>
@@ -71,15 +60,17 @@ class MealSelection extends Component {
 					{this.renderMealForm(event)}
 				</div>
 				<br />
-				{this.renderButton(
-					backButtonLink(event),
-					'Back'
-				)}
-				<br />
-				{this.renderButton(
-					nextButtonLink(event),
-					'Next'
-				)}
+				<RaisedButton 
+					label="Back"
+					secondary={true}
+					style={style.backBtn}
+					onTouchTap={() => this.props.history.push(`/registration/category/${event._id}`)}
+				/>
+				<RaisedButton 
+					label="Next"
+					primary={true}
+					onTouchTap={() => this.props.history.push(`/registration/checkout/${event._id}`)}
+				/>
 			</div>
 		);
 

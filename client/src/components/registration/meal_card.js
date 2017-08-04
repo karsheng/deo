@@ -13,15 +13,20 @@ import Checkbox from 'material-ui/Checkbox';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-const styles = {
-	div: {
-		marginBottom: 15
+const style = {
+	card: {
+		margin: "auto",
+		marginBottom: 20,
+		maxWidth: 200
 	},
   checkbox: {
-    marginBottom: 15,
-    width: 100
+  	display: "inline-block",
+    marginTop: 40,
+    width: 30,
+    float: "right"
   },
   selectField: {
+  	display: "inline-block",
   	width: 60
   }
 };
@@ -67,8 +72,8 @@ class MealCard extends Component {
 	render() {
 		const { meal } = this.props;
 		return(
-			<div className="col-xs-6 col-sm-4">
-				<Card>
+			<div className="col-xs-6 col-sm-3">
+				<Card style={style.card} >
 					<CardMedia>
 						<img src={meal.imageUrl}/>
 					</CardMedia>
@@ -78,7 +83,7 @@ class MealCard extends Component {
 		          floatingLabelText="Quantity"
 		          value={this.state.value}
 		          onChange={this.handleValueChange}
-		          style={styles.selectField}
+		          style={style.selectField}
 		        >
 		          <MenuItem value={1} primaryText="1" />
 		          <MenuItem value={2} primaryText="2" />
@@ -92,7 +97,7 @@ class MealCard extends Component {
 		          <MenuItem value={10} primaryText="10" />
 		        </SelectField>
 		        <Checkbox 
-							style={styles.checkbox}
+							style={style.checkbox}
 							onCheck={this.handleCheck}
 							checked={this.state.checked}
 						/>
