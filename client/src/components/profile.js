@@ -74,7 +74,9 @@ class UserProfile extends Component {
 		if (!user) return <div>loading...</div>
 		return(
 			<div>
-				<h2>Profile</h2>
+				<div className="col-xs-12">
+					<h2>Profile</h2>
+				</div>
     		<Paper style={style} zDepth={5} >
     			<br/>
 					<h3>{user.name}</h3>
@@ -96,7 +98,9 @@ class UserProfile extends Component {
     		</Paper>
     		<br/>
     		<br/>
-    		<h2>Events Joined</h2>
+    		<div className="col-xs-12">
+					<h2>Events Joined</h2>
+				</div>
     		<Tabs>
     			<Tab label="Upcoming Events">
     				<Paper style={style}>

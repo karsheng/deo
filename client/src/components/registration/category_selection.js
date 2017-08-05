@@ -8,10 +8,21 @@ import { selectCategory } from '../../actions/registration_actions';
 import { participantFormCompleted } from '../../helper/';
 import RaisedButton from 'material-ui/RaisedButton';
 import { calculateAge } from '../../helper/';
+import Stepper from './stepper';
+import { updateStepper } from '../../actions/stepper_actions';
+import Paper from 'material-ui/Paper';
+import Divider from 'material-ui/Divider';
 
 const style = {
-	backBtn: {
-		marginRight: '24px'
+	paper: {
+		height: "100%",
+		width: "100%",
+		maxWidth: "768px",
+		margin: "auto",
+		padding: "20px"		
+	},
+	nextBtn: {
+		float: 'right'
 	}
 }
 
@@ -45,6 +56,8 @@ class CategorySelection extends Component {
 			if (earlyBirdEndDate && new Date(earlyBirdEndDate) > Date.now()) {
 				this.setState({ earlyBirdValid: true });
 			}
+
+			this.props.updateStepper(1);
 		});
 	}
 
@@ -89,27 +102,32 @@ class CategorySelection extends Component {
 
 		return(
 			<div>
-				<div>
+				<Stepper />
+				<Paper zDepth={3} style={style.paper}>
 					<h2>{event.name}</h2>
 					<h3>Step 2: Category Selection</h3>
-					<h4>Participant Details</h4>
-					<p>Name: {participant.fullName}</p>
-					<p>Age: {calculateAge(participant.dateOfBirth)}</p>
-					<p>Gender: {participant.gender ? "Male" : "Female"}</p>
+					<h5>Participant: {`${participant.fullName} (${participant.gender ? "male" : "female"}, ${calculateAge(participant.dateOfBirth)} years old)`} </h5>
+					<div className="row">
 					{this.renderCategoryCard(event.categories, participant)}
-				</div>
-				<RaisedButton 
-					label="Back"
-					secondary={true}
-					style={style.backBtn}
-					onTouchTap={() => this.props.history.push(`/registration/participant/${event._id}`)}
-				/>
-				<RaisedButton 
-					label="Next"
-					primary={true}
-					disabled={disabled}
-					onTouchTap={() => this.props.history.push(`/registration/meal/${event._id}`)}
-				/>
+					</div>
+					<br /><br /><br /><br />
+					<Divider />
+					<br />
+					<div>
+						<RaisedButton 
+							label="Back"
+							secondary={true}
+							onTouchTap={() => this.props.history.push(`/registration/participant/${event._id}`)}
+						/>
+						<RaisedButton 
+							label="Next"
+							primary={true}
+							disabled={disabled}
+							style={style.nextBtn}
+							onTouchTap={() => this.props.history.push(`/registration/meal/${event._id}`)}
+						/>
+					</div>
+				</Paper>
 			</div>
 		);
 	}
@@ -123,4 +141,4 @@ function mapStateToProps(state, ownProps) {
 	};
 }
 
-export default connect(mapStateToProps, { fetchEvent, selectCategory })(CategorySelection);
+export default connect(mapStateToProps, { fetchEvent, selectCategory, updateStepper })(CategorySelection);

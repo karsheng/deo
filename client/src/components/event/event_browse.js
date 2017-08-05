@@ -105,7 +105,9 @@ class EventBrowse extends Component {
 		if (!events) return <div>Loading...</div>; 
 		return(
 			<div>
-				<h2>Browse Events</h2>
+				<div className="col-xs-12">
+					<h2>Browse Events</h2>
+				</div>
 				<EventFilter 
 					state={this.state}
 					setFilter={this.setFilter}

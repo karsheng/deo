@@ -4,13 +4,15 @@ import authReducer from './auth_reducer';
 import eventReducer from './event_reducer';
 import registrationReducer from './registration_reducer';
 import participantReducer from './participant_reducer';
+import stepperReducer from './stepper_reducer';
 
 const rootReducer = combineReducers({
   form,
   auth : authReducer,
   events: eventReducer,
   registration: registrationReducer,
-  participant: participantReducer
+  participant: participantReducer,
+  stepper: stepperReducer
 });
 
 export default rootReducer;

@@ -6,12 +6,23 @@ import RaisedButton from 'material-ui/RaisedButton';
 import MealCard from './meal_card';
 import _ from 'lodash';
 import { resetMealSelection } from '../../actions/registration_actions';
+import Stepper from './stepper';
+import { updateStepper } from '../../actions/stepper_actions';
+import Paper from 'material-ui/Paper';
+import Divider from 'material-ui/Divider';
 
 const style = {
-	backBtn: {
-		marginRight: '24px'
+	paper: {
+		height: "100%",
+		width: "100%",
+		maxWidth: "768px",
+		margin: "auto",
+		padding: "20px"		
+	},
+	nextBtn: {
+		float: 'right'
 	}
-}
+};
 
 class MealSelection extends Component {
 
@@ -24,6 +35,7 @@ class MealSelection extends Component {
 		// if selectedMeals' event is not equal to event_id
 		// set selectedMeals to {} with resetMealSelection action
 		if (!_.findKey(selectedMeals, { event: event_id })) this.props.resetMealSelection();
+		this.props.updateStepper(2);
 	}
 
 	renderMealForm(event) {
@@ -48,23 +60,30 @@ class MealSelection extends Component {
 
 		return(
 			<div>
-				<h2>{event.name}</h2>
-				<h3>Step 2: Select Meal</h3>
-				<div className="row">
-					{this.renderMealForm(event)}
-				</div>
-				<br />
-				<RaisedButton 
-					label="Back"
-					secondary={true}
-					style={style.backBtn}
-					onTouchTap={() => this.props.history.push(`/registration/category/${event._id}`)}
-				/>
-				<RaisedButton 
-					label="Next"
-					primary={true}
-					onTouchTap={() => this.props.history.push(`/registration/checkout/${event._id}`)}
-				/>
+				<Stepper />
+				<Paper zDepth={3} style={style.paper} >
+					<h2>{event.name}</h2>
+					<h3>Step 3: Order Meal</h3>
+					<div className="row">
+						{this.renderMealForm(event)}
+					</div>
+					<div>
+					<br /><br /><br /><br />
+					<Divider />
+					<br />					
+						<RaisedButton 
+							label="Back"
+							secondary={true}
+							onTouchTap={() => this.props.history.push(`/registration/category/${event._id}`)}
+						/>
+						<RaisedButton 
+							label="Next"
+							primary={true}
+							style={style.nextBtn}
+							onTouchTap={() => this.props.history.push(`/registration/checkout/${event._id}`)}
+						/>
+					</div>
+				</Paper>
 			</div>
 		);
 	}
@@ -78,4 +97,4 @@ function mapStateToProps(state, ownProps) {
 	};
 }
 
-export default connect(mapStateToProps, { resetMealSelection })(MealSelection);
+export default connect(mapStateToProps, { resetMealSelection, updateStepper })(MealSelection);

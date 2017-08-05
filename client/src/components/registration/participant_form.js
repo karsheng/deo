@@ -5,9 +5,13 @@ import RaisedButton from "material-ui/RaisedButton";
 import { RadioButton } from "material-ui/RadioButton";
 import { connect } from "react-redux";
 import * as participant_actions from "../../actions/participant_actions";
+import { updateStepper } from '../../actions/stepper_actions';
 import { fetchEvent } from "../../actions/event_actions";
 import { COUNTRIES } from "../../constants";
 import CircularProgress from "material-ui/CircularProgress";
+import Stepper from './stepper';
+import Paper from 'material-ui/Paper';
+import Divider from 'material-ui/Divider';
 import {
 	renderMenuItem,
 	renderRadioGroup,
@@ -17,15 +21,24 @@ import {
 } from "../../helper/";
 
 const style = {
-	backBtn: {
-		marginRight: "24px"
+	nextBtn: {
+		float: "right"
+	},
+	paper: {
+		height: "100%",
+		width: "100%",
+		maxWidth: "768px",
+		margin: "auto",
+		padding: "20px"
 	}
 };
 
 class ParticipantForm extends Component {
 	componentWillMount() {
 		const { event_id } = this.props.match.params;
-		this.props.fetchEvent(event_id, () => {});
+		this.props.fetchEvent(event_id, () => {
+			this.props.updateStepper(0);
+		});
 	}
 
 	handleFormSubmit(formProps) {
@@ -75,139 +88,153 @@ class ParticipantForm extends Component {
 
 		return (
 			<div>
-				<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-					<h2>{event.name}</h2>
-					<h3>Step 1: Participant Info</h3>
-					<p>Are you registering for yourself?</p>
-					<Field name="self" component={renderRadioGroup}>
-						<RadioButton value="yes" label="yes" />
-						<RadioButton value="others" label="others" />
-					</Field>
-					<br />
-					<Field
-						label="Full Name (as per IC or passport)"
-						type="text"
-						name="fullName"
-						component={renderField}
-					/>
-					<br />
-					<Field
-						label="Participant Email"
-						type="text"
-						name="email"
-						component={renderField}
-					/>
-					<br />
-					<Field
-						label="Identity Number (IC or passport)"
-						type="text"
-						name="identityNumber"
-						component={renderField}
-					/>
-					<br />
-					<p>Gender:</p>
-					<Field name="male" component={renderRadioGroup}>
-						<RadioButton value="male" label="male" />
-						<RadioButton value="female" label="female" />
-					</Field>
-					<br />
-					<Field
-						label="Nationality"
-						name="nationality"
-						component={renderSelectField}
-					>
-						{renderMenuItem(COUNTRIES)}
-					</Field>
-					<br />
-					<Field
-						label="Country of Residence"
-						name="countryOfResidence"
-						component={renderSelectField}
-					>
-						{renderMenuItem(COUNTRIES)}
-					</Field>
-					<br />
-					<Field
-						label="Phone Number"
-						type="text"
-						name="phone"
-						component={renderField}
-					/>
-					<br />
-					<Field
-						label="Postcode"
-						type="text"
-						name="postcode"
-						component={renderField}
-					/>
-					<br />
-					<Field
-						label="Apparel Size"
-						type="text"
-						name="apparelSize"
-						component={renderField}
-					/>
-					<br />
-					<Field
-						label="Date of Birth"
-						hintText="Date of Birth"
-						name="dateOfBirth"
-						component={renderDatePicker}
-					/>
-					<br />
-					<h3>Emergency Contact</h3>
-					<Field
-						label="Name"
-						type="text"
-						name="emergencyContactName"
-						component={renderField}
-					/>
-					<br />
-					<Field
-						label="Relationship"
-						type="text"
-						name="relationship"
-						component={renderField}
-					/>
-					<br />
-					<Field
-						label="Phone"
-						type="text"
-						name="emergencyContactPhone"
-						component={renderField}
-					/>
-					<br />
-					<h3>Medical Condition</h3>
-					<Field name="withMedicalCondition" component={renderRadioGroup}>
-						<RadioButton value="yes" label="yes" />
-						<RadioButton value="no" label="no" />
-					</Field>
-					<br />
-					<Field
-						label="Description"
-						type="text"
-						name="medicalConditionDescription"
-						component={renderField}
-					/>
-					<br />
-					{this.renderAlert()}
-					<br />
-					<RaisedButton
-						label="Back"
-						secondary={true}
-						style={style.backBtn}
-						onTouchTap={() =>
-							this.props.history.push(
-								`/event/${this.props.match.params.event_id}`
-							)}
-					/>
-					<RaisedButton
-						type="submit"
-						label="Next"
-						disabled={submitting}
-						primary={true}
-					/>
-				</form>
+				<Stepper />
+				<Paper style={style.paper} zDepth={3} >
+					<form style={style.form} onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+						<h2>{event.name}</h2>
+						<h3>Step 1: Participant Info</h3>
+						<div className="row">
+						<div className="col-xs-12 col-md-6">
+						<p>Are you registering for yourself?</p>
+						<Field name="self" component={renderRadioGroup}>
+							<RadioButton value="yes" label="yes" />
+							<RadioButton value="others" label="others" />
+						</Field>
+						<Field
+							label="Full Name (as per IC or passport)"
+							type="text"
+							name="fullName"
+							component={renderField}
+						/>
+						<br />
+						<Field
+							label="Participant Email"
+							type="text"
+							name="email"
+							component={renderField}
+						/>
+						<br />
+						<Field
+							label="Identity Number (IC or passport)"
+							type="text"
+							name="identityNumber"
+							component={renderField}
+						/>
+						<br />
+						<p>Gender:</p>
+						<Field name="male" component={renderRadioGroup}>
+							<RadioButton value="male" label="male" />
+							<RadioButton value="female" label="female" />
+						</Field>
+						<br />
+						<Field
+							label="Nationality"
+							name="nationality"
+							component={renderSelectField}
+						>
+							{renderMenuItem(COUNTRIES)}
+						</Field>
+						<br />
+						<Field
+							label="Country of Residence"
+							name="countryOfResidence"
+							component={renderSelectField}
+						>
+							{renderMenuItem(COUNTRIES)}
+						</Field>
+						<br />
+						<Field
+							label="Phone Number"
+							type="text"
+							name="phone"
+							component={renderField}
+						/>
+						<br />
+						<Field
+							label="Postcode"
+							type="text"
+							name="postcode"
+							component={renderField}
+						/>
+						<br />
+						<Field
+							label="Apparel Size"
+							type="text"
+							name="apparelSize"
+							component={renderField}
+						/>
+						<br />
+						<p>Date of birth:</p>
+						<Field
+							label="Date of Birth"
+							hintText="Date of Birth"
+							name="dateOfBirth"
+							component={renderDatePicker}
+						/>
+						<br />
+						</div>
+						<div className="col-xs-12 col-md-6">
+						<h3>Emergency Contact</h3>
+						<Field
+							label="Name"
+							type="text"
+							name="emergencyContactName"
+							component={renderField}
+						/>
+						<br />
+						<Field
+							label="Relationship"
+							type="text"
+							name="relationship"
+							component={renderField}
+						/>
+						<br />
+						<Field
+							label="Phone"
+							type="text"
+							name="emergencyContactPhone"
+							component={renderField}
+						/>
+						<br />
+						<h3>Medical Condition</h3>
+						<Field name="withMedicalCondition" component={renderRadioGroup}>
+							<RadioButton value="yes" label="yes" />
+							<RadioButton value="no" label="no" />
+						</Field>
+						<br />
+						<Field
+							label="Description"
+							type="text"
+							name="medicalConditionDescription"
+							component={renderField}
+						/>
+						<br />
+						</div>
+						</div>
+						{this.renderAlert()}
+						<br /><br /><br /><br />
+						<Divider />
+						<br />
+						<div>
+							<RaisedButton
+								label="Back"
+								secondary={true}
+								onTouchTap={() =>
+									this.props.history.push(
+										`/event/${this.props.match.params.event_id}`
+									)}
+							/>
+							<RaisedButton
+								type="submit"
+								label="Next"
+								style={style.nextBtn}
+								disabled={submitting}
+								primary={true}
+							/>
+						</div>
+					</form>
+				</Paper>
+				<br />
 			</div>
 		);
 	}
@@ -305,7 +332,7 @@ function mapStateToProps(state, ownProps) {
 	};
 }
 
-export default connect(mapStateToProps, { ...participant_actions, fetchEvent })(
+export default connect(mapStateToProps, { ...participant_actions, fetchEvent, updateStepper })(
 	reduxForm({
 		validate,
 		form: "participant"

@@ -8,15 +8,25 @@ import { participantFormCompleted } from '../../helper/';
 import CircularProgress from 'material-ui/CircularProgress';
 import { formatDate } from '../../helper/';
 import Paper from 'material-ui/Paper';
+import Stepper from './stepper';
+import { updateStepper } from '../../actions/stepper_actions';
+import Divider from 'material-ui/Divider';
 
 const style = {
-	backBtn: {
-		marginRight: '24px'
-	},
 	paper: {
-		padding: 15,
+		height: "100%",
+		width: "100%",
+		maxWidth: "768px",
+		margin: "auto",
+		padding: "20px"		
+	},
+	nextBtn: {
+		float: 'right'
+	},
+	priceCol: {
+		textAlign: 'center'
 	}
-}
+};
 
 class Checkout extends Component {
 	constructor(props) {
@@ -40,6 +50,7 @@ class Checkout extends Component {
 		}
 
 		this.props.setTotalPrice(this.getTotalPrice());
+		this.props.updateStepper(3);
 	}
 
 	handleCheckout() {
@@ -90,11 +101,11 @@ class Checkout extends Component {
 		return _.map(selectedMeals, selectedMeal => {
 			return (
 				<div key={selectedMeal.meal._id}>
-					<div className="col-xs-9">
-						{selectedMeal.meal.name + ' (RM '+ selectedMeal.meal.price + ') x ' + selectedMeal.quantity}
+					<div className="col-xs-8">
+						{selectedMeal.meal.name + ' (RM '+ selectedMeal.meal.price.toFixed(2) + ') x ' + selectedMeal.quantity}
 					</div>
-					<div className="col-xs-3">
-						{selectedMeal.meal.price * selectedMeal.quantity}
+					<div style={style.priceCol} className="col-xs-4">
+						{(selectedMeal.meal.price * selectedMeal.quantity).toFixed(2)}
 					</div>
 				</div>
 			);
@@ -103,56 +114,60 @@ class Checkout extends Component {
 
 	renderParticipantDetails(participant) {
 		return(
-			<Paper style={style.paper} zDepth={3}>
-				<h3>Participant Details</h3>
-				<p>
-					Full Name: {participant.fullName}
-				</p>
-				<p>
-					Participant Email: {participant.email}
-				</p>
-				<p>
-					Identity Number: {participant.identityNumber}
-				</p>
-				<p>
-					Gender: {participant.gender ? "Male" : "Female"}
-				</p>
-				<p>
-					Nationality: {participant.nationality}
-				</p>
-				<p>
-					Country of Residence: {participant.countryOfResidence}
-				</p>
-				<p>
-					Phone: {participant.phone}
-				</p>
-				<p>
-					Postcode: {participant.postcode}
-				</p>
-				<p>
-					Apparel Size: {participant.apparelSize}
-				</p>
-				<p>
-					Date of Birth: {formatDate(participant.dateOfBirth)}
-				</p>
-				<h3>Emergency Contact</h3>
-				<p>
-					Emergency Contact Name: {participant.emergencyContact.name}
-				</p>
-				<p>
-					Relationship: {participant.emergencyContact.relationship}
-				</p>
-				<p>
-					Phone: {participant.emergencyContact.phone}
-				</p>
-				<h3>Medical Condition</h3>
-				<p>
-					Medical Condition: {participant.medicalCondition.yes ? "Yes" : "No"}
-				</p>
-				<p>
-					Description: {participant.medicalCondition.description}
-				</p>
-			</Paper>
+			<div>
+				<div className="col-xs-12 col-md-6">
+					<h4>Participant Details</h4>
+					<p>
+						Full Name: {participant.fullName}
+					</p>
+					<p>
+						Participant Email: {participant.email}
+					</p>
+					<p>
+						Identity Number: {participant.identityNumber}
+					</p>
+					<p>
+						Gender: {participant.gender ? "Male" : "Female"}
+					</p>
+					<p>
+						Nationality: {participant.nationality}
+					</p>
+					<p>
+						Country of Residence: {participant.countryOfResidence}
+					</p>
+					<p>
+						Phone: {participant.phone}
+					</p>
+					<p>
+						Postcode: {participant.postcode}
+					</p>
+					<p>
+						Apparel Size: {participant.apparelSize}
+					</p>
+					<p>
+						Date of Birth: {formatDate(participant.dateOfBirth)}
+					</p>
+				</div>
+				<div className="col-xs-12 col-md-6">
+					<h4>Emergency Contact</h4>
+					<p>
+						Emergency Contact Name: {participant.emergencyContact.name}
+					</p>
+					<p>
+						Relationship: {participant.emergencyContact.relationship}
+					</p>
+					<p>
+						Phone: {participant.emergencyContact.phone}
+					</p>
+					<h4>Medical Condition</h4>
+					<p>
+						Medical Condition: {participant.medicalCondition.yes ? "Yes" : "No"}
+					</p>
+					<p>
+						Description: {participant.medicalCondition.description}
+					</p>
+				</div>
+			</div>
 		);
 	}
 
@@ -172,50 +187,57 @@ class Checkout extends Component {
 
 		return(
 			<div>
-				<h2>{event.name}</h2>
-				<h3>Step 3: Confirmation and Payment</h3>
-				<div className="row">
-					<div className="col-xs-9">
-						Description
+				<Stepper />
+				<Paper zDepth={3} style={style.paper} >
+					<h2>{event.name}</h2>
+					<h3>Step 4: Confirmation and Payment</h3>
+					<div className="row">
+						<div className="col-xs-8">
+							<h4>Description</h4>
+						</div>
+						<div style={style.priceCol} className="col-xs-4">
+							<h4>Price (RM)</h4>
+						</div>
 					</div>
-					<div className="col-xs-3">
-						Price (RM)
+					<div className="row">
+						<div className="col-xs-8">
+							{selectedCategory.name}
+						</div>
+						<div style={style.priceCol} className="col-xs-4">
+							{this.renderCategoryPrice(selectedCategory).toFixed(2)}
+						</div>
+						{this.renderMealNameAndPrice(selectedMeals)}
 					</div>
-				</div>
-				<div className="row">
-					<div className="col-xs-9">
-						{selectedCategory.name}
+					<hr />
+					<div className="row">
+						<div className="col-xs-8">
+							Total
+						</div>
+						<div style={style.priceCol} className="col-xs-4">
+							{this.getTotalPrice().toFixed(2)}
+						</div>
 					</div>
-					<div className="col-xs-3">
-						{this.renderCategoryPrice(selectedCategory)}
+					<br /><br />
+					<div className="row">
+						{this.renderParticipantDetails(participant)}
 					</div>
-					{this.renderMealNameAndPrice(selectedMeals)}
-				</div>
-				<hr />
-				<div className="row">
-					<div className="col-xs-9">
-						Total
+					<br /><br /><br /><br />
+					<Divider />
+					<br />
+					<div>
+						<RaisedButton 
+							label="Back"
+							secondary={true}
+							onTouchTap={() => this.props.history.push(`/registration/meal/${event._id}`)}
+						/>
+						<RaisedButton 
+							label="Payment"
+							primary={true}
+							style={style.nextBtn}
+							onTouchTap={this.handleCheckout.bind(this)}
+						/>
 					</div>
-					<div className="col-xs-3">
-						{this.getTotalPrice()}
-					</div>
-				</div>
-				<br />
-				<div className="col-xs-12">
-					{this.renderParticipantDetails(participant)}
-				</div>
-				<br />
-				<RaisedButton 
-					label="Back"
-					secondary={true}
-					style={style.backBtn}
-					onTouchTap={() => this.props.history.push(`/registration/meal/${event._id}`)}
-				/>
-				<RaisedButton 
-					label="Payment"
-					primary={true}
-					onTouchTap={this.handleCheckout.bind(this)}
-				/>
+				</Paper>
 			</div>
 		);
 	}
@@ -230,4 +252,4 @@ function mapStateToProps(state, ownProps) {
 	}
 }
 
-export default connect(mapStateToProps, { setTotalPrice, createRegistration })(Checkout);
+export default connect(mapStateToProps, { setTotalPrice, createRegistration, updateStepper })(Checkout);

@@ -4,16 +4,16 @@ import FlatButton from "material-ui/FlatButton";
 
 const style = {
 	height: 200,
-	width: 200,
-	margin: 20,
+	width: "100%",
+	maxWidth: "168px",
 	textAlign: "center",
 	display: "inline-block",
 };
 
 const disabledStyle = {
 	height: 200,
-	width: 200,
-	margin: 20,
+	width: "100%",
+	maxWidth: "168px",
 	textAlign: "center",
 	display: "inline-block",
 	backgroundColor: "grey"
@@ -49,24 +49,26 @@ class CategoryCard extends Component {
 		const { category, selected, earlyBirdValid } = this.props;
 
 		return (
-			<Paper style={this.state.disabled ? disabledStyle : style} zDepth={selected ? 5 : 1}>
-				<div style={{ margin: 10 }}>
-					<h4>
-						{category.name}
-					</h4>
-					<h5>
-						{earlyBirdValid
-							? `RM ${category.price.earlyBird} (early bird)`
-							: `RM ${category.price.normal}`}
-					</h5>
-					<FlatButton
-						primary={true}
-						disabled={this.state.disabled}
-						label="Select"
-						onTouchTap={this.handleSelection.bind(this)}
-					/>
-				</div>
-			</Paper>
+			<div className="col-xs-6 col-md-3">
+				<Paper style={this.state.disabled ? disabledStyle : style} zDepth={selected ? 5 : 1}>
+					<div style={{ margin: 10 }}>
+						<h4>
+							{category.name}
+						</h4>
+						<h5>
+							{earlyBirdValid
+								? `RM ${category.price.earlyBird} (early bird)`
+								: `RM ${category.price.normal}`}
+						</h5>
+						<FlatButton
+							primary={true}
+							disabled={this.state.disabled}
+							label="Select"
+							onTouchTap={this.handleSelection.bind(this)}
+						/>
+					</div>
+				</Paper>
+			</div>
 		);
 	}
 }

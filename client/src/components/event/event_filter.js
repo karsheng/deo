@@ -42,7 +42,7 @@ class EventFilter extends Component {
 	render() {
 		const { type, distance, month, stateName } = this.props.state;
 		return (
-			<div>
+			<div className="col-xs-12">
 				<SelectField
 					style={style.selectField}
 					floatingLabelText="Select type"

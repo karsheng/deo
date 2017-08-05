@@ -77,8 +77,10 @@ class MealCard extends Component {
 					<CardMedia>
 						<img src={meal.imageUrl}/>
 					</CardMedia>
-					<CardTitle subtitle={meal.name + ' | RM ' + meal.price} />
-					<CardActions>
+					<CardTitle style={{ padding: "5px 8px" }} subtitle={meal.name + ' | RM ' + meal.price.toFixed(2)} />
+					<CardActions
+						style={{ padding: "0 8px" }}
+					>
 						<SelectField
 		          floatingLabelText="Quantity"
 		          value={this.state.value}

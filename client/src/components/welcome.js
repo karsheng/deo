@@ -49,15 +49,16 @@ class WelcomePage extends Component {
 	      </Slider>	
 				<br/>
 				<br/>
-				<h2>Events</h2>
-				<div className="row">
-					{this.renderEvents()}
+				<div className="col-xs-12">
+					<h2>Events</h2>
 				</div>
+					{this.renderEvents()}
 				<br/>
 				<RaisedButton
 					label="View More"
 					fullWidth={true}
 					secondary={true}
+					onTouchTap={() => this.props.history.push('/event/browse')}
 				/>
 			</div>
 		);
