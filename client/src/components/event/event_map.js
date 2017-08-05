@@ -9,7 +9,7 @@ const EventMapGoogle = _.flowRight(
   withGoogleMap
 )(props =>
   <GoogleMap
-    defaultZoom={13}
+    defaultZoom={18}
     defaultCenter={{ lat: props.lat, lng: props.lng }}
   >
     {<Marker {...props.marker} />}
