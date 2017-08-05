@@ -43,6 +43,19 @@ class EventPage extends Component {
 		};
 	}
 
+	renderOrganizerDetails(organizers) {
+		return organizers.map(organizer => {
+			return(
+				<div key={organizer._id}>
+					<h3> Organizer Details</h3>
+					{organizer.name ? <p>Organizer: {organizer.name}</p> : ''}
+					{organizer.email ? <p>Email: {organizer.email}</p> : ''}
+					{organizer.website ? <p>Website: {organizer.email}</p> : ''}
+				</div>
+			);
+		});
+	}
+
 	renderEventDetails(event) {
 		const time = getTime(event.datetime);
 		const earlyBirdDetails = () => {
@@ -168,7 +181,7 @@ class EventPage extends Component {
 		if (!event) {
 			return <CircularProgress />;
 		}
-
+		// TODO: airbnb, booking.com, grab and uber
 		return (
 			<Card style={style.card}>
 				<CardMedia>
@@ -178,6 +191,8 @@ class EventPage extends Component {
 				<CardText>
 					{this.renderEventDetails(event)}
 					<br />
+					{this.renderOrganizerDetails(event.organizer)}
+					<br />
 					{this.renderCollectionInfo(event)}
 					<br />
 					<h3>Categories</h3>
@@ -186,8 +201,6 @@ class EventPage extends Component {
 				</CardText>
 				<CardActions>
 					{this.renderRegisterButton(event)}
-					{this.renderAirbnbButton(event.address)}
-					{this.renderBookingButton(event.address)}
 				</CardActions>
 				<CardMedia>
 					<EventMap lat={event.lat} lng={event.lng} />
