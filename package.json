@@ -12,11 +12,15 @@
   },
   "author": "Kar Sheng, Lee",
   "license": "ISC",
+  "engine": {
+    "node" : "6.11.1"
+  },
   "dependencies": {
     "axios": "^0.16.1",
     "babel-preset-stage-1": "^6.1.18",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.1",
+    "compression": "^1.7.0",
     "cors": "^2.8.3",
     "express": "^4.15.2",
     "faker": "^4.1.0",
