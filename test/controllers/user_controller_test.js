@@ -163,32 +163,8 @@ describe("User Controller", function(done) {
 
 	it("GET to /api/registration/:event_id retrieves registration info", done => {
 		const orders = [{ meal: meal1, quantity: 1 }, { meal: meal2, quantity: 2 }];
-		const participant = {
-			fullName: "Gavin Belson",
-			identityNumber: "1234567",
-			nationality: "U.S.",
-			countryOfResidence: "U.S.",
-			gender: true,
-			dateOfBirth: new Date(1988, 1, 2),
-			email: "gavin@hooli.com",
-			phone: "1234567890",
-			postcode: "45720",
-			city: "San Francisco",
-			state: "California",
-			emergencyContact: {
-				name: "Richard Hendricks",
-				relationship: "friend",
-				phone: "1234567890"
-			},
-			medicalCondition: {
-				yes: true,
-				description: "High colestrol because of the blood boy"
-			},
-			apparelSize: "L",
-			waiverDeclaration: true
-		};
-		
-		createRegistration(userToken, event._id, cat1, orders, participant, true).then(reg => {
+	
+		createRegistration(userToken, event._id, cat1, orders, data.participant, true).then(reg => {
 			request(app)
 				.get(`/api/registration/${reg._id}`)
 				.set("authorization", userToken)
@@ -196,7 +172,7 @@ describe("User Controller", function(done) {
 					assert(res.body.event.name === "Event 1");
 					assert(res.body.orders.length === 2);
 					// not eligible for earlybird
-					assert(res.body.totalBill === 105);
+					assert(res.body.totalBill === 155);
 					assert(res.body.participant.registration.toString() === reg._id.toString());
 					assert(res.body.participant.fullName === 'Gavin Belson');
 					done();
@@ -205,36 +181,12 @@ describe("User Controller", function(done) {
 	});
 
 	it("POST to /api/event/register/:event_id creates a registration", done => {
-		const participant = {
-			fullName: "Gavin Belson",
-			identityNumber: "1234567",
-			nationality: "U.S.",
-			countryOfResidence: "U.S.",
-			gender: true,
-			dateOfBirth: new Date(1988, 1, 2),
-			email: "gavin@hooli.com",
-			phone: "1234567890",
-			postcode: "45720",
-			city: "San Francisco",
-			state: "California",
-			emergencyContact: {
-				name: "Richard Hendricks",
-				relationship: "friend",
-				phone: "1234567890"
-			},
-			medicalCondition: {
-				yes: true,
-				description: "High colestrol because of the blood boy"
-			},
-			apparelSize: "L",
-			waiverDeclaration: true
-		};
 		request(app)
 			.post(`/api/event/register/${event._id}`)
 			.send({
 				category: cat1,
 				orders: [{ meal: meal1, quantity: 1 }, { meal: meal2, quantity: 2 }],
-				participant,
+				participant: data.participant,
 				registerForSelf: true
 			})
 			.set("authorization", userToken)
@@ -245,7 +197,7 @@ describe("User Controller", function(done) {
 					.populate({ path: "category", model: "category" })
 					.populate({ path: "participant", model: "participant" })
 					.then(reg => {
-						assert(reg.totalBill === 105);
+						assert(reg.totalBill === 155);
 						assert(reg.event.name === "Event 1");
 						assert(reg.user.name === "Gavin Belson");
 						assert(reg.category.name === "5km");
@@ -281,7 +233,17 @@ describe("User Controller", function(done) {
 				description: "High colestrol because of the blood boy"
 			},
 			apparelSize: "L",
-			waiverDeclaration: true
+			waiverDeclaration: true,
+			wantsPostalService: true,
+			postalAddress: {
+				line1: "123 Jalan Api",
+				line2: "456 Taman",
+				line3: "",
+				state: "kUALa LumpUR",
+				postcode: "12345",
+				city: "KL",
+				country: "Malaysia"
+			}
 		};
 		
 		createRegistration(userToken, event._id, cat1, orders, participant, true)
@@ -295,8 +257,12 @@ describe("User Controller", function(done) {
 					assert(result.category.name === '5km');
 					assert(result.orders.length === 2);
 					assert(result.orders[0].quantity === 1);
+					assert(result.totalBill === 111);
 					
 					participant.fullName = "Blood boy";
+					participant.wantsPostalService = true;
+					participant.postalAddress.state = "sabah";
+					participant.postalAddress.city = "KK";
 					orders = [{ meal: meal1, quantity: 5 }];
 					createRegistration(userToken, event._id, cat2, orders, participant, true)
 						.then(regNew => {
@@ -305,6 +271,9 @@ describe("User Controller", function(done) {
 							.populate({ path: "category", model: "category" })
 							.populate({ path: "participant", model: "participant" })
 							.then(result => {
+								// cat2 = 60, meal1 x 5 = 55
+								// postal eastMalaysia = 12
+								assert(result.totalBill === 127);
 								assert(result.participant.fullName === "Blood boy");
 								assert(result.category.name === '10km');
 								assert(result.orders.length === 1);

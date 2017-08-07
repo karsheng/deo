@@ -13,6 +13,7 @@ const Event = mongoose.model("event");
 const Meal = mongoose.model("meal");
 const Associate = mongoose.model("associate");
 const Category = mongoose.model("category");
+const data = require("../../helper/");
 
 describe("Admin Controller", function(done) {
 	this.timeout(20000);
@@ -20,32 +21,6 @@ describe("Admin Controller", function(done) {
 	var cat1, cat2, cat3, cat4;
 	var meal1, meal2, meal3;
 	var event;
-	
-	const organizer =	[{
-							name: "Fictional Sports Brand",
-							email: "Fictional@sportsbrand.com",
-							website: "fictionalsportsbrand.com",
-							socialMedia: {
-								facebook: "facebook.com/fictionalsportsbrand",
-								twitter: "twitter.com/fictionalsportsbrand",
-								instagram: "instagram.com/fictionalsportsbrand",
-								youtube: "youtube.com/fictionalsportsbrand",
-								snapchat: "@fictionalsportsbrand",
-								pinterest: "@fictionalsportsbrand"
-							}
-						}]
-						
-	const apparel = {
-						attachmentUrl: null,
-						sizes: ["XS", "S", "M", "L", "XL"],
-						hasDeliveryOption: true,
-						postalCharges: {
-							eastMalaysia: 6,
-							westMalaysia: 12,
-							international: 50
-						},
-						otherDetail: null
-					}
 
 	beforeEach(done => {
 		createAdmin("karshenglee@gmail.com", "qwerty123").then(token => {
@@ -160,22 +135,8 @@ describe("Admin Controller", function(done) {
 							"Kuala Lumpur",
 							new Date(2017, 1, 1),
 							new Date(2017, 2, 2),
-							[
-								{
-									name: "Fictional Sports Brand",
-									email: "Fictional@sportsbrand.com",
-									website: "fictionalsportsbrand.com",
-									socialMedia: {
-										facebook: "facebook.com/fictionalsportsbrand",
-										twitter: "twitter.com/fictionalsportsbrand",
-										instagram: "instagram.com/fictionalsportsbrand",
-										youtube: "youtube.com/fictionalsportsbrand",
-										snapchat: "@fictionalsportsbrand",
-										pinterest: "@fictionalsportsbrand"
-									}
-								}
-							],
-							apparel
+							data.organizer,
+							data.apparel
 						).then(updatedEvent => {
 							event = updatedEvent;
 							done();

@@ -21,7 +21,17 @@ module.exports = {
 			description: "High colestrol because of the blood boy"
 		},
 		apparelSize: "L",
-		waiverDeclaration: true
+		waiverDeclaration: true,
+		wantsPostalService: true,
+		postalAddress: {
+			line1: "1 Hooli Road",
+			line2: "Silicon Valley",
+			line3: "Palo Alto",
+			city: "San Francisco",
+			state: "California",
+			postcode: "12345",
+			country: "United States"
+		}
 	},
 	organizer: [{
 		name: "Fictional Sports Brand",
@@ -41,8 +51,8 @@ module.exports = {
 		sizes: ["XS", "S", "M", "L", "XL"],
 		hasDeliveryOption: true,
 		postalCharges: {
-			eastMalaysia: 6,
-			westMalaysia: 12,
+			eastMalaysia: 12,
+			westMalaysia: 6,
 			international: 50
 		},
 		otherDetail: null

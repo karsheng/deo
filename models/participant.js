@@ -27,7 +27,17 @@ const ParticipantSchema = new Schema({
     registration: {
         type: Schema.Types.ObjectId,
         ref: 'registration'
-    }
+    },
+    postalAddress: {
+        line1: String,
+        line2: String,
+        line3: String,
+        city: String,
+        state: String,
+        postcode: String,
+        country: String
+    },
+    wantsPostalService: Boolean 
 });
 
 const Participant = mongoose.model('participant', ParticipantSchema);

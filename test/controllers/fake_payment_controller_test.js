@@ -90,7 +90,6 @@ describe("Fake Payment Controller", function(done) {
 							data.apparel
 						).then(updatedEvent => {
 							event = updatedEvent;
-							console.log(event);
 							createUser(
 								"Gavin Belson",
 								"gavin@hooli.com",
