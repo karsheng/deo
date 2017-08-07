@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const CollectionSchema = require("./collection_schema");
 const OrganizerSchema = require("./organizer_schema");
+const ApparelSchema = require("./apparel_schema");
 
 const EventSchema = new Schema({
 	name: String,
@@ -32,7 +33,8 @@ const EventSchema = new Schema({
 	stateName: String,
 	earlyBirdEndDate: Date,
 	registrationDeadline: Date,
-	organizer: [OrganizerSchema]
+	organizer: [OrganizerSchema],
+	apparel: ApparelSchema
 });
 
 EventSchema.pre("save", function(next) {

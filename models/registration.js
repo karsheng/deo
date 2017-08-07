@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const OrderSchema = require("./order");
+const OrderSchema = require("./order_schema");
 const Event = require("./event");
 const Category = require("./category");
 const Meal = require("./meal");

@@ -12,6 +12,7 @@ const executeFakePayment = require("../helper/fake_payment_execute_helper");
 const mongoose = require("mongoose");
 const User = mongoose.model("user");
 const Registration = mongoose.model("registration");
+const data = require("../helper/");
 
 describe("Registration Rules", function(done) {
 	this.timeout(20000);
@@ -203,21 +204,8 @@ describe("Registration Rules", function(done) {
 							"Kuala Lumpur",
 							Date.now() - 1000 * 60 * 60 * 24 * 3,
 							Date.now() + 1000 * 60 * 60 * 24 * 30,
-							[
-								{
-									name: "Fictional Sports Brand",
-									email: "Fictional@sportsbrand.com",
-									website: "fictionalsportsbrand.com",
-									socialMedia: {
-										facebook: "facebook.com/fictionalsportsbrand",
-										twitter: "twitter.com/fictionalsportsbrand",
-										instagram: "instagram.com/fictionalsportsbrand",
-										youtube: "youtube.com/fictionalsportsbrand",
-										snapchat: "@fictionalsportsbrand",
-										pinterest: "@fictionalsportsbrand"
-									}
-								}
-							]
+							data.organizer,
+							data.apparel
 						),
 						updateEvent(
 							adminToken,
@@ -243,21 +231,8 @@ describe("Registration Rules", function(done) {
 							"Kuala Lumpur",
 							Date.now() - 1000 * 60 * 60 * 24 * 30,
 							Date.now() - 1000 * 60 * 60 * 24 * 15,
-							[
-								{
-									name: "Fictional Sports Brand",
-									email: "Fictional@sportsbrand.com",
-									website: "fictionalsportsbrand.com",
-									socialMedia: {
-										facebook: "facebook.com/fictionalsportsbrand",
-										twitter: "twitter.com/fictionalsportsbrand",
-										instagram: "instagram.com/fictionalsportsbrand",
-										youtube: "youtube.com/fictionalsportsbrand",
-										snapchat: "@fictionalsportsbrand",
-										pinterest: "@fictionalsportsbrand"
-									}
-								}
-							]
+							data.organizer,
+							data.apparel
 						),
 						updateEvent(
 							adminToken,
@@ -283,21 +258,8 @@ describe("Registration Rules", function(done) {
 							"Kuala Lumpur",
 							Date.now() - 1000 * 60 * 60 * 24 * 30,
 							Date.now() - 1000 * 60 * 60 * 24 * 15,
-							[
-								{
-									name: "Fictional Sports Brand",
-									email: "Fictional@sportsbrand.com",
-									website: "fictionalsportsbrand.com",
-									socialMedia: {
-										facebook: "facebook.com/fictionalsportsbrand",
-										twitter: "twitter.com/fictionalsportsbrand",
-										instagram: "instagram.com/fictionalsportsbrand",
-										youtube: "youtube.com/fictionalsportsbrand",
-										snapchat: "@fictionalsportsbrand",
-										pinterest: "@fictionalsportsbrand"
-									}
-								}
-							]
+							data.organizer,
+							data.apparel
 						)
 					]).then(updatedEvents => {
 						event1 = updatedEvents[0];

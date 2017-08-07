@@ -8,6 +8,7 @@ const updateEvent = require("../../helper/update_event_helper");
 const createMeal = require("../../helper/create_meal_helper");
 const createAssociate = require("../../helper/create_associate_helper");
 const faker = require("faker");
+const data = require("../../helper/");
 
 describe("Public Controller", function(done) {
 	this.timeout(15000);
@@ -161,21 +162,8 @@ describe("Public Controller", function(done) {
 								"Kuala Lumpur",
 								new Date(2017, 1, 1),
 								new Date(2018, 2, 2),
-								[
-									{
-										name: "Fictional Sports Brand",
-										email: "Fictional@sportsbrand.com",
-										website: "fictionalsportsbrand.com",
-										socialMedia: {
-											facebook: "facebook.com/fictionalsportsbrand",
-											twitter: "twitter.com/fictionalsportsbrand",
-											instagram: "instagram.com/fictionalsportsbrand",
-											youtube: "youtube.com/fictionalsportsbrand",
-											snapchat: "@fictionalsportsbrand",
-											pinterest: "@fictionalsportsbrand"
-										}
-									}
-								]
+								data.organizer,
+								data.apparel
 							),
 							updateEvent(
 								adminToken,
@@ -201,21 +189,8 @@ describe("Public Controller", function(done) {
 								"Kuala Lumpur",
 								new Date(2017, 1, 1),
 								new Date(2018, 2, 2),
-								[
-									{
-										name: "Fictional Sports Brand",
-										email: "Fictional@sportsbrand.com",
-										website: "fictionalsportsbrand.com",
-										socialMedia: {
-											facebook: "facebook.com/fictionalsportsbrand",
-											twitter: "twitter.com/fictionalsportsbrand",
-											instagram: "instagram.com/fictionalsportsbrand",
-											youtube: "youtube.com/fictionalsportsbrand",
-											snapchat: "@fictionalsportsbrand",
-											pinterest: "@fictionalsportsbrand"
-										}
-									}
-								]
+								data.organizer,
+								data.apparel
 							),
 							updateEvent(
 								adminToken,
@@ -241,21 +216,8 @@ describe("Public Controller", function(done) {
 								"Kuala Lumpur",
 								new Date(2017, 1, 1),
 								new Date(2018, 2, 2),
-								[
-									{
-										name: "Fictional Sports Brand",
-										email: "Fictional@sportsbrand.com",
-										website: "fictionalsportsbrand.com",
-										socialMedia: {
-											facebook: "facebook.com/fictionalsportsbrand",
-											twitter: "twitter.com/fictionalsportsbrand",
-											instagram: "instagram.com/fictionalsportsbrand",
-											youtube: "youtube.com/fictionalsportsbrand",
-											snapchat: "@fictionalsportsbrand",
-											pinterest: "@fictionalsportsbrand"
-										}
-									}
-								]
+								data.organizer,
+								data.apparel
 							)
 						]).then(updatedEvents => {
 							event1 = updatedEvents[0];
@@ -282,6 +244,8 @@ describe("Public Controller", function(done) {
 			assert(new Date(res.body.earlyBirdEndDate).getYear() === 117);
 			assert(new Date(res.body.registrationDeadline).getYear() === 118);
 			assert(res.body.organizer[0].name === 'Fictional Sports Brand');
+			assert(res.body.apparel.hasDeliveryOption === true);
+			assert(res.body.apparel.sizes.length === 5);
 			done();
 		});
 	});

@@ -11,6 +11,7 @@ const createMeal = require("../../helper/create_meal_helper");
 const faker = require("faker");
 const mongoose = require("mongoose");
 const Registration = mongoose.model("registration");
+const data = require("../../helper/");
 
 describe("User Controller", function(done) {
 	this.timeout(15000);
@@ -132,21 +133,8 @@ describe("User Controller", function(done) {
 							"Kuala Lumpur",
 							Date.now() - 1000 * 60 * 60 * 24 * 3,
 							Date.now() + 1000 * 60 * 60 * 24 * 30,
-							[
-								{
-									name: "Fictional Sports Brand",
-									email: "Fictional@sportsbrand.com",
-									website: "fictionalsportsbrand.com",
-									socialMedia: {
-										facebook: "facebook.com/fictionalsportsbrand",
-										twitter: "twitter.com/fictionalsportsbrand",
-										instagram: "instagram.com/fictionalsportsbrand",
-										youtube: "youtube.com/fictionalsportsbrand",
-										snapchat: "@fictionalsportsbrand",
-										pinterest: "@fictionalsportsbrand"
-									}
-								}
-							]
+							data.organizer,
+							data.apparel
 						).then(updatedEvent => {
 							event = updatedEvent;
 							createUser(

@@ -20,6 +20,32 @@ describe("Admin Controller", function(done) {
 	var cat1, cat2, cat3, cat4;
 	var meal1, meal2, meal3;
 	var event;
+	
+	const organizer =	[{
+							name: "Fictional Sports Brand",
+							email: "Fictional@sportsbrand.com",
+							website: "fictionalsportsbrand.com",
+							socialMedia: {
+								facebook: "facebook.com/fictionalsportsbrand",
+								twitter: "twitter.com/fictionalsportsbrand",
+								instagram: "instagram.com/fictionalsportsbrand",
+								youtube: "youtube.com/fictionalsportsbrand",
+								snapchat: "@fictionalsportsbrand",
+								pinterest: "@fictionalsportsbrand"
+							}
+						}]
+						
+	const apparel = {
+						attachmentUrl: null,
+						sizes: ["XS", "S", "M", "L", "XL"],
+						hasDeliveryOption: true,
+						postalCharges: {
+							eastMalaysia: 6,
+							westMalaysia: 12,
+							international: 50
+						},
+						otherDetail: null
+					}
 
 	beforeEach(done => {
 		createAdmin("karshenglee@gmail.com", "qwerty123").then(token => {
@@ -148,7 +174,8 @@ describe("Admin Controller", function(done) {
 										pinterest: "@fictionalsportsbrand"
 									}
 								}
-							]
+							],
+							apparel
 						).then(updatedEvent => {
 							event = updatedEvent;
 							done();
@@ -259,7 +286,18 @@ describe("Admin Controller", function(done) {
 							pinterest: "@fictionalsportsbrand"
 						}
 					}
-				]
+				],
+				apparel: {
+					attachmentUrl: null,
+					sizes: ["XS", "S", "M", "L", "XL"],
+					hasDeliveryOption: true,
+					postalCharges: {
+						eastMalaysia: 6,
+						westMalaysia: 12,
+						international: 50
+					},
+					otherDetail: null
+				}
 			})
 			.end((err, res) => {
 				Event.findOne({ name: "Changed Event Name" }).then(e => {
@@ -278,6 +316,9 @@ describe("Admin Controller", function(done) {
 					assert(new Date(e.registrationDeadline).getYear() === 118);
 					assert(e.organizer[0].name === "Fictional Sports Brand");
 					assert(e.organizer[0].socialMedia.facebook === "facebook.com/fictionalsportsbrand");
+					assert(e.apparel.sizes.length === 5);
+					assert(e.apparel.postalCharges.eastMalaysia === 6);
+					assert(e.apparel.hasDeliveryOption === true);
 					done();
 				});
 			});

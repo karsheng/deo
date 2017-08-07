@@ -13,6 +13,8 @@ const Payment = require("../../models/payment");
 const mongoose = require("mongoose");
 const Registration = mongoose.model("registration");
 const executeFakePayment = require("../../helper/fake_payment_execute_helper");
+const data = require('../../helper/');
+
 
 describe("Fake Payment Controller", function(done) {
 	this.timeout(20000);
@@ -20,31 +22,7 @@ describe("Fake Payment Controller", function(done) {
 	var cat1;
 	var meal1, meal2;
 	var event;
-	const participant = {
-			fullName: "Gavin Belson",
-			identityNumber: "1234567",
-			nationality: "U.S.",
-			countryOfResidence: "U.S.",
-			gender: true,
-			dateOfBirth: new Date(1988, 1, 2),
-			email: "gavin@hooli.com",
-			phone: "1234567890",
-			postcode: "45720",
-			city: "San Francisco",
-			state: "California",
-			emergencyContact: {
-				name: "Richard Hendricks",
-				relationship: "friend",
-				phone: "1234567890"
-			},
-			medicalCondition: {
-				yes: true,
-				description: "High colestrol because of the blood boy"
-			},
-			apparelSize: "L",
-			waiverDeclaration: true
-		};
-		
+	
 	beforeEach(done => {
 		createAdmin("karshenglee@gmail.com", "qwerty123").then(token => {
 			adminToken = token;
@@ -108,23 +86,11 @@ describe("Fake Payment Controller", function(done) {
 							"Kuala Lumpur",
 							new Date(2017, 1, 1),
 							Date.now() + 1000 * 60 * 60 * 24 * 10,
-							[
-								{
-									name: "Fictional Sports Brand",
-									email: "Fictional@sportsbrand.com",
-									website: "fictionalsportsbrand.com",
-									socialMedia: {
-										facebook: "facebook.com/fictionalsportsbrand",
-										twitter: "twitter.com/fictionalsportsbrand",
-										instagram: "instagram.com/fictionalsportsbrand",
-										youtube: "youtube.com/fictionalsportsbrand",
-										snapchat: "@fictionalsportsbrand",
-										pinterest: "@fictionalsportsbrand"
-									}
-								}
-							]
+							data.organizer,
+							data.apparel
 						).then(updatedEvent => {
 							event = updatedEvent;
+							console.log(event);
 							createUser(
 								"Gavin Belson",
 								"gavin@hooli.com",
@@ -151,7 +117,7 @@ describe("Fake Payment Controller", function(done) {
 
 	it("POST to /api/fakepayment/:registration_id", done => {
 		const orders = [{ meal: meal1, quantity: 1 }, { meal: meal2, quantity: 1 }];
-		createRegistration(userToken, event._id, cat1, orders, participant, true).then(reg => {
+		createRegistration(userToken, event._id, cat1, orders, data.participant, true).then(reg => {
 			assert(reg.paid === false);
 			request(app)
 				.post(`/api/fakepayment/${reg._id}`)
@@ -168,7 +134,7 @@ describe("Fake Payment Controller", function(done) {
 
 	it("disallows repeated payment", done => {
 		const orders = [{ meal: meal1, quantity: 1 }];
-		createRegistration(userToken, event._id, cat1, orders, participant, true).then(reg => {
+		createRegistration(userToken, event._id, cat1, orders, data.participant, true).then(reg => {
 			executeFakePayment(userToken, reg).then(result1 => {
 				assert(result1.registration.toString() === reg._id.toString());
 				executeFakePayment(userToken, reg).then(result2 => {
