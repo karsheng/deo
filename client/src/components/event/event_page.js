@@ -4,7 +4,7 @@ import * as actions from "../../actions/event_actions";
 import { openSigninDialog } from '../../actions/auth_actions';
 import _ from "lodash";
 import { Link } from "react-router-dom";
-import CircularProgress from "material-ui/CircularProgress";
+import Progress from "../progress";
 import ReactSVG from "react-svg";
 import IconButton from "material-ui/IconButton";
 import FontIcon from "material-ui/FontIcon";
@@ -179,7 +179,7 @@ class EventPage extends Component {
 	render() {
 		const { event } = this.props;
 		if (!event) {
-			return <CircularProgress />;
+			return <Progress />;
 		}
 		// TODO: airbnb, booking.com, grab and uber
 		return (

@@ -184,7 +184,7 @@ class Header extends Component {
       <div>
         <AppBar
           style={style.appBar}
-          title="Runners App"
+          title="Deoraces"
           onLeftIconButtonTouchTap={this.handleToggle}
           iconStyleLeft={this.state.iconStyleLeft}
           onTitleTouchTap={() => this.props.history.push("/")}
