@@ -41,25 +41,48 @@ module.exports = {
 		const { event_id } = req.params;
 		const { user } = req;
 		const { category, orders, participant, registerForSelf } = req.body;
-
+		
+		// TODO: Check waiver declaration
 		checkRegistrationEligibity(participant, category, next, function(errMessage, isEligible) {
 			if (isEligible) {
-				// TODO: Check waiver declaration
-				const p = new Participant(participant);
-				const registration = new Registration({
-							user: user._id,
-							event: event_id,
-							category,
-							orders,
-							participant: p,
-							registerForSelf
-						});
-				p.registration = registration._id;
-				Promise.all([
-					p.save(),
-					registration.save()
-				])
-				.then(results => res.json(results[1]))
+				// check if user already has an unpaid registration		
+				Registration.findOne({ user, paid: 'false' })
+				.then(unpaidReg => {
+					if (unpaidReg) {
+						// if there is an unpaid registration, update the registration
+						// info of the registration document and update participant info
+						unpaidReg.category = category;
+						unpaidReg.orders = orders;
+						
+						Participant.findByIdAndUpdate(unpaidReg.participant, participant)
+							.then(updatedParticipant => {
+								unpaidReg.save()
+								.then(reg => res.json(reg))
+								.catch(next);
+							})
+							.catch(next);
+						
+					} else {
+						// if no unpaid registration, create a new registration document
+						// and update participant info
+						const p = new Participant(participant);
+						const registration = new Registration({
+									user: user._id,
+									event: event_id,
+									category,
+									orders,
+									participant: p,
+									registerForSelf
+								});
+						p.registration = registration._id;
+						Promise.all([
+							p.save(),
+							registration.save()
+						])
+						.then(results => res.json(results[1]))
+						.catch(next);
+					}
+				})
 				.catch(next);
 				
 			} else {
@@ -67,4 +90,4 @@ module.exports = {
 			}
 		});
 	}
-}
+};

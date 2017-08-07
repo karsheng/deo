@@ -18,7 +18,6 @@ describe("User Controller", function(done) {
 	var cat1, cat2, cat3, cat4;
 	var meal1, meal2, meal3;
 	var event;
-	var order;
 
 	beforeEach(done => {
 		createAdmin("karshenglee@gmail.com", "qwerty123").then(token => {
@@ -208,8 +207,8 @@ describe("User Controller", function(done) {
 				.end((err, res) => {
 					assert(res.body.event.name === "Event 1");
 					assert(res.body.orders.length === 2);
-					// eligible for earlybird
-					assert(res.body.totalBill === 95);
+					// not eligible for earlybird
+					assert(res.body.totalBill === 105);
 					assert(res.body.participant.registration.toString() === reg._id.toString());
 					assert(res.body.participant.fullName === 'Gavin Belson');
 					done();
@@ -258,7 +257,7 @@ describe("User Controller", function(done) {
 					.populate({ path: "category", model: "category" })
 					.populate({ path: "participant", model: "participant" })
 					.then(reg => {
-						assert(reg.totalBill === 95);
+						assert(reg.totalBill === 105);
 						assert(reg.event.name === "Event 1");
 						assert(reg.user.name === "Gavin Belson");
 						assert(reg.category.name === "5km");
@@ -267,6 +266,66 @@ describe("User Controller", function(done) {
 						assert(reg.participant.fullName === 'Gavin Belson');
 						done();
 					});
+			});
+	});
+	
+	it('updates user unpaid registration document when POST to /api/event/register/:event_id', done => {
+		let orders = [{ meal: meal1, quantity: 1 }, { meal: meal2, quantity: 2 }];
+		let participant = {
+			fullName: "Gavin Belson",
+			identityNumber: "1234567",
+			nationality: "U.S.",
+			countryOfResidence: "U.S.",
+			gender: true,
+			dateOfBirth: new Date(1988, 1, 2),
+			email: "gavin@hooli.com",
+			phone: "1234567890",
+			postcode: "45720",
+			city: "San Francisco",
+			state: "California",
+			emergencyContact: {
+				name: "Richard Hendricks",
+				relationship: "friend",
+				phone: "1234567890"
+			},
+			medicalCondition: {
+				yes: true,
+				description: "High colestrol because of the blood boy"
+			},
+			apparelSize: "L",
+			waiverDeclaration: true
+		};
+		
+		createRegistration(userToken, event._id, cat1, orders, participant, true)
+			.then(regOld => {
+				Registration.findById(regOld._id)
+				.populate({ path: "event", model: "event" })
+				.populate({ path: "category", model: "category" })
+				.populate({ path: "participant", model: "participant" })
+				.then(result => {
+					assert(result.participant.fullName === "Gavin Belson");
+					assert(result.category.name === '5km');
+					assert(result.orders.length === 2);
+					assert(result.orders[0].quantity === 1);
+					
+					participant.fullName = "Blood boy";
+					orders = [{ meal: meal1, quantity: 5 }];
+					createRegistration(userToken, event._id, cat2, orders, participant, true)
+						.then(regNew => {
+							Registration.findById(regOld._id)
+							.populate({ path: "event", model: "event" })
+							.populate({ path: "category", model: "category" })
+							.populate({ path: "participant", model: "participant" })
+							.then(result => {
+								assert(result.participant.fullName === "Blood boy");
+								assert(result.category.name === '10km');
+								assert(result.orders.length === 1);
+								assert(result.orders[0].quantity === 5);
+								done();	
+							});
+							
+						});	
+				});
 			});
 	});
 });
