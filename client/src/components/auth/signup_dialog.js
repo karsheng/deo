@@ -4,10 +4,31 @@ import { Field, reduxForm } from "redux-form";
 import * as actions from "../../actions/auth_actions";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { renderField } from "../../helper/";
 import RaisedButton from "material-ui/RaisedButton";
+import TextField from "material-ui/TextField";
+
+const style = {
+  contentStyle: {
+    maxWidth: "380px"
+  }
+};
 
 class SignupDialog extends Component {
+	renderField(field) {
+		const { meta: { touched, error } } = field;
+
+		return (
+			<TextField
+		    hintText={field.label}
+		    floatingLabelText={field.label}
+		    type={field.type}
+		    errorText={touched && error}
+		    fullWidth={true}
+		    {...field.input}
+			/>
+		);
+	}
+
 	handleFormSubmit(formProps) {
 		this.props.signupUser(formProps, () => {
 			this.props.history.push("/");
@@ -39,34 +60,37 @@ class SignupDialog extends Component {
 					modal={false}
 					open={this.props.signupDialogOpen}
 					onRequestClose={this.props.closeSignupDialog}
+					contentStyle={style.contentStyle}
+					autoScrollBodyContent={true}
+
 				>
 					<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
 						<Field
 							label="Name:"
 							type="text"
 							name="name"
-							component={renderField}
+							component={this.renderField}
 						/>
 						<br />
 						<Field
 							label="Email:"
 							type="text"
 							name="email"
-							component={renderField}
+							component={this.renderField}
 						/>
 						<br />
 						<Field
 							label="Password:"
 							type="password"
 							name="password"
-							component={renderField}
+							component={this.renderField}
 						/>
 						<br />
 						<Field
 							label="Confirm Password:"
 							type="password"
 							name="passwordConfirm"
-							component={renderField}
+							component={this.renderField}
 						/>
 						<br />
             {this.renderAlert()}

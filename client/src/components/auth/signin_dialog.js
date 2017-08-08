@@ -8,6 +8,12 @@ import FlatButton from "material-ui/FlatButton";
 import RaisedButton from "material-ui/RaisedButton";
 import { withRouter, Link } from "react-router-dom";
 
+const style = {
+  contentStyle: {
+    maxWidth: "380px"
+  }
+};
+
 class SigninDialog extends Component {
   renderField(field) {
     const { meta: { touched, error } } = field;
@@ -18,6 +24,7 @@ class SigninDialog extends Component {
         floatingLabelText={field.label}
         type={field.type}
         errorText={touched && error}
+        fullWidth={true}
         {...field.input}
       />
     );
@@ -62,7 +69,9 @@ class SigninDialog extends Component {
           title="Sign In"
           modal={false}
           open={this.props.signinDialogOpen}
+          contentStyle={style.contentStyle}
           onRequestClose={this.props.closeSigninDialog}
+          autoScrollBodyContent={true}
         >
           <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
             <Field

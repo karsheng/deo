@@ -39,7 +39,7 @@ class CategorySelection extends Component {
 		const { event_id } = this.props.match.params;
 		const { selectedCategory, participant } = this.props;
 		if (!participantFormCompleted(participant)) return this.props.history.push(`/registration/participant/${event_id}`);
-
+		// TODO: change this to check category availability instead
 		this.props.fetchEvent(event_id, () => {
 			const { categories } = this.props.event;
 			const selection = _.reduce(categories, function(result, val, key) {
