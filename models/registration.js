@@ -79,7 +79,7 @@ RegistrationSchema.pre("save", function(next) {
 	
 				// this part calculates fee for postal
 				if (participant.wantsPostalService) {
-					const { postalCharges } = event.apparel;
+					const { postalCharges } = event.delivery;
 					
 					postal_bill = determinePostalCharges(participant.postalAddress, postalCharges);
 				}

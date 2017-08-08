@@ -7,6 +7,7 @@ const updateEvent = require("./helper/update_event_helper");
 const createUser = require("./helper/create_user_helper");
 const createRegistration = require("./helper/create_registration_helper");
 const faker = require("faker");
+const data = require("./helper/");
 
 createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 	Promise.all([
@@ -175,21 +176,9 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						"Kuala Lumpur",
 						Date.now() + 1000 * 60 * 60 * 24 * 5,
 						Date.now() + 1000 * 60 * 60 * 24 * 50,
-						[
-							{
-								name: "Fictional Sports Brand",
-								email: "Fictional@sportsbrand.com",
-								website: "fictionalsportsbrand.com",
-								socialMedia: {
-									facebook: "facebook.com/fictionalsportsbrand",
-									twitter: "twitter.com/fictionalsportsbrand",
-									instagram: "instagram.com/fictionalsportsbrand",
-									youtube: "youtube.com/fictionalsportsbrand",
-									snapchat: "@fictionalsportsbrand",
-									pinterest: "@fictionalsportsbrand"
-								}
-							}
-						]
+						data.organizer,
+						data.apparel,
+						data.delivery
 					),
 					updateEvent(
 						adminToken,
@@ -215,21 +204,9 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						"Negeri Sembilan",
 						null,
 						Date.now() + 1000 * 60 * 60 * 24 * 50,
-						[
-							{
-								name: "Fictional Sports Brand",
-								email: "Fictional@sportsbrand.com",
-								website: "fictionalsportsbrand.com",
-								socialMedia: {
-									facebook: "facebook.com/fictionalsportsbrand",
-									twitter: "twitter.com/fictionalsportsbrand",
-									instagram: "instagram.com/fictionalsportsbrand",
-									youtube: "youtube.com/fictionalsportsbrand",
-									snapchat: "@fictionalsportsbrand",
-									pinterest: "@fictionalsportsbrand"
-								}
-							}
-						]
+						data.organizer,
+						data.apparel,
+						data.delivery
 					),
 					updateEvent(
 						adminToken,
@@ -255,21 +232,9 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						"Penang",
 						Date.now() - 1000 * 60 * 60 * 24 * 5,
 						Date.now() + 1000 * 60 * 60 * 24 * 50,
-						[
-							{
-								name: "Fictional Sports Brand",
-								email: "Fictional@sportsbrand.com",
-								website: "fictionalsportsbrand.com",
-								socialMedia: {
-									facebook: "facebook.com/fictionalsportsbrand",
-									twitter: "twitter.com/fictionalsportsbrand",
-									instagram: "instagram.com/fictionalsportsbrand",
-									youtube: "youtube.com/fictionalsportsbrand",
-									snapchat: "@fictionalsportsbrand",
-									pinterest: "@fictionalsportsbrand"
-								}
-							}
-						]
+						data.organizer,
+						data.apparel,
+						data.delivery
 					),
 					updateEvent(
 						adminToken,
@@ -295,21 +260,9 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						"Kuala Lumpur",
 						null,
 						Date.now() + 1000 * 60 * 60 * 24 * 50,
-						[
-							{
-								name: "Fictional Sports Brand",
-								email: "Fictional@sportsbrand.com",
-								website: "fictionalsportsbrand.com",
-								socialMedia: {
-									facebook: "facebook.com/fictionalsportsbrand",
-									twitter: "twitter.com/fictionalsportsbrand",
-									instagram: "instagram.com/fictionalsportsbrand",
-									youtube: "youtube.com/fictionalsportsbrand",
-									snapchat: "@fictionalsportsbrand",
-									pinterest: "@fictionalsportsbrand"
-								}
-							}
-						]
+						data.organizer,
+						data.apparel,
+						data.delivery
 					),
 					updateEvent(
 						adminToken,
@@ -335,21 +288,9 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						"Negeri Sembilan",
 						Date.now() + 1000 * 60 * 60 * 24 * 5,
 						Date.now() + 1000 * 60 * 60 * 24 * 50,
-						[
-							{
-								name: "Fictional Sports Brand",
-								email: "Fictional@sportsbrand.com",
-								website: "fictionalsportsbrand.com",
-								socialMedia: {
-									facebook: "facebook.com/fictionalsportsbrand",
-									twitter: "twitter.com/fictionalsportsbrand",
-									instagram: "instagram.com/fictionalsportsbrand",
-									youtube: "youtube.com/fictionalsportsbrand",
-									snapchat: "@fictionalsportsbrand",
-									pinterest: "@fictionalsportsbrand"
-								}
-							}
-						]
+						data.organizer,
+						data.apparel,
+						data.delivery
 					),
 					updateEvent(
 						adminToken,
@@ -374,7 +315,10 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						"https:result/url",
 						"Johor",
 						Date.now() - 1000 * 60 * 60 * 24 * 5,
-						Date.now() + 1000 * 60 * 60 * 24 * 50
+						Date.now() + 1000 * 60 * 60 * 24 * 50,
+						data.organizer,
+						data.apparel,
+						data.delivery
 					),
 					updateEvent(
 						adminToken,
@@ -385,7 +329,7 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						2.7902,
 						104.1698,
 						faker.lorem.paragraphs(),
-						"http://www-static3.spulsecdn.net/pics/00/03/13/85/3138594_1_O.jpg",
+						"http://www.su-neusiedl.at/fileadmin/user_upload/news/Hessheimer_web.jpg",
 						[cats[7]],
 						[meals[0], meals[1], meals[2]],
 						true,
@@ -400,21 +344,9 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 						"Pahang",
 						null,
 						Date.now() + 1000 * 60 * 60 * 24 * 30,
-						[
-							{
-								name: "Fictional Sports Brand",
-								email: "Fictional@sportsbrand.com",
-								website: "fictionalsportsbrand.com",
-								socialMedia: {
-									facebook: "facebook.com/fictionalsportsbrand",
-									twitter: "twitter.com/fictionalsportsbrand",
-									instagram: "instagram.com/fictionalsportsbrand",
-									youtube: "youtube.com/fictionalsportsbrand",
-									snapchat: "@fictionalsportsbrand",
-									pinterest: "@fictionalsportsbrand"
-								}
-							}
-						]
+						data.organizer,
+						data.apparel,
+						data.delivery
 					)
 				]).then(updatedEvents => {
 					createUser(

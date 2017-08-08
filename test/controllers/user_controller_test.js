@@ -134,7 +134,8 @@ describe("User Controller", function(done) {
 							Date.now() - 1000 * 60 * 60 * 24 * 3,
 							Date.now() + 1000 * 60 * 60 * 24 * 30,
 							data.organizer,
-							data.apparel
+							data.apparel,
+							data.delivery
 						).then(updatedEvent => {
 							event = updatedEvent;
 							createUser(

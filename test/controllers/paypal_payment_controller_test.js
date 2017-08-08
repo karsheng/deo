@@ -83,7 +83,8 @@ xdescribe("PayPal Payment Controller", function(done) {
 							new Date(2017, 1, 1),
 							new Date(1988, 1, 3),
 							data.organizer,
-							data.apparel
+							data.apparel,
+							data.delivery
 						).then(updatedEvent => {
 							event = updatedEvent;
 							createUser(

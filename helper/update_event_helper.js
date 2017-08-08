@@ -20,7 +20,8 @@ module.exports = (
 	earlyBirdEndDate,
 	registrationDeadline,
 	organizer,
-	apparel
+	apparel,
+	delivery
 ) => {
 	return new Promise((resolve, reject) => {
 		request(app)
@@ -43,7 +44,8 @@ module.exports = (
 				earlyBirdEndDate,
 				registrationDeadline,
 				organizer,
-				apparel
+				apparel,
+				delivery
 			})
 			.end((err, res) => {
 				resolve(res.body);

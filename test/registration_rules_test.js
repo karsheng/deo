@@ -205,7 +205,8 @@ describe("Registration Rules", function(done) {
 							Date.now() - 1000 * 60 * 60 * 24 * 3,
 							Date.now() + 1000 * 60 * 60 * 24 * 30,
 							data.organizer,
-							data.apparel
+							data.apparel,
+							data.delivery
 						),
 						updateEvent(
 							adminToken,
@@ -232,7 +233,8 @@ describe("Registration Rules", function(done) {
 							Date.now() - 1000 * 60 * 60 * 24 * 30,
 							Date.now() - 1000 * 60 * 60 * 24 * 15,
 							data.organizer,
-							data.apparel
+							data.apparel,
+							data.delivery
 						),
 						updateEvent(
 							adminToken,
@@ -259,7 +261,8 @@ describe("Registration Rules", function(done) {
 							Date.now() - 1000 * 60 * 60 * 24 * 30,
 							Date.now() - 1000 * 60 * 60 * 24 * 15,
 							data.organizer,
-							data.apparel
+							data.apparel,
+							data.delivery
 						)
 					]).then(updatedEvents => {
 						event1 = updatedEvents[0];

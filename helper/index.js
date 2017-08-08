@@ -49,13 +49,15 @@ module.exports = {
 	apparel: {
 		attachmentUrl: null,
 		sizes: ["XS", "S", "M", "L", "XL"],
+		otherDetail: null
+	},
+	delivery: {
 		hasDeliveryOption: true,
 		postalCharges: {
 			eastMalaysia: 12,
 			westMalaysia: 6,
 			international: 50
-		},
-		otherDetail: null
+		}
 	}
 	
 };

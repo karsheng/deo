@@ -136,7 +136,8 @@ describe("Admin Controller", function(done) {
 							new Date(2017, 1, 1),
 							new Date(2017, 2, 2),
 							data.organizer,
-							data.apparel
+							data.apparel,
+							data.delivery
 						).then(updatedEvent => {
 							event = updatedEvent;
 							done();
@@ -251,13 +252,15 @@ describe("Admin Controller", function(done) {
 				apparel: {
 					attachmentUrl: null,
 					sizes: ["XS", "S", "M", "L", "XL"],
+					otherDetail: null
+				},
+				delivery: {
 					hasDeliveryOption: true,
 					postalCharges: {
 						eastMalaysia: 6,
 						westMalaysia: 12,
 						international: 50
-					},
-					otherDetail: null
+					}
 				}
 			})
 			.end((err, res) => {
@@ -278,8 +281,8 @@ describe("Admin Controller", function(done) {
 					assert(e.organizer[0].name === "Fictional Sports Brand");
 					assert(e.organizer[0].socialMedia.facebook === "facebook.com/fictionalsportsbrand");
 					assert(e.apparel.sizes.length === 5);
-					assert(e.apparel.postalCharges.eastMalaysia === 6);
-					assert(e.apparel.hasDeliveryOption === true);
+					assert(e.delivery.postalCharges.eastMalaysia === 6);
+					assert(e.delivery.hasDeliveryOption === true);
 					done();
 				});
 			});

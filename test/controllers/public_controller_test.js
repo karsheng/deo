@@ -163,7 +163,8 @@ describe("Public Controller", function(done) {
 								new Date(2017, 1, 1),
 								new Date(2018, 2, 2),
 								data.organizer,
-								data.apparel
+								data.apparel,
+								data.delivery
 							),
 							updateEvent(
 								adminToken,
@@ -190,7 +191,8 @@ describe("Public Controller", function(done) {
 								new Date(2017, 1, 1),
 								new Date(2018, 2, 2),
 								data.organizer,
-								data.apparel
+								data.apparel,
+								data.delivery
 							),
 							updateEvent(
 								adminToken,
@@ -217,7 +219,8 @@ describe("Public Controller", function(done) {
 								new Date(2017, 1, 1),
 								new Date(2018, 2, 2),
 								data.organizer,
-								data.apparel
+								data.apparel,
+								data.delivery
 							)
 						]).then(updatedEvents => {
 							event1 = updatedEvents[0];
@@ -244,8 +247,8 @@ describe("Public Controller", function(done) {
 			assert(new Date(res.body.earlyBirdEndDate).getYear() === 117);
 			assert(new Date(res.body.registrationDeadline).getYear() === 118);
 			assert(res.body.organizer[0].name === 'Fictional Sports Brand');
-			assert(res.body.apparel.hasDeliveryOption === true);
 			assert(res.body.apparel.sizes.length === 5);
+			assert(res.body.delivery.hasDeliveryOption === true);
 			done();
 		});
 	});

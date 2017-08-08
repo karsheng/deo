@@ -87,7 +87,8 @@ describe("Fake Payment Controller", function(done) {
 							new Date(2017, 1, 1),
 							Date.now() + 1000 * 60 * 60 * 24 * 10,
 							data.organizer,
-							data.apparel
+							data.apparel,
+							data.delivery
 						).then(updatedEvent => {
 							event = updatedEvent;
 							createUser(
