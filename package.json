@@ -10,7 +10,6 @@
     "build": "NODE_ENV=production npm run clean && webpack -p",
     "serve": "webpack-dev-server",
     "serve-c9" : "webpack-dev-server -d --watch --history-api-fallback --host $IP --port $PORT",
-    "dev-c9": "nodemon index.js --host $IP --port $PORT"
   },
   "author": "Kar Sheng, Lee",
   "license": "ISC",
