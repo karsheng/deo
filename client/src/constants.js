@@ -264,5 +264,6 @@ export const STATESNAME = [
   "Sabah",
   "Sarawak",
   "Selangor",
-  "Terrengganu"
+  "Terrengganu",
+  "Others"
 ];

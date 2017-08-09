@@ -19,13 +19,21 @@ const fakeParticipant = {
   emergencyContactPhone: "123475953",
   relationship: "123475953",
   withMedicalCondition: "yes",
-  medicalConditionDescription: "High colestrol because of blood boy"
-}
+  medicalConditionDescription: "High colestrol because of blood boy",
+  wantsPostalService: true,
+  line1: "123 Hooli Road",
+  line2: "Silicon Valley",
+  line3: "Palo Alto",
+  postalCity: "San Francisco",
+  postalState: "Others",
+  postalPostcode: "12345",
+  postalCountry: "United States"
+};
 
 export default function(state = {...fakeParticipant}, action) {
 	switch(action.type) {
 		case UPDATE_PARTICIPANT_INFO: 
-			return { ...action.payload }
+			return { ...action.payload };
 	}
 	
 	return state;

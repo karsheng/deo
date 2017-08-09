@@ -7,11 +7,9 @@ import { Link } from "react-router-dom";
 import Progress from "../progress";
 import ReactSVG from "react-svg";
 import IconButton from "material-ui/IconButton";
-import FontIcon from "material-ui/FontIcon";
 import {
 	Card,
 	CardActions,
-	CardHeader,
 	CardMedia,
 	CardTitle,
 	CardText
@@ -64,10 +62,10 @@ class EventPage extends Component {
 					<p>
 						Early Bird Expiry Date: {formatDate(event.earlyBirdEndDate)} 
 					</p>
-				)
+				);
 			}
 			return null;
-		}
+		};
 
 		return (
 			<div>
@@ -88,25 +86,48 @@ class EventPage extends Component {
 
 	renderCollectionInfo(event) {
 		if (event.collectionInfo) {
-			// TODO: make this map array
-			const collection = event.collectionInfo[0];
-			return (
+			const collections = event.collectionInfo;
+			return collections.map(collection => {
+				return (
+					<div key={collection._id}>
+						<h3>Collection Info</h3>
+						<p>
+							Location: <Link to={`https://www.google.com/maps?q=${collection.lat},${collection.lng}`} target="_blank">{collection.address}</Link>
+						</p>
+						<p>
+							Date & Time: {collection.time}
+						</p>
+						<p>
+							Description: {collection.description}
+						</p>
+					</div>
+				);	
+			});
+		}
+	}
+	
+	renderDeliveryInfo(delivery) {
+		if (delivery.hasDeliveryOption) {
+			return(
 				<div>
-					<h3>Collection Info</h3>
-					<p>
-						Location: <Link to={`https://www.google.com/maps?q=${collection.lat},${collection.lng}`} target="_blank">{collection.address}</Link>
-					</p>
-					<p>
-						Date & Time: {collection.time}
-					</p>
-					<p>
-						Description: {collection.description}
-					</p>
+					<p> Delivery By Post: Yes</p>
 				</div>
 			);
 		}
 	}
 
+
+	renderApparelInfo(apparel) {
+		if (apparel.sizes) {
+			return(
+				<div>
+					<h3>Apparel Info</h3>
+					<p>Attachment to be added</p>
+				</div>
+			);
+		}	
+	}
+	
 	handleRegisterButtonclick() {
 		if (this.props.authenticated) {
 			this.props.history.push("/registration/participant/" +  this.props.match.params._id);
@@ -194,6 +215,9 @@ class EventPage extends Component {
 					{this.renderOrganizerDetails(event.organizer)}
 					<br />
 					{this.renderCollectionInfo(event)}
+					{this.renderDeliveryInfo(event.delivery)}
+					<br />
+					{this.renderApparelInfo(event.apparel)}
 					<br />
 					<h3>Categories</h3>
 					<EventCategoryTable event={event} />

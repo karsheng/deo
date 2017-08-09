@@ -3,8 +3,7 @@ import TextField from 'material-ui/TextField';
 import DatePicker from 'material-ui/DatePicker';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import AutoComplete from 'material-ui/AutoComplete';
-import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+import { RadioButtonGroup } from 'material-ui/RadioButton';
 
 export const formatDate = (datetime) => {
 
@@ -37,12 +36,12 @@ export const getTime = (datetime) => {
     }
     return i;
   }
-}
+};
 
 
 export const renderMenuItem = (itemArray) => {
   return itemArray.map(itemValue => {
-    return <MenuItem key={itemValue} value={itemValue} primaryText={itemValue} />
+    return <MenuItem key={itemValue} value={itemValue} primaryText={itemValue} />;
   });
 };
 
@@ -58,7 +57,7 @@ export const renderRadioGroup = ({ input, meta: { touched, error }, ...rest }) =
       <div className="error-text">{renderErrorText(touched, error)}</div>
     </div>
   );
-}
+};
 
 export const renderSelectField = ({
   input,
@@ -66,12 +65,14 @@ export const renderSelectField = ({
   meta: { touched, error },
   children,
   multiple,
+  disabled,
   ...custom
 }) => (
   <SelectField
     multiple={multiple}
     floatingLabelText={label}
     errorText={touched && error}
+    disabled={disabled}
     {...input}
     onChange={(event, index, value) => input.onChange(value)}
     children={children}
@@ -99,7 +100,36 @@ export const renderField = (field) => {
   return(
     <TextField hintText={field.label}
       floatingLabelText={field.label}
+      disabled={field.disabled}
       errorText={touched && error}
+      type={field.type}
+      {...field.input}
+    />
+  );
+};
+
+export const renderAddressTextField = (field) => {
+  const { meta: { touched, error } } = field;
+  return(
+    <TextField hintText={field.label}
+      floatingLabelText={field.label}
+
+      errorText={touched && error}
+      type={field.type}
+      {...field.input}
+    />
+  );
+};
+
+export const renderTextarea = (field) => {
+  const { meta: { touched, error } } = field;
+  return(
+    <TextField hintText={field.label}
+      floatingLabelText={field.label}
+      errorText={touched && error}
+      multiLine={true}
+      rows={2}
+      rowsMax={3}
       type={field.type}
       {...field.input}
     />
@@ -126,18 +156,31 @@ export const participantFormCompleted = (participant) => {
     apparelSize,
     dateOfBirth,
     emergencyContact,
-    medicalCondition
+    medicalCondition,
+    wantsPostalService,
+    postalAddress
   } = participant;
 
   let medicalConditionCheck = false;
   if (medicalCondition) {
     if (medicalCondition.yes === true) {
       if (medicalCondition.description) {
-        medicalConditionCheck = true  
+        medicalConditionCheck = true;  
       }
     } else {
-      medicalConditionCheck = true
+      medicalConditionCheck = true;
     }
+  }
+  
+  // if participant doesn't want delivery service
+  // pass deliverycheck
+  let deliveryCheck = !wantsPostalService;
+  
+  // if participant wants delivery service
+  // check if address details are filled
+  const { line1, city, state, country} = postalAddress;
+  if (wantsPostalService === true) {
+    deliveryCheck = line1 && city && state && country && postalAddress.postcode;
   }
 
   const genderCheck = gender !== undefined ? true : false;
@@ -158,13 +201,14 @@ export const participantFormCompleted = (participant) => {
     emergencyContact.name &&
     emergencyContact.relationship &&
     emergencyContact.phone && 
-    medicalConditionCheck
+    medicalConditionCheck && 
+    deliveryCheck
   );
-}
+};
 
 
 export const calculateAge = (dateOfBirth) => {
   const ageDifMs = Date.now() - new Date(dateOfBirth);
   const ageDate = new Date(ageDifMs);
   return Math.abs(ageDate.getUTCFullYear() - 1970);
-}
+};

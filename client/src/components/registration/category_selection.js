@@ -24,7 +24,7 @@ const style = {
 	nextBtn: {
 		float: 'right'
 	}
-}
+};
 
 class CategorySelection extends Component {
 	constructor(props) {
@@ -32,35 +32,39 @@ class CategorySelection extends Component {
 		this.state = {
 			selection: {},
 			earlyBirdValid: false
-		}
+		};
 	}
 
 	componentWillMount() {
+		this.props.updateStepper(1);
 		const { event_id } = this.props.match.params;
-		const { selectedCategory, participant } = this.props;
-		if (!participantFormCompleted(participant)) return this.props.history.push(`/registration/participant/${event_id}`);
+		// const { participant } = this.props;
+		
+		// if (!participantFormCompleted(participant)) return this.props.history.push(`/registration/participant/${event_id}`);
 		// TODO: change this to check category availability instead
 		this.props.fetchEvent(event_id, () => {
-			const { categories } = this.props.event;
-			const selection = _.reduce(categories, function(result, val, key) {
-				result[val._id] = false;
-				return result;
-			}, {});
-			// check if any category was previously selected
-			// if yes, pre select the category
-			if (selectedCategory && selectedCategory.event === event_id) selection[selectedCategory._id] = true;
-			this.setState({ selection });
-
-			const { earlyBirdEndDate } = this.props.event;
-			
-			if (earlyBirdEndDate && new Date(earlyBirdEndDate) > Date.now()) {
-				this.setState({ earlyBirdValid: true });
-			}
-
-			this.props.updateStepper(1);
 		});
 	}
 
+	componentDidMount() {
+		const { event_id } = this.props.match.params;		
+		const { categories } = this.props.event;
+		const { selectedCategory } = this.props;
+		const selection = _.reduce(categories, function(result, val, key) {
+			result[val._id] = false;
+			return result;
+		}, {});
+		// check if any category was previously selected
+		// if yes, pre select the category
+		if (selectedCategory && selectedCategory.event === event_id) selection[selectedCategory._id] = true;
+		this.setState({ selection });
+
+		const { earlyBirdEndDate } = this.props.event;
+		
+		if (earlyBirdEndDate && new Date(earlyBirdEndDate) > Date.now()) {
+			this.setState({ earlyBirdValid: true });
+		}
+	}
 	renderCategoryCard(categories, participant) {
 		const participantAge = calculateAge(participant.dateOfBirth);
 
