@@ -212,3 +212,15 @@ export const calculateAge = (dateOfBirth) => {
   const ageDate = new Date(ageDifMs);
   return Math.abs(ageDate.getUTCFullYear() - 1970);
 };
+
+export const determinePostalCharges = (postalAddress, eventPostalCharges, cb) => {
+	if (postalAddress.country.toLowerCase() === "malaysia") {
+		if (postalAddress.state.toLowerCase() === 'sabah' || postalAddress.state.toLowerCase() === 'sarawak' || postalAddress.state.toLowerCase() === 'labuan') {
+			return cb("East Malaysia", eventPostalCharges.eastMalaysia);
+		} else {
+			return cb("West Malaysia", eventPostalCharges.westMalaysia);
+		}
+	} else {
+		return cb("International", eventPostalCharges.international);
+	}
+};

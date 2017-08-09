@@ -3,10 +3,9 @@ import { connect } from 'react-redux';
 import { setTotalPrice, createRegistration } from '../../actions/registration_actions';
 import _ from 'lodash';
 import RaisedButton from 'material-ui/RaisedButton';
-import { Link } from 'react-router-dom';
 import { participantFormCompleted } from '../../helper/';
 import CircularProgress from 'material-ui/CircularProgress';
-import { formatDate } from '../../helper/';
+import { formatDate, determinePostalCharges } from '../../helper/';
 import Paper from 'material-ui/Paper';
 import Stepper from './stepper';
 import { updateStepper } from '../../actions/stepper_actions';
@@ -33,10 +32,11 @@ class Checkout extends Component {
 		super(props);
 		this.state = {
 			earlyBirdValid: false
-		}
+		};
 	}
 
 	componentWillMount() {
+		this.props.updateStepper(3);
 		const { event_id } = this.props.match.params;
 		const { selectedCategory, participant, event } = this.props;
 		if (!selectedCategory) return this.props.history.push(`/registration/participant/${event_id}`);
@@ -50,7 +50,6 @@ class Checkout extends Component {
 		}
 
 		this.props.setTotalPrice(this.getTotalPrice());
-		this.props.updateStepper(3);
 	}
 
 	handleCheckout() {
@@ -85,16 +84,41 @@ class Checkout extends Component {
 	getTotalPrice() {
 		const {
 			selectedMeals,
-			selectedCategory
+			selectedCategory,
+			event,
+			participant
 		} = this.props;
 
-		let totalPrice = this.state.earlyBirdValid ? selectedCategory.price.earlyBird : selectedCategory.price.normal
+		let totalPrice = this.state.earlyBirdValid ? selectedCategory.price.earlyBird : selectedCategory.price.normal;
 
 		_.map(selectedMeals, selectedMeal => {
 			totalPrice += selectedMeal.meal.price * selectedMeal.quantity;
 		});
-
+		
+		if (event.delivery.hasDeliveryOption && participant.wantsPostalService) {
+			totalPrice += determinePostalCharges(participant.postalAddress, event.delivery.postalCharges, function(location, charges) {
+				return charges;
+			});	
+		}
+		
 		return totalPrice;
+	}
+	
+	renderPostalCharges(event, participant) {
+		if (event.delivery.hasDeliveryOption && participant.wantsPostalService) {
+			return determinePostalCharges(participant.postalAddress, event.delivery.postalCharges, function(location, charges) {
+				return(
+					<div>
+						<div className="col-xs-8">
+							{`Postal charges: ${location}`}	
+						</div>
+						<div style={style.priceCol} className="col-xs-4">
+							{charges.toFixed(2)}
+						</div>
+					</div>
+				);				
+			});
+		}
 	}
 
 	renderMealNameAndPrice(selectedMeals) {
@@ -113,6 +137,25 @@ class Checkout extends Component {
 	}
 
 	renderParticipantDetails(participant) {
+		
+		const postalDetails = (participant) => {
+			if (participant.wantsPostalService) {
+				const { postalAddress } = participant;
+				return(
+					<div>
+						<h4>Postal Address</h4>
+						<p>{postalAddress.line1}</p>
+						<p>{postalAddress.line2}</p>
+						<p>{postalAddress.line3}</p>
+						<p>{postalAddress.city}</p>
+						<p>{postalAddress.postcode}</p>
+						{postalAddress.state.toLowerCase() !== "others" ? <p>{postalAddress.state}</p> : ""}
+						<p>{postalAddress.country}</p>
+					</div>
+				);
+			}	
+		};
+		
 		return(
 			<div>
 				<div className="col-xs-12 col-md-6">
@@ -147,8 +190,6 @@ class Checkout extends Component {
 					<p>
 						Date of Birth: {formatDate(participant.dateOfBirth)}
 					</p>
-				</div>
-				<div className="col-xs-12 col-md-6">
 					<h4>Emergency Contact</h4>
 					<p>
 						Emergency Contact Name: {participant.emergencyContact.name}
@@ -159,6 +200,8 @@ class Checkout extends Component {
 					<p>
 						Phone: {participant.emergencyContact.phone}
 					</p>
+				</div>
+				<div className="col-xs-12 col-md-6">
 					<h4>Medical Condition</h4>
 					<p>
 						Medical Condition: {participant.medicalCondition.yes ? "Yes" : "No"}
@@ -166,6 +209,9 @@ class Checkout extends Component {
 					<p>
 						Description: {participant.medicalCondition.description}
 					</p>
+					<h4>Racepack Collection</h4>
+					<p>Collection: {participant.wantsPostalService ? "by post" : "self collection"}</p>					
+					{postalDetails(participant)}
 				</div>
 			</div>
 		);
@@ -207,6 +253,7 @@ class Checkout extends Component {
 							{this.renderCategoryPrice(selectedCategory).toFixed(2)}
 						</div>
 						{this.renderMealNameAndPrice(selectedMeals)}
+						{this.renderPostalCharges(event, participant)}
 					</div>
 					<hr />
 					<div className="row">
@@ -249,7 +296,7 @@ function mapStateToProps(state, ownProps) {
 		selectedCategory: state.registration.selectedCategory,
 		selectedMeals: state.registration.selectedMeals,
 		participant: state.participant
-	}
+	};
 }
 
 export default connect(mapStateToProps, { setTotalPrice, createRegistration, updateStepper })(Checkout);

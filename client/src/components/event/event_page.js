@@ -110,7 +110,7 @@ class EventPage extends Component {
 		if (delivery.hasDeliveryOption) {
 			return(
 				<div>
-					<p> Delivery By Post: Yes</p>
+					<p>Delivery By Post: Yes</p>
 				</div>
 			);
 		}
