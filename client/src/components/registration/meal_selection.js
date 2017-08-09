@@ -37,6 +37,10 @@ class MealSelection extends Component {
 		if (!_.findKey(selectedMeals, { event: event_id })) this.props.resetMealSelection();
 		this.props.updateStepper(2);
 	}
+	
+	componentDidMount() {
+		window.scrollTo(0, 0);
+	}
 
 	renderMealForm(event) {
 		return event.meals.map((meal) => {

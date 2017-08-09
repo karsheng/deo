@@ -47,6 +47,7 @@ class CategorySelection extends Component {
 	}
 
 	componentDidMount() {
+		window.scrollTo(0, 0);
 		const { event_id } = this.props.match.params;		
 		const { categories } = this.props.event;
 		const { selectedCategory } = this.props;

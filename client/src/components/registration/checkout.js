@@ -51,6 +51,10 @@ class Checkout extends Component {
 
 		this.props.setTotalPrice(this.getTotalPrice());
 	}
+	
+	componentDidMount() {
+		window.scrollTo(0, 0);
+	}
 
 	handleCheckout() {
 		const { 

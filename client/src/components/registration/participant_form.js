@@ -49,6 +49,7 @@ class ParticipantForm extends Component {
 	}
 
 	componentDidMount() {
+		window.scrollTo(0, 0);		
 		if (this.props.initialValues.wantsPostalService) {
 			this.setState({ wantsPostalService: true});
 		}

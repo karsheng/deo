@@ -40,7 +40,7 @@ class EventPage extends Component {
 			registered: false
 		};
 	}
-
+	
 	renderOrganizerDetails(organizers) {
 		return organizers.map(organizer => {
 			return(
@@ -182,6 +182,7 @@ class EventPage extends Component {
 	}
 
 	componentDidMount() {
+		window.scrollTo(0, 0);
 		const { user } = this.props;
 		const { _id } = this.props.match.params;
 
