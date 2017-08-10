@@ -2,29 +2,26 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import * as actions from '../../actions/auth_actions'; 
 import { connect } from 'react-redux';
-import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import { renderField } from '../../helper/';
+import Paper from 'material-ui/Paper';
+import { Link } from 'react-router-dom';
 
+const style = {
+	paper: {
+		height: "100%",
+		width: "100%",
+		maxWidth: "500px",
+		margin: "30px auto",
+		padding: "20px"
+	}
+};
 
 class Signin extends Component {
 
-	renderField(field) {
-		const { meta: { touched, error } } = field;
-
-		return(
-			<TextField hintText={field.label}
-		    floatingLabelText={field.label}
-		    type={field.type}
-		    errorText={touched && error}
-		    {...field.input}
-		  />			
-		);
-	}
-
 	handleFormSubmit({ email, password }) {
-		// Need to do something to sign user in
 		this.props.signinUser({ email, password }, () => {
-      this.props.history.push('/');
+    		this.props.history.goBack();
 		});
 	}
 
@@ -42,37 +39,42 @@ class Signin extends Component {
 		const { handleSubmit, pristine, reset, submitting} = this.props;
 
 		return(
-			<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-				<h2>Sign In</h2>
-				<Field
-					label="Email"
-					name="email"
-					type="text"
-					component={this.renderField}
-				/>
-				<br/>
-				<Field
-					label="Password"
-					name="password"
-					type="password"
-					component={this.renderField}
-				/>
-				<br/>
-				{this.renderAlert()}
-				<br/>
-				<br/>
-				<RaisedButton type="submit" label="Login" className="button-submit" disabled={pristine || submitting} ></RaisedButton>
-			</form>
+			<Paper zDepth={3} style={style.paper}>
+				<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+					<h2>Sign In</h2>
+					<Field
+						label="Email"
+						name="email"
+						type="text"
+						component={renderField}
+					/>
+					<br/>
+					<Field
+						label="Password"
+						name="password"
+						type="password"
+						component={renderField}
+					/>
+					<br/>
+					{this.renderAlert()}
+					<br/>
+					<br/>
+					<RaisedButton primary={true} type="submit" label="Login" className="button-submit" disabled={pristine || submitting} ></RaisedButton>
+					<br /><br />
+					<h5>Not a member? <Link to="/signup">Sign up here!</Link></h5>
+        			<br /><br />
+				</form>
+			</Paper>
 		);
 	}
 }
 
 function mapStateToProps(state) {
-	return { errorMessage: state.auth.error };
+	return { errorMessage: state.auth.signinError };
 }
 
 export default reduxForm({
-	form: 'login'
+	form: 'signin'
 })(
 	connect(mapStateToProps, actions)(Signin)
 );

@@ -6,10 +6,8 @@ import {
 	AUTH_SIGNIN_ERROR,
 	AUTH_SIGNUP_ERROR,
 	FETCH_USER_INFO,
-	OPEN_SIGNIN_DIALOG,
-	CLOSE_SIGNIN_DIALOG,
-	OPEN_SIGNUP_DIALOG,
-	CLOSE_SIGNUP_DIALOG
+	OPEN_AUTH_DIALOG,
+	CLOSE_AUTH_DIALOG,
 } from './types';
 
 
@@ -133,27 +131,14 @@ export function fetchUserInfo() {
 	}
 }
 
-export function openSigninDialog() {
+export function openAuthDialog() {
 	return function(dispatch) {
-		dispatch({ type: OPEN_SIGNIN_DIALOG });
+		dispatch({ type: OPEN_AUTH_DIALOG });
 	}; 
 }
 
-export function closeSigninDialog() {
+export function closeAuthDialog() {
 	return function(dispatch) {
-		dispatch({ type: CLOSE_SIGNIN_DIALOG });
+		dispatch({ type: CLOSE_AUTH_DIALOG });
 	};
 }
-
-export function openSignupDialog() {
-	return function(dispatch) {
-		dispatch({ type: OPEN_SIGNUP_DIALOG });
-	}; 
-}
-
-export function closeSignupDialog() {
-	return function(dispatch) {
-		dispatch({ type: CLOSE_SIGNUP_DIALOG });
-	};
-}
-

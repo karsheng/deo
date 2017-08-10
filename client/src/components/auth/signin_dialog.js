@@ -116,6 +116,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default reduxForm({ form: "signin" })(
+export default reduxForm({ form: "signin_dialog" })(
   connect(mapStateToProps, actions)(withRouter(SigninDialog))
 );

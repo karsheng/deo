@@ -47,9 +47,9 @@ class SignupDialog extends Component {
 	}
 
 	handleFormSwitch() {
-    this.props.closeSignupDialog();
-    this.props.openSigninDialog();
-  }
+    	this.props.closeSignupDialog();
+    	this.props.openSigninDialog();
+	}
 
 	render() {
 		const { handleSubmit, pristine, reset, submitting } = this.props;
@@ -132,8 +132,13 @@ function validate(formProps) {
 	if (formProps.password !== formProps.passwordConfirm) {
 		errors.password = "Passwords must match";
 	}
-
-	// TODO: more validation
+	
+	if (
+		formProps.email &&
+		!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formProps.email)
+	) {
+		errors.email = "Invalid email address";
+	}
 
 	return errors;
 }
@@ -144,6 +149,6 @@ function mapStateToProps(state) {
 		errorMessage: state.auth.signupError
 	};
 }
-export default reduxForm({ validate, form: "signup" })(
+export default reduxForm({ validate, form: "signup_dialog" })(
 	connect(mapStateToProps, actions)(withRouter(SignupDialog))
 );

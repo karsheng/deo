@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from "../../actions/event_actions";
-import { openSigninDialog } from '../../actions/auth_actions';
+import { openAuthDialog } from '../../actions/auth_actions';
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import Progress from "../progress";
@@ -18,6 +18,7 @@ import RaisedButton from "material-ui/RaisedButton";
 import { formatDate, getTime } from "../../helper/";
 import EventMap from "./event_map";
 import EventCategoryTable from "./event_category_table";
+import AuthDialog from '../auth/auth_dialog';
 
 const style = {
 	card: {
@@ -132,7 +133,7 @@ class EventPage extends Component {
 		if (this.props.authenticated) {
 			this.props.history.push("/registration/participant/" +  this.props.match.params._id);
 		} else {
-			this.props.openSigninDialog();
+			this.props.openAuthDialog();
 		}
 	}
 
@@ -205,32 +206,35 @@ class EventPage extends Component {
 		}
 		// TODO: airbnb, booking.com, grab and uber
 		return (
-			<Card style={style.card}>
-				<CardMedia>
-					<img style={style.cardImg} src={event.imageUrl} alt="" />
-				</CardMedia>
-				<CardTitle title={event.name} />
-				<CardText>
-					{this.renderEventDetails(event)}
-					<br />
-					{this.renderOrganizerDetails(event.organizer)}
-					<br />
-					{this.renderCollectionInfo(event)}
-					{this.renderDeliveryInfo(event.delivery)}
-					<br />
-					{this.renderApparelInfo(event.apparel)}
-					<br />
-					<h3>Categories</h3>
-					<EventCategoryTable event={event} />
-					<br />
-				</CardText>
-				<CardActions>
-					{this.renderRegisterButton(event)}
-				</CardActions>
-				<CardMedia>
-					<EventMap lat={event.lat} lng={event.lng} />
-				</CardMedia>
-			</Card>
+			<div>
+				<Card style={style.card}>
+					<CardMedia>
+						<img style={style.cardImg} src={event.imageUrl} alt="" />
+					</CardMedia>
+					<CardTitle title={event.name} />
+					<CardText>
+						{this.renderEventDetails(event)}
+						<br />
+						{this.renderOrganizerDetails(event.organizer)}
+						<br />
+						{this.renderCollectionInfo(event)}
+						{this.renderDeliveryInfo(event.delivery)}
+						<br />
+						{this.renderApparelInfo(event.apparel)}
+						<br />
+						<h3>Categories</h3>
+						<EventCategoryTable event={event} />
+						<br />
+					</CardText>
+					<CardActions>
+						{this.renderRegisterButton(event)}
+					</CardActions>
+					<CardMedia>
+						<EventMap lat={event.lat} lng={event.lng} />
+					</CardMedia>
+				</Card>
+				<AuthDialog />
+			</div>
 		);
 	}
 }
@@ -243,4 +247,4 @@ function mapStateToProps(state, ownProps) {
 	};
 }
 
-export default connect(mapStateToProps, { ...actions, openSigninDialog })(EventPage);
+export default connect(mapStateToProps, { ...actions, openAuthDialog })(EventPage);

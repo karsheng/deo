@@ -4,13 +4,11 @@ import {
 	AUTH_SIGNIN_ERROR,
 	AUTH_SIGNUP_ERROR,
 	FETCH_USER_INFO,
-	OPEN_SIGNIN_DIALOG,
-	CLOSE_SIGNIN_DIALOG,
-	OPEN_SIGNUP_DIALOG,
-	CLOSE_SIGNUP_DIALOG
+	OPEN_AUTH_DIALOG,
+	CLOSE_AUTH_DIALOG
 } from '../actions/types';
 
-export default function(state = { signinDialogOpen: false, signupDialogOpen: false }, action) {
+export default function(state = { authDialogOpen: false }, action) {
 	switch(action.type) {
 		case AUTH_USER:
 			return { ...state, error:'', authenticated: true };
@@ -22,14 +20,10 @@ export default function(state = { signinDialogOpen: false, signupDialogOpen: fal
 			return { ...state, signupError: action.payload };
 		case FETCH_USER_INFO:
 			return { ...state, info: action.payload };
-		case OPEN_SIGNIN_DIALOG: 
-			return { ...state, signinDialogOpen: true };
-		case CLOSE_SIGNIN_DIALOG: 
-			return { ...state, signinDialogOpen: false };
-		case OPEN_SIGNUP_DIALOG: 
-			return { ...state, signupDialogOpen: true };
-		case CLOSE_SIGNUP_DIALOG: 
-			return { ...state, signupDialogOpen: false };
+		case OPEN_AUTH_DIALOG: 
+			return { ...state, authDialogOpen: true };
+		case CLOSE_AUTH_DIALOG: 
+			return { ...state, authDialogOpen: false };
 	}
 
 	return state;

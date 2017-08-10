@@ -9,16 +9,13 @@ import FlatButton from "material-ui/FlatButton";
 import withWidth, { SMALL } from "material-ui/utils/withWidth";
 import { ToolbarGroup, ToolbarSeparator } from "material-ui/Toolbar";
 import Popover from "material-ui/Popover";
-import SigninDialog from "./auth/signin_dialog";
-import SignupDialog from "./auth/signup_dialog";
-import { openSigninDialog, openSignupDialog } from "../actions/auth_actions";
 
 const style = {
   appBar: {
     boxShadow: "none"
   },
   navButton: {
-    color: "white"
+    color: 'white'
   }
 };
 class Header extends Component {
@@ -87,7 +84,8 @@ class Header extends Component {
         Events
       </MenuItem>,
       <MenuItem key={2}>Results</MenuItem>,
-      <MenuItem key={3}>Contact</MenuItem>
+      <MenuItem key={3}>Blog</MenuItem>,
+      <MenuItem key={4}>Contact</MenuItem>
     ];
   }
 
@@ -116,8 +114,18 @@ class Header extends Component {
             label="Events"
             onTouchTap={() => this.props.history.push("/event/browse")}
           />
-          <FlatButton style={style.navButton} label="Results" />
-          <FlatButton style={style.navButton} label="Contact" />
+          <FlatButton
+            style={style.navButton}
+            label="Results" 
+          />
+          <FlatButton
+            style={style.navButton}
+            label="Blog"
+          />
+          <FlatButton
+            style={style.navButton}
+            label="Contact" 
+          />
         </ToolbarGroup>
       );
     }
@@ -163,17 +171,15 @@ class Header extends Component {
         <ToolbarGroup>
           <FlatButton
             style={style.navButton}
-            onTouchTap={this.props.openSigninDialog}
-          >
-            Sign In
-          </FlatButton>
+            label="Sign in"
+            containerElement={<Link to="/signin" />}
+          />
           <ToolbarSeparator />
           <FlatButton
             style={style.navButton}
-            onTouchTap={this.props.openSignupDialog}
-          >
-            Sign Up
-          </FlatButton>
+            label="Sign up"
+            containerElement={<Link to="/signup" />} 
+          />
         </ToolbarGroup>
       );
     }
@@ -192,8 +198,6 @@ class Header extends Component {
           {this.renderNavItems()}
           {this.renderUserLink()}
         </AppBar>
-        <SigninDialog />
-        <SignupDialog />
       </div>
     );
   }
@@ -207,5 +211,5 @@ function mapStateToProps(state) {
 }
 
 export default withWidth()(
-  connect(mapStateToProps, { openSigninDialog, openSignupDialog })(withRouter(Header))
+  connect(mapStateToProps)(withRouter(Header))
 );
