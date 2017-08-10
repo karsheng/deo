@@ -112,7 +112,7 @@ class SigninDialog extends Component {
 function mapStateToProps(state) {
   return {
     signinDialogOpen: state.auth.signinDialogOpen,
-    errorMessage: state.auth.error
+    errorMessage: state.auth.signinError
   };
 }
 

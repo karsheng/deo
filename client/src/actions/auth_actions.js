@@ -3,7 +3,8 @@ import { ROOT_URL } from '../constants';
 import { 
 	AUTH_USER,
 	UNAUTH_USER,
-	AUTH_ERROR,
+	AUTH_SIGNIN_ERROR,
+	AUTH_SIGNUP_ERROR,
 	FETCH_USER_INFO,
 	OPEN_SIGNIN_DIALOG,
 	CLOSE_SIGNIN_DIALOG,
@@ -38,21 +39,28 @@ export function signinUser({ email, password }, cb) {
 				})
 				.catch((err) => {
 					console.log(err);
-					dispatch(authError('An error occured'));
+					dispatch(authSigninError('An error occured'));
 
 				});				
 			})
 			.catch((err) => {
 				console.log(err);
-				dispatch(authError('Bad Sign In Info'));
+				dispatch(authSigninError('Bad Sign In Info'));
 			});
-	}
+	};
 
 }
 
-export function authError(error) {
+export function authSigninError(error) {
 	return {
-		type: AUTH_ERROR,
+		type: AUTH_SIGNIN_ERROR,
+		payload: error
+	};
+}
+
+export function authSignupError(error) {
+	return {
+		type: AUTH_SIGNUP_ERROR,
 		payload: error
 	};
 }
@@ -83,13 +91,13 @@ export function signupUser(formProps, cb) {
 				})
 				.catch((err) => {
 					console.log(err);
-					dispatch(authError('An error occured'));
+					dispatch(authSignupError('An error occured'));
 				});
 			})
 			.catch(({response}) => {
-				dispatch(authError(response.data.error));
+				dispatch(authSignupError(response.data.error));
 			});
-	}
+	};
 
 }
 
@@ -121,7 +129,7 @@ export function fetchUserInfo() {
 			.catch(err => {
 				console.log(err);
 			});
-		}
+		};
 	}
 }
 

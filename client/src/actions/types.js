@@ -1,6 +1,7 @@
 export const AUTH_USER = 'auth_user';
 export const UNAUTH_USER = 'unauth_user';
-export const AUTH_ERROR = 'auth_error';
+export const AUTH_SIGNIN_ERROR = 'auth_signin_error';
+export const AUTH_SIGNUP_ERROR = 'auth_signup_error';
 export const FETCH_USER_INFO = 'fetch_user_info';
 export const FETCH_INTERESTS = 'fetch_interests';
 export const OPEN_SIGNIN_DIALOG = 'open_signin_dialog';

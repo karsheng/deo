@@ -93,7 +93,7 @@ class SignupDialog extends Component {
 							component={this.renderField}
 						/>
 						<br />
-            {this.renderAlert()}
+            			{this.renderAlert()}
 						<br />
 						<br />
 						<RaisedButton
@@ -141,7 +141,7 @@ function validate(formProps) {
 function mapStateToProps(state) {
 	return {
     signupDialogOpen: state.auth.signupDialogOpen,
-		errorMessage: state.auth.error
+		errorMessage: state.auth.signupError
 	};
 }
 export default reduxForm({ validate, form: "signup" })(
