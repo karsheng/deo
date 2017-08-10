@@ -1,7 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchRegistrationInfo } from '../../actions/registration_actions';
+import Paper from 'material-ui/Paper';
 
+const style = {
+	paper: {
+		height: "100%",
+		width: "100%",
+		maxWidth: "768px",
+		margin: "auto",
+		padding: "20px",
+		marginTop: "30px"
+	},
+	h4: {
+		textAlign: "center"
+	}
+};
 
 class ConfirmationPage extends Component {
 	componentWillMount() {
@@ -10,19 +24,21 @@ class ConfirmationPage extends Component {
 			// TODO: if no registration found, show default error page
 			// if registration is not paid, redirect to payment
 			if (!registration.paid) {
-				this.props.history.push(`/registration/payment/${registration_id}`)
+				this.props.history.push(`/registration/payment/${registration_id}`);
 			} 
 		});
 	}
 
 	render() {
-		const { event, totalBill } = this.props.info;
+		const { event, totalBill, participant } = this.props.info;
 		return(
-			<div>
+			<Paper zDepth={3} style={style.paper}>
 				<h2>Confirmation</h2>
 				<h3>{event.name}</h3>
-				<p>Total: RM {totalBill}</p>
-			</div>
+				<p>Total: RM {totalBill.toFixed(2)}</p>
+				<br /><br />
+				<h4 style={style.h4}>Thank you for registering with us! A confirmation email will be sent to {participant.email}.</h4>
+			</Paper>
 		);
 	}
 }

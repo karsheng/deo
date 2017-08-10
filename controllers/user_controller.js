@@ -53,6 +53,7 @@ module.exports = {
 						// info of the registration document and update participant info
 						unpaidReg.category = category;
 						unpaidReg.orders = orders;
+						unpaidReg.event = event_id;
 						
 						Participant.findByIdAndUpdate(unpaidReg.participant, participant)
 							.then(updatedParticipant => {

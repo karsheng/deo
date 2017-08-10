@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { ROOT_URL } from '../../constants';
 import axios from 'axios';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class FakePaymentButton extends Component {
 	handleFakePayment() {
@@ -29,13 +29,13 @@ class FakePaymentButton extends Component {
 
 	render() {
 		return(
-			<div>
-				<FlatButton 
+			<div style={{ width: "100%", textAlign: 'center' }}>
+				<RaisedButton
+					style={{ float: "center" }}
+					label="Pay now"
 					secondary={true}
 					onTouchTap={this.handleFakePayment.bind(this)}
-				>
-				Fake Payment Button
-				</FlatButton>
+				/>
 			</div>
 		);
 	}
