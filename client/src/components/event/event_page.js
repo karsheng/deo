@@ -19,6 +19,7 @@ import { formatDate, getTime } from "../../helper/";
 import EventMap from "./event_map";
 import EventCategoryTable from "./event_category_table";
 import AuthDialog from '../auth/auth_dialog';
+import RegistrationCheckDialog from '../registration/registration_check_dialog';
 
 const style = {
 	card: {
@@ -38,9 +39,19 @@ class EventPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			registered: false
+			regCheckDialogOpen: false
 		};
 	}
+	
+	openRegCheckDialog() {
+		this.setState({ regCheckDialogOpen: true });
+	}
+	
+	closeRegCheckDialog() {
+		this.setState({ regCheckDialogOpen: false });
+	}
+	
+	
 	
 	renderOrganizerDetails(organizers) {
 		return organizers.map(organizer => {
@@ -131,23 +142,13 @@ class EventPage extends Component {
 	
 	handleRegisterButtonclick() {
 		if (this.props.authenticated) {
-			this.props.history.push("/registration/participant/" +  this.props.match.params._id);
+			this.openRegCheckDialog();
 		} else {
 			this.props.openAuthDialog();
 		}
 	}
 
 	renderRegisterButton(event) {
-		if (this.state.registered) {
-			return (
-				<RaisedButton
-					style={style.registerButton}
-					disabled={true}
-					label="Registered"
-				/>
-			);
-		}
-
 		return (
 			<RaisedButton
 				style={style.registerButton}
@@ -184,14 +185,6 @@ class EventPage extends Component {
 
 	componentDidMount() {
 		window.scrollTo(0, 0);
-		const { user } = this.props;
-		const { _id } = this.props.match.params;
-
-		if (user) {
-			const registeredEvents = _.map(_.map(user.registrations, "event"), "_id");
-			if (registeredEvents.indexOf(_id) > -1)
-				this.setState({ registered: true });
-		}
 	}
 
 	componentWillMount() {
@@ -234,6 +227,10 @@ class EventPage extends Component {
 					</CardMedia>
 				</Card>
 				<AuthDialog />
+				<RegistrationCheckDialog 
+					regCheckDialogOpen={this.state.regCheckDialogOpen}
+					closeRegCheckDialog={this.closeRegCheckDialog.bind(this)}
+				/>
 			</div>
 		);
 	}
@@ -242,7 +239,6 @@ class EventPage extends Component {
 function mapStateToProps(state, ownProps) {
 	return {
 		event: state.events[ownProps.match.params._id],
-		user: state.auth.info,
 		authenticated: state.auth.authenticated
 	};
 }
