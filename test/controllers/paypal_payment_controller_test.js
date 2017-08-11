@@ -90,16 +90,7 @@ xdescribe("PayPal Payment Controller", function(done) {
 							createUser(
 								"Gavin Belson",
 								"gavin@hooli.com",
-								"qwerty123",
-								true,
-								"100 Hooli Road",
-								"Silicon Valley",
-								"Palo Alto",
-								"San Francisco",
-								45720,
-								"U.S.",
-								["5km", "10km", "Half-marathon", "Full-marathon"],
-								new Date(1988, 1, 2)
+								"qwerty123"
 							).then(ut => {
 								userToken = ut;
 								done();

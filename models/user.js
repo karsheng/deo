@@ -8,19 +8,30 @@ const LOCK_TIME = 2 * 60 * 60 * 1000;
 
 const UserSchema = new Schema({
 	name: { type: String },
+	fullName: { type: String },
 	email: { type: String, unique: true, lowercase: true },
 	password: String,
+    phone: String,
 	gender: { type: Boolean },
-	address1: { type: String },
-	address2: { type: String },
-	address3: { type: String },
+	identityNumber: String,
+    nationality: String,
+    countryOfResidence: String,
 	city: { type: String },
 	postcode: { type: String },
-	country: { type: String },
+	state: { type: String },
 	registrations: [{
 		type: Schema.Types.ObjectId,
 		ref: 'registration'
 	}],
+	emergencyContact: {
+        name: String,
+        relationship: String,
+        phone: String
+    },
+    medicalCondition: {
+        yes: { type: Boolean, default: false },
+        description: String,
+    },
 	interests: [String],
 	dateOfBirth: {
 		type: Date
@@ -29,6 +40,15 @@ const UserSchema = new Schema({
 		type: Boolean,
 		default: false
 	},
+	postalAddress: {
+        line1: String,
+        line2: String,
+        line3: String,
+        city: String,
+        state: String,
+        postcode: String,
+        country: String
+    },
 	loginAttempts: { type: Number, required: true, default: 0 },
 	lockUntil: { type: Number }
 });

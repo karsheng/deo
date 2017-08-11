@@ -8,7 +8,7 @@ const ParticipantSchema = new Schema({
     countryOfResidence: String,
     gender: Boolean,
     dateOfBirth: Date,
-    email: String,
+    email: { type: String, lowercase: true},
     phone: String,
     postcode: String,
     city: String,

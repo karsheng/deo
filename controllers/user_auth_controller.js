@@ -18,20 +18,11 @@ module.exports = {
 		const {
 			name, 
 			email, 
-			password,
-			gender,
-			address1,
-			address2,
-			address3,
-			city,
-			postcode,
-			country,
-			interests,
-			dateOfBirth
+			password
 		} = req.body;
 
-		if (!email || !password) {
-			return res.status(422).send({ error: 'You must provide email and password' })
+		if (!email || !password || !name) {
+			return res.status(422).send({ error: 'You must provide email and password' });
 		}
 
 		// TODO: email and password validation
@@ -49,16 +40,7 @@ module.exports = {
 			const user = new User({
 				name,
 				email,
-				password,
-				gender,
-				address1,
-				address2,
-				address3,
-				city,
-				postcode,
-				country,
-				interests,
-				dateOfBirth
+				password
 			});
 
 			user.save(function(err) {
@@ -131,35 +113,45 @@ module.exports = {
 	},
 	updateProfile(req, res, next) {
 		const {
-			name, 
+			name,
+			fullName,
+			phone,
 			gender,
-			address1,
-			address2,
-			address3,
+			identityNumber,
+			nationality,
+			countryOfResidence,
 			city,
 			postcode,
-			country,
+			state,
+			emergencyContact,
+			medicalCondition,
 			interests,
-			dateOfBirth
+			dateOfBirth,
+			postalAddress
 		} = req.body;
 
 		User.findByIdAndUpdate(
 			req.user._id,
 			{
-				name, 
+				name,
+				fullName,
+				phone,
 				gender,
-				address1,
-				address2,
-				address3,
+				identityNumber,
+				nationality,
+				countryOfResidence,
 				city,
 				postcode,
-				country,
+				state,
+				emergencyContact,
+				medicalCondition,
 				interests,
-				dateOfBirth
+				dateOfBirth,
+				postalAddress
 			},
 			{ new: true }
 		)
-		.select('name gender address1 address2 address3 city postcode country interests dateOfBirth')
+		.select('-password -loginAttempts -isAdmin')
 		.then(user => {
 			res.json(user);
 		})

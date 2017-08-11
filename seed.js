@@ -5,7 +5,7 @@ const createCategory = require("./helper/create_category_helper");
 const createMeal = require("./helper/create_meal_helper");
 const updateEvent = require("./helper/update_event_helper");
 const createUser = require("./helper/create_user_helper");
-const createRegistration = require("./helper/create_registration_helper");
+const updateUser = require("./helper/update_user_helper");
 const faker = require("faker");
 const data = require("./helper/");
 
@@ -352,19 +352,29 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 					createUser(
 						"Gavin Belson",
 						"gavin@hooli.com",
-						"qwerty123",
-						true,
-						"100 Hooli Road",
-						"Palo Alto",
-						"Silicon Valley",
-						"San Francisco",
-						12345,
-						"U.S.",
-						["5km", "10km", "Half-marathon", "Full-marathon"],
-						new Date(1957, 1, 1)
+						"qwerty123"
 					).then(userToken => {
-						console.log("done seeding");
-						process.exit();
+						updateUser(
+							userToken,
+							"Gavin Belson",
+							"Gavin Belson",
+							"1234567890",
+							true,
+							"ABC12345",
+							"United States",
+							"United States",
+							"San Francisco",
+							"12345",
+							"California",
+							data.participant.emergencyContact,
+							data.participant.medicalCondition,
+							["running", "cycling", "full-marathon"],
+							new Date(1968, 1, 1),
+							data.participant.postalAddress
+						).then(result => {
+							console.log("done seeding");
+							process.exit();	
+						});
 					});
 				});
 			});

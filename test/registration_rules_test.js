@@ -272,30 +272,12 @@ describe("Registration Rules", function(done) {
 							createUser(
 								"Gavin Belson",
 								"gavin@hooli.com",
-								"qwerty123",
-								true,
-								"100 Hooli Road",
-								"Silicon Valley",
-								"Palo Alto",
-								"San Francisco",
-								45720,
-								"U.S.",
-								[],
-								new Date(1957, 1, 2)
+								"qwerty123"
 							),
 							createUser(
 								"Richard Hendricks",
 								"richard@piedpiper.com",
-								"qwerty123",
-								true,
-								"5230 Newell Road",
-								"East Palo Alto",
-								"Palo Alto",
-								"San Francisco",
-								45720,
-								"U.S.",
-								[],
-								new Date(1988, 1, 2)
+								"qwerty123"
 							)
 						]).then(uts => {
 							userToken1 = uts[0];

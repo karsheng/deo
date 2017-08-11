@@ -4,8 +4,10 @@ const app = require("../../app");
 const createAdmin = require("../../helper/create_admin_helper");
 const createUser = require("../../helper/create_user_helper");
 const signinUser = require("../../helper/user_signin_helper");
+const updateUser = require("../../helper/update_user_helper");
 const mongoose = require("mongoose");
 const User = mongoose.model("user");
+const data = require("../../helper/");
 
 describe("User Auth Controller", function(done) {
 	this.timeout(15000);
@@ -21,20 +23,13 @@ describe("User Auth Controller", function(done) {
 		request(app)
 			.post("/api/signup")
 			.send({
-				name: "Lee Kar Sheng",
-				email: "karshenglee@gmail.com",
+				name: "Gavin Belson",
+				email: "gavin@hooli.com",
 				password: "qwerty123",
-				gender: true,
-				address1: "16, The Breezeway",
-				address2: "Desa Parkcity",
-				city: "Kuala Lumpur",
-				postcode: "52200",
-				interests: ["5km", "10km", "Half-marathon", "Full-marathon"]
 			})
 			.end((err, res) => {
-				User.findOne({ name: "Lee Kar Sheng" }).then(user => {
-					assert(user.email === "karshenglee@gmail.com");
-					assert(user.interests[0] === "5km");
+				User.findOne({ name: "Gavin Belson" }).then(user => {
+					assert(user.email === "gavin@hooli.com");
 					done();
 				});
 			});
@@ -44,20 +39,15 @@ describe("User Auth Controller", function(done) {
 		request(app)
 			.post("/api/signup")
 			.send({
-				name: "Lee Kar Sheng",
-				email: "karsheng_88@hotmail.com",
-				password: "qwerty123",
-				gender: true,
-				address1: "16, The Breezeway",
-				address2: "Desa Parkcity",
-				city: "Kuala Lumpur",
-				postcode: "52200"
+				name: "Gavin Belson",
+				email: "gavin@hooli.com",
+				password: "qwerty123"
 			})
 			.end((err, res) => {
 				request(app)
 					.post("/api/signin")
 					.send({
-						email: "karsheng_88@hotmail.com",
+						email: "gavin@hooli.com",
 						password: "qwerty123"
 					})
 					.end((err, res) => {
@@ -70,16 +60,8 @@ describe("User Auth Controller", function(done) {
 	it("PUT to /api/user/email updates the user email", done => {
 		createUser(
 			"Gavin Belson",
-			"gavin@hooli.com",
-			"qwerty123",
-			true,
-			"100 Hooli Road",
-			"Silicon Valley",
-			"Palo Alto",
-			"San Francisco",
-			45720,
-			"U.S.",
-			["5km", "10km", "Half-marathon", "Full-marathon"]
+			"gavin@hoover.com",
+			"qwerty123"
 		).then(token => {
 			request(app)
 				.put("/api/user/email")
@@ -99,15 +81,7 @@ describe("User Auth Controller", function(done) {
 		createUser(
 			"Gavin Belson",
 			"gavin@hooli.com",
-			"qwerty123",
-			true,
-			"100 Hooli Road",
-			"Silicon Valley",
-			"Palo Alto",
-			"San Francisco",
-			45720,
-			"U.S.",
-			["5km", "10km", "Half-marathon", "Full-marathon"]
+			"qwerty123"
 		).then(token => {
 			request(app)
 				.post("/api/user/password/change")
@@ -136,27 +110,39 @@ describe("User Auth Controller", function(done) {
 		createUser(
 			"Gavin Belson",
 			"gavin@hooli.com",
-			"qwerty123",
-			true,
-			"100 Hooli Road",
-			"Silicon Valley",
-			"Palo Alto",
-			"San Francisco",
-			45720,
-			"U.S.",
-			["5km", "10km", "Half-marathon", "Full-marathon"]
+			"qwerty123"
 		).then(token => {
-			request(app)
-				.get("/api/profile")
-				.set("authorization", token)
-				.end((err, res) => {
-					assert(res.body.name === "Gavin Belson");
-					assert(res.body.password === undefined);
-					assert(res.body.isAdmin === undefined);
-					assert(res.body.loginAttempts === undefined);
-					assert(res.body.interests[0] === "5km");
-					done();
-				});
+			updateUser(
+				token,
+				'Gavin Belson',
+				'Gavin Belson',
+				'1234567',
+				true,
+				'7654321',
+				'United States',
+				'United States',
+				'San Francisco',
+				'999999',
+				'California',
+				data.participant.emergencyContact,
+				data.participant.medicalCondition,
+				['running'],
+				new Date(1957, 1, 1),
+				data.participant.postalAddress
+			).then(result => {
+				request(app)
+					.get("/api/profile")
+					.set("authorization", token)
+					.end((err, res) => {
+						assert(res.body.name === "Gavin Belson");
+						assert(res.body.password === undefined);
+						assert(res.body.isAdmin === undefined);
+						assert(res.body.loginAttempts === undefined);
+						assert(res.body.interests[0] === "running");
+						assert(res.body.fullName === 'Gavin Belson');
+						done();
+					});
+			});
 		});
 	});
 
@@ -164,37 +150,35 @@ describe("User Auth Controller", function(done) {
 		createUser(
 			"Gavin Belson",
 			"gavin@hooli.com",
-			"qwerty123",
-			true,
-			"100 Hooli Road",
-			"Silicon Valley",
-			"Palo Alto",
-			"San Francisco",
-			45720,
-			"U.S.",
-			["5km", "10km", "Half-marathon", "Full-marathon"]
+			"qwerty123"
 		).then(token => {
 			request(app)
 				.put("/api/profile")
 				.set("authorization", token)
 				.send({
 					name: "Gavin Smelson",
+					fullName: "Gavin Smelson",
 					email: "gavin@hooli.com",
 					gender: false,
-					address1: "200 Belson Road",
-					address2: "Silicon Valley",
-					address3: "Palo Alto",
-					city: "San Franscisco",
-					postcode: 13576,
-					country: "U.S.",
-					interests: ["Half-marathon", "Full-marathon"]
+					identityNumber: 'A12345',
+					nationality: 'United States',
+					countryOfResidence: 'United States',
+					city: 'San Francisco',
+					postcode: 'ABC123',
+					state: 'California',
+					emergencyContact: data.participant.emergencyContact,
+					medicalCondition: data.participant.medicalCondition,
+					dateOfBirth: new Date(1957, 1, 1),
+					postalAddress: data.participant.postalAddress,
+					interests: ["Half-marathon", "Full-marathon", "running", "cycling"]
 				})
 				.end((err, res) => {
 					User.findOne({ name: "Gavin Smelson" }).then(user => {
 						assert(res.body.password === undefined);
 						assert(user.email === "gavin@hooli.com");
-						assert(user.address1 === "200 Belson Road");
-						assert(user.postcode === "13576");
+						assert(user.interests.length === 4);
+						assert(user.gender === false);
+						assert(user.postcode === 'ABC123');
 						done();
 					});
 				});
@@ -205,15 +189,7 @@ describe("User Auth Controller", function(done) {
 		createUser(
 			"Gavin Belson",
 			"gavin@hooli.com",
-			"qwerty123",
-			true,
-			"100 Hooli Road",
-			"Silicon Valley",
-			"Palo Alto",
-			"San Francisco",
-			45720,
-			"U.S.",
-			["5km", "10km", "Half-marathon", "Full-marathon"]
+			"qwerty123"
 		).then(_ => {
 			signinUser("gavin@hooli.com", "qwerty123").then(res => {
 				assert(res.body.token);
