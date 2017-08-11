@@ -3,19 +3,34 @@ import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
 import AppBar from "material-ui/AppBar";
 import Drawer from "material-ui/Drawer";
-import Menu from "material-ui/Menu";
 import MenuItem from "material-ui/MenuItem";
-import FlatButton from "material-ui/FlatButton";
 import withWidth, { SMALL } from "material-ui/utils/withWidth";
-import { ToolbarGroup, ToolbarSeparator } from "material-ui/Toolbar";
-import Popover from "material-ui/Popover";
+import { ToolbarGroup } from "material-ui/Toolbar";
+import { Tabs, Tab } from 'material-ui/Tabs' ;
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import IconMenu from 'material-ui/IconMenu';
+import IconButton from 'material-ui/IconButton';
 
 const style = {
   appBar: {
-    boxShadow: "none"
+    boxShadow: "none",
+    padding: "0 16px"
   },
   navButton: {
-    color: 'white'
+    color: "white"
+  },
+  navItem: {
+    padding: "0 15px"
+  },
+  inkBar: {
+    display: "none"
+  },
+  iconBtn: {
+    padding: "12px 0",
+    width: "36px"
+  },
+  moreVertIcon: {
+    fill: "white"
   }
 };
 class Header extends Component {
@@ -77,15 +92,39 @@ class Header extends Component {
 
   renderMenuItems() {
     return [
+      <MenuItem 
+        key={1} 
+        containerElement={<Link to="/" />}
+        onTouchTap={this.handleClose}
+      >
+        Home
+      </MenuItem>,
       <MenuItem
-        key={1}
-        onTouchTap={() => this.props.history.push("/event/browse")}
+        key={2}
+        containerElement={<Link to="/event/browse" />}
+        onTouchTap={this.handleClose}
       >
         Events
       </MenuItem>,
-      <MenuItem key={2}>Results</MenuItem>,
-      <MenuItem key={3}>Blog</MenuItem>,
-      <MenuItem key={4}>Contact</MenuItem>
+      <MenuItem 
+        key={3}
+        onTouchTap={this.handleClose}
+      >
+        Results
+      </MenuItem>,
+      <MenuItem 
+        key={4}
+        containerElement={<Link to="http://www.deorunner.com/" target="_blank" />}
+        onTouchTap={this.handleClose}
+      >
+        Blog
+      </MenuItem>,
+      <MenuItem 
+        key={5}
+        onTouchTap={this.handleClose}
+      >
+        Contact
+      </MenuItem>
     ];
   }
 
@@ -99,89 +138,95 @@ class Header extends Component {
           open={this.state.open}
           onRequestChange={open => this.setState({ open })}
         >
-          <MenuItem key={1} containerElement={<Link to="/" />}>
-            Home
-          </MenuItem>
           {this.renderMenuItems()}
         </Drawer>
       );
     } else {
-      // render buttons if screen is not small
+      // render tabs if screen is not small
       return (
-        <ToolbarGroup>
-          <FlatButton
-            style={style.navButton}
-            label="Events"
-            onTouchTap={() => this.props.history.push("/event/browse")}
-          />
-          <FlatButton
-            style={style.navButton}
-            label="Results" 
-          />
-          <FlatButton
-            style={style.navButton}
-            label="Blog"
-          />
-          <FlatButton
-            style={style.navButton}
-            label="Contact" 
-          />
-        </ToolbarGroup>
+          <Tabs>
+            <Tab
+              key={1}
+              style={style.navItem}
+              label="HOME"
+              onActive={() => this.props.history.push('/')}
+            />
+            <Tab
+              key={2}
+              style={style.navItem}
+              label="EVENTS"
+              onActive={() => this.props.history.push('/event/browse')}
+            />
+            <Tab
+              key={3}
+              style={style.navItem}
+              label="RESULTS"
+            />
+            <Tab
+              key={4}
+              style={style.navItem}
+              label="BLOG"
+              containerElement={<Link to="http://www.deorunner.com/" target="_blank" />}
+            />
+            <Tab
+              key={5}
+              style={style.navItem}
+              label="CONTACT"
+            />
+            {this.renderSigninSignupTabs()}
+          </Tabs>
       );
     }
   }
 
-  renderUserLink() {
-    if (this.props.authenticated) {
-      const { user } = this.props;
-
-      if (user) {
-        return (
-          <ToolbarGroup>
-            <FlatButton
-              style={style.navButton}
-              onTouchTap={this.handleTouchTap.bind(this)}
-              label={"Hi, " + user.name}
+  renderSigninSignupTabs() {
+    if (!this.props.authenticated) {
+      return ([
+            <Tab
+              key={6}
+              style={style.navItem}
+              label="Sign in"
+              containerElement={<Link to="/signin" />}
+            />,
+            <Tab
+              key={7}
+              style={style.navItem}
+              label="Sign up"
+              containerElement={<Link to="/signup" />} 
             />
-            <Popover
-              open={this.state.popOverOpen}
-              anchorEl={this.state.anchorEl}
-              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-              targetOrigin={{ horizontal: "right", vertical: "top" }}
-              onRequestClose={this.handleRequestClose.bind(this)}
-            >
-              <Menu>
-                <MenuItem
-                  onTouchTap={() => this.setState({ popOverOpen: false })}
-                  containerElement={<Link to="/profile" />}
-                  primaryText="Profile"
-                />
-                <MenuItem
-                  onTouchTap={() => this.setState({ popOverOpen: false })}
-                  containerElement={<Link to="/signout" />}
-                  primaryText="Sign out"
-                />
-              </Menu>
-            </Popover>
-          </ToolbarGroup>
-        );
-      }
-    } else {
+      ]);  
+    }
+  }
+  
+  renderTabsOrMoreVertIcon() {
+    const { user } = this.props;
+    if (!this.props.authenticated && this.state.isSmallSize) {
       return (
         <ToolbarGroup>
-          <FlatButton
-            style={style.navButton}
-            label="Sign in"
-            containerElement={<Link to="/signin" />}
-          />
-          <ToolbarSeparator />
-          <FlatButton
-            style={style.navButton}
-            label="Sign up"
-            containerElement={<Link to="/signup" />} 
-          />
-        </ToolbarGroup>
+          <Tabs>
+            {this.renderSigninSignupTabs()}
+          </Tabs>
+        </ToolbarGroup>  
       );
+    } else {
+      if (user) {
+        return (
+          <IconMenu
+            iconButtonElement={<IconButton style={style.iconBtn} iconStyle={style.moreVertIcon}><MoreVertIcon /></IconButton>}
+            anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+            targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          >
+              <MenuItem
+                containerElement={<Link to="/profile" />}
+                primaryText="Profile"
+              />
+              <MenuItem
+                containerElement={<Link to="/signout" />}
+                primaryText="Sign out"
+              />
+          </IconMenu>
+        );
+      }
     }
   }
 
@@ -195,8 +240,10 @@ class Header extends Component {
           iconStyleLeft={this.state.iconStyleLeft}
           onTitleTouchTap={() => this.props.history.push("/")}
         >
-          {this.renderNavItems()}
-          {this.renderUserLink()}
+          <ToolbarGroup>
+            {this.renderNavItems()}
+            {this.renderTabsOrMoreVertIcon()}
+          </ToolbarGroup>
         </AppBar>
       </div>
     );
