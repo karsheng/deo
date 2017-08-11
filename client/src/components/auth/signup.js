@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import * as actions from '../../actions/auth_actions';
+import { openSnackbar } from '../../actions/snackbar_actions';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -23,6 +24,7 @@ class Signup extends Component {
 
   handleFormSubmit(formProps) {
     this.props.signupUser(formProps, () => {
+      this.props.openSnackbar(`Signed in as ${formProps.email}`);
       this.props.history.goBack();
     });
   }
@@ -124,6 +126,6 @@ export default reduxForm({
   validate,
   form: 'signup'
 })(
-  connect(mapStateToProps, actions)(Signup)
+  connect(mapStateToProps, { ...actions, openSnackbar })(Signup)
 );
 

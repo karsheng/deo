@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchRegistrationInfo } from '../../actions/registration_actions';
+import { openSnackbar } from '../../actions/snackbar_actions';
 import Paper from 'material-ui/Paper';
 
 const style = {
@@ -29,6 +30,10 @@ class ConfirmationPage extends Component {
 		});
 	}
 
+	componentDidMount() {
+		this.props.openSnackbar('Event registered successfully!');
+	}
+
 	render() {
 		const { event, totalBill, participant } = this.props.info;
 		return(
@@ -49,4 +54,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps, { fetchRegistrationInfo })(ConfirmationPage);
+export default connect(mapStateToProps, { fetchRegistrationInfo, openSnackbar })(ConfirmationPage);

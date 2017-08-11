@@ -6,8 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import reduxThunk from 'redux-thunk';
 import reducers from './reducers';
 import App from './app';
-import { AUTH_USER, FETCH_USER_INFO } from './actions/types';
-import _ from 'lodash';
+import { AUTH_USER, FETCH_USER_INFO, OPEN_SNACKBAR } from './actions/types';
 import { ROOT_URL } from './constants';
 import axios from 'axios';
 import'../style/style.css';
@@ -36,7 +35,11 @@ if (token) {
       type: FETCH_USER_INFO,
       payload: response.data
     });
-    store.dispatch({ type: AUTH_USER });  
+    store.dispatch({ type: AUTH_USER });
+    store.dispatch({ 
+      type: OPEN_SNACKBAR,
+      payload: `Signed in as ${response.data.email}` 
+    });
   })
   .catch(err => {
     console.log(err);

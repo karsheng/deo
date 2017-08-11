@@ -8,7 +8,11 @@ import {
 	CLOSE_AUTH_DIALOG
 } from '../actions/types';
 
-export default function(state = { authDialogOpen: false }, action) {
+const initialState = {
+	authDialogOpen: false
+};
+
+export default function(state = { ...initialState }, action) {
 	switch(action.type) {
 		case AUTH_USER:
 			return { ...state, error:'', authenticated: true };

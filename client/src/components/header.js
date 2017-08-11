@@ -10,6 +10,7 @@ import { Tabs, Tab } from 'material-ui/Tabs' ;
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
+import Snackbar from './snackbar';
 
 const style = {
   appBar: {
@@ -245,6 +246,7 @@ class Header extends Component {
             {this.renderTabsOrMoreVertIcon()}
           </ToolbarGroup>
         </AppBar>
+        <Snackbar />
       </div>
     );
   }

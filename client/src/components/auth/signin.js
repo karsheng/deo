@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import * as actions from '../../actions/auth_actions'; 
+import * as actions from '../../actions/auth_actions';
+import { openSnackbar } from '../../actions/snackbar_actions';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import { renderField } from '../../helper/';
@@ -21,6 +22,7 @@ class Signin extends Component {
 
 	handleFormSubmit({ email, password }) {
 		this.props.signinUser({ email, password }, () => {
+			this.props.openSnackbar(`Signed in as ${email}`);
     		this.props.history.goBack();
 		});
 	}
@@ -37,7 +39,6 @@ class Signin extends Component {
 
 	render() {
 		const { handleSubmit, pristine, reset, submitting} = this.props;
-
 		return(
 			<Paper zDepth={3} style={style.paper}>
 				<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
@@ -76,7 +77,7 @@ function mapStateToProps(state) {
 export default reduxForm({
 	form: 'signin'
 })(
-	connect(mapStateToProps, actions)(Signin)
+	connect(mapStateToProps, { ...actions, openSnackbar })(Signin)
 );
 
 

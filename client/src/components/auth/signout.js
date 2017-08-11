@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { signoutUser } from '../../actions/auth_actions';
+import { openSnackbar } from '../../actions/snackbar_actions';
 import Paper from 'material-ui/Paper';
 import { Link } from 'react-router-dom';
 
@@ -19,6 +20,7 @@ const style = {
 class Signout extends Component {
 	componentWillMount() {
 		this.props.signoutUser();
+		this.props.openSnackbar('Successfully signed out.')
 	}
 	render() {
 		return(
@@ -32,4 +34,4 @@ class Signout extends Component {
 	}
 }
 
-export default connect(null, { signoutUser })(Signout);
+export default connect(null, { signoutUser, openSnackbar })(Signout);

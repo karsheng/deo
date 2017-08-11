@@ -7,7 +7,7 @@ import {
 	AUTH_SIGNUP_ERROR,
 	FETCH_USER_INFO,
 	OPEN_AUTH_DIALOG,
-	CLOSE_AUTH_DIALOG,
+	CLOSE_AUTH_DIALOG
 } from './types';
 
 
@@ -142,3 +142,4 @@ export function closeAuthDialog() {
 		dispatch({ type: CLOSE_AUTH_DIALOG });
 	};
 }
+
