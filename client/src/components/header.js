@@ -210,7 +210,7 @@ class Header extends Component {
         </ToolbarGroup>  
       );
     } else {
-      if (user) {
+      if (user && this.props.authenticated) {
         return (
           <IconMenu
             iconButtonElement={<IconButton style={style.iconBtn} iconStyle={style.moreVertIcon}><MoreVertIcon /></IconButton>}
@@ -255,7 +255,7 @@ class Header extends Component {
 function mapStateToProps(state) {
   return {
     authenticated: state.auth.authenticated,
-    user: state.profile.info
+    user: state.profile
   };
 }
 

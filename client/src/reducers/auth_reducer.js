@@ -16,7 +16,7 @@ export default function(state = { ...initialState }, action) {
 		case AUTH_USER:
 			return { ...state, error:'', authenticated: true };
 		case UNAUTH_USER:
-			return { ...state, ...{ authenticated: false, info: {} } };
+			return { ...state, authenticated: false };
 		case AUTH_SIGNIN_ERROR:
 			return { ...state, signinError: action.payload };
 		case AUTH_SIGNUP_ERROR:

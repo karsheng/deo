@@ -30,7 +30,7 @@ const style = {
 
 
 class UserProfile extends Component {
-	componentDidMount() {
+	componentWillMount() {
 		this.props.fetchUserInfo();
 	}
 
@@ -215,7 +215,7 @@ class UserProfile extends Component {
 
 function mapStateToProps(state) {
 	return {
-		user: state.profile.info
+		user: state.profile
 	};
 }
 

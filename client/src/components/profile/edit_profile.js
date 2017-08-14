@@ -14,6 +14,8 @@ import {
 import { COUNTRIES, STATESNAME } from "../../constants";
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
+import { updateUserProfile } from '../../actions/profile_actions';
+import { openSnackbar } from '../../actions/snackbar_actions';
 
 const style = {
   paper: {
@@ -22,6 +24,9 @@ const style = {
 		maxWidth: "768px",
 		margin: "auto",
 		padding: "20px"
+	},
+	saveBtn: {
+		float: "right"
 	}
 };
 
@@ -98,7 +103,33 @@ class EditProfile extends Component {
     }
     
     handleFormSubmit(formProps) {
-      console.log(formProps);
+    	let profile = { ...formProps };
+    	
+			profile.postalAddress = {
+				line1: formProps.line1,
+				line2: formProps.line2,
+				line3: formProps.line3,
+				city: formProps.postalCity,
+				postcode: formProps.postalPostcode,
+				state: formProps.postalState,
+				country: formProps.postalCountry
+			};
+			
+			profile.emergencyContact = {
+				name: formProps.emergencyContactName,
+				relationship: formProps.relationship,
+				phone: formProps.emergencyContactPhone
+			};
+			
+			profile.medicalCondition = {
+				yes: formProps.withMedicalCondition,
+				description: formProps.medicalConditionDescription
+			};
+			
+			this.props.updateUserProfile(profile, () => {
+				this.props.history.push('/profile');
+				this.props.openSnackbar('Profile successfully updated!');
+			});
     }
     
     render() {
@@ -214,9 +245,16 @@ class EditProfile extends Component {
     						<Divider />
     						<br />
     						<div>
+									<RaisedButton
+										label="Back"
+										secondary={true}
+										onTouchTap={() =>
+											this.props.history.push('/profile')}
+									/>
     							<RaisedButton
     								type="submit"
-    								label="Next"
+    								label="Save"
+    								style={style.saveBtn}
     								disabled={submitting}
     								primary={true}
     							/>
@@ -228,23 +266,14 @@ class EditProfile extends Component {
     }
 }
 
-function validate(formProps) {
-  const errors = {};
-  if (!formProps.name) {
-    errors.name = "Please enter your name";
-  } 
-  return errors;
-}
-
 function mapStateToProps(state) {
   return {
-    initialValues: state.profile.info
+    initialValues: state.profile
   };
 }
 
-export default connect(mapStateToProps)(
+export default connect(mapStateToProps, { updateUserProfile, openSnackbar })(
   reduxForm({
-    validate,
     form: "profile"
   })(EditProfile)
 );

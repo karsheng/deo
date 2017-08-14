@@ -72,7 +72,7 @@ class RegistrationCheckDialog extends Component {
 
 function mapStateToProps(state) {
     return {
-        user: state.profile.info  
+        user: state.profile  
     };
 }
 
