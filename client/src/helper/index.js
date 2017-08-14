@@ -6,21 +6,24 @@ import MenuItem from 'material-ui/MenuItem';
 import { RadioButtonGroup } from 'material-ui/RadioButton';
 
 export const formatDate = (datetime) => {
-
-	const date = new Date(datetime);
-	 
-  const monthNames = [
-    "Jan", "Feb", "Mar",
-    "Apr", "May", "Jun", "Jul",
-    "Aug", "Sep", "Oct",
-    "Nov", "Dec"
-  ];
-
-  const day = date.getDate();
-  const monthIndex = date.getMonth();
-  const year = date.getFullYear();
-
-  return day + ' ' + monthNames[monthIndex] + ' ' + year;
+  if (datetime) {
+    const date = new Date(datetime);
+  	 
+    const monthNames = [
+      "Jan", "Feb", "Mar",
+      "Apr", "May", "Jun", "Jul",
+      "Aug", "Sep", "Oct",
+      "Nov", "Dec"
+    ];
+  
+    const day = date.getDate();
+    const monthIndex = date.getMonth();
+    const year = date.getFullYear();
+  
+    return day + ' ' + monthNames[monthIndex] + ' ' + year;
+  }
+  
+  return null;
 };
 
 export const getTime = (datetime) => {

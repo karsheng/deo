@@ -29,7 +29,7 @@ const UserSchema = new Schema({
         phone: String
     },
     medicalCondition: {
-        yes: { type: Boolean, default: false },
+        yes: { type: Boolean },
         description: String,
     },
 	interests: [String],

@@ -26,10 +26,10 @@ export default function(state = { selectedMeals: {}, totalPrice: 0, info: {} }, 
 			return { ...state, selectedMeals: {} };
 
 		case SET_TOTAL_PRICE:
-			return { ...state, totalPrice: action.payload}
+			return { ...state, totalPrice: action.payload};
 
 		case FETCH_REGISTRATION_INFO:
-			return { ...state, info: action.payload }
+			return { ...state, info: action.payload };
 			
 	}
 

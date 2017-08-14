@@ -38,9 +38,9 @@ class Checkout extends Component {
 	componentWillMount() {
 		this.props.updateStepper(3);
 		const { event_id } = this.props.match.params;
-		const { selectedCategory, participant, event } = this.props;
+		const { selectedCategory, event } = this.props;
 		if (!selectedCategory) return this.props.history.push(`/registration/participant/${event_id}`);
-		if (!participantFormCompleted(participant)) return this.props.history.push(`/registration/participant/${event_id}`);
+		// if (!participantFormCompleted(participant)) return this.props.history.push(`/registration/participant/${event_id}`);
 		if (!event) return this.props.history.push(`/event/${event_id}`);
 		
 		const { earlyBirdEndDate } = event;

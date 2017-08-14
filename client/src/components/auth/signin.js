@@ -39,7 +39,6 @@ class Signin extends Component {
 
 	render() {
 		const { handleSubmit, pristine, reset, submitting} = this.props;
-		console.log(this.props);
 		return(
 			<Paper zDepth={3} style={style.paper}>
 				<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>

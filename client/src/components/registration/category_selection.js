@@ -111,7 +111,7 @@ class CategorySelection extends Component {
 				<Paper zDepth={3} style={style.paper}>
 					<h2>{event.name}</h2>
 					<h3>Step 2: Category Selection</h3>
-					<h5>Participant: {`${participant.fullName} (${participant.gender ? "male" : "female"}, ${calculateAge(participant.dateOfBirth)} years old)`} </h5>
+					<h5>Participant: {`${participant.fullName} (${participant.gender === true ? "male" : "female"}, ${calculateAge(participant.dateOfBirth)} years old)`} </h5>
 					<div className="row">
 					{this.renderCategoryCard(event.categories, participant)}
 					</div>

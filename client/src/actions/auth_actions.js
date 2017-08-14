@@ -5,9 +5,9 @@ import {
 	UNAUTH_USER,
 	AUTH_SIGNIN_ERROR,
 	AUTH_SIGNUP_ERROR,
-	FETCH_USER_INFO,
 	OPEN_AUTH_DIALOG,
-	CLOSE_AUTH_DIALOG
+	CLOSE_AUTH_DIALOG,
+	FETCH_USER_INFO
 } from './types';
 
 
@@ -102,33 +102,6 @@ export function signupUser(formProps, cb) {
 export function signoutUser() {
 	localStorage.removeItem('deotoken');
 	return { type: UNAUTH_USER };
-}
-
-export function fetchUserInfo() {
-	const token = localStorage.getItem('deotoken');
-	if (token) {
-		return function(dispatch) {
-			axios.get(
-				`${ROOT_URL}/api/profile`,
-				{
-					headers:
-					{
-						authorization: token
-					}
-				}
-			)
-			.then(response => {
-				dispatch({
-					type: FETCH_USER_INFO,
-					payload:response.data
-				});
-
-			})
-			.catch(err => {
-				console.log(err);
-			});
-		};
-	}
 }
 
 export function openAuthDialog() {

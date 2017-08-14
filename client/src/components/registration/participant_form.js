@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
-import { Link } from "react-router-dom";
 import RaisedButton from "material-ui/RaisedButton";
 import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton";
 import { connect } from "react-redux";
@@ -59,7 +58,7 @@ class ParticipantForm extends Component {
 		const participant = { ...formProps };
 		const { event_id } = this.props.match.params;
 		
-		if (participant.wantsPostalService) {
+		if (participant.wantsPostalService === true) {
 			participant.postalAddress = {
 				line1: formProps.line1,
 				line2: formProps.line2,
@@ -71,26 +70,16 @@ class ParticipantForm extends Component {
 			};
 		}
 		
-		
 		participant.emergencyContact = {
 			name: formProps.emergencyContactName,
 			relationship: formProps.relationship,
 			phone: formProps.emergencyContactPhone
 		};
-
-		if (formProps.male) {
-			participant.gender = formProps.male === "male" ? true : false;
-		}
-
-		if (participant.withMedicalCondition) {
-			participant.medicalCondition = {
-				yes: formProps.withMedicalCondition === "yes" ? true : false,
-				description: formProps.medicalConditionDescription
-			};
-		}
-		if (formProps.self) {
-			participant.registerForSelf = formProps.self === "yes" ? true : false;
-		}
+		
+		participant.medicalCondition = {
+			yes: formProps.withMedicalCondition,
+			description: formProps.medicalConditionDescription
+		};
 		
 		this.props.updateParticipantInfo(participant);
 		this.props.history.push(`/registration/category/${event_id}`);
@@ -203,15 +192,6 @@ class ParticipantForm extends Component {
 		}
 	}
 	
-	renderAlert() {
-		if (this.props.errorMessage) {
-			return (
-				<div className="alert alert-danger">
-					<strong>Oops!</strong> {this.props.errorMessage}
-				</div>
-			);
-		}
-	}
 
 	render() {
 		const { event, handleSubmit, reset, submitting } = this.props;
@@ -224,15 +204,15 @@ class ParticipantForm extends Component {
 			<div>
 				<Stepper />
 				<Paper style={style.paper} zDepth={3} >
-					<form style={style.form} onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+					<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
 						<h2>{event.name}</h2>
 						<h3>Step 1: Participant Info</h3>
 						<div className="row">
 							<div className="col-xs-12 col-md-6">
 							<p>Are you registering for yourself?</p>
-							<Field name="self" component={renderRadioGroup}>
-								<RadioButton value="yes" label="yes" />
-								<RadioButton value="others" label="others" />
+							<Field name="registerForSelf" component={renderRadioGroup}>
+								<RadioButton value={true} label="yes" />
+								<RadioButton value={false} label="others" />
 							</Field>
 							<Field
 								label="Full Name (as per IC or passport)"
@@ -256,9 +236,9 @@ class ParticipantForm extends Component {
 							/>
 							<br />
 							<p>Gender:</p>
-							<Field name="male" component={renderRadioGroup}>
-								<RadioButton value="male" label="male" />
-								<RadioButton value="female" label="female" />
+							<Field name="gender" component={renderRadioGroup}>
+								<RadioButton value={true} label="male" />
+								<RadioButton value={false} label="female" />
 							</Field>
 							<br />
 							<Field
@@ -334,8 +314,8 @@ class ParticipantForm extends Component {
 							<div className="col-xs-12 col-md-6">
 								<h3>Medical Condition</h3>
 								<Field name="withMedicalCondition" component={renderRadioGroup}>
-									<RadioButton value="yes" label="yes" />
-									<RadioButton value="no" label="no" />
+									<RadioButton value={true} label="yes" />
+									<RadioButton value={false} label="no" />
 								</Field>
 								<br />
 								<Field
@@ -348,7 +328,6 @@ class ParticipantForm extends Component {
 								{this.renderRacePackDelivery(event.delivery)}
 							</div>
 						</div>
-						{this.renderAlert()}
 						<br /><br /><br /><br />
 						<Divider />
 						<br />
@@ -381,8 +360,8 @@ function validate(formProps) {
 	const errors = {};
 	const { wantsPostalService } = formProps;
 	
-	if (!formProps.self) {
-		errors.self = "Please tell us if you're registering for yourself or others";
+	if (formProps.registerForSelf !== true && formProps.registerForSelf !== false) {
+		errors.registerForSelf = "Please tell us if you're registering for yourself or others";
 	}
 
 	if (!formProps.fullName) {
@@ -404,8 +383,8 @@ function validate(formProps) {
 		errors.identityNumber = "Please enter the identity number of participant";
 	}
 
-	if (!formProps.male) {
-		errors.male = "Please select the gender of the participant";
+	if (formProps.gender !== true && formProps.gender !== false) {
+		errors.gender = "Please select the gender of the participant";
 	}
 
 	if (!formProps.nationality) {
@@ -414,6 +393,10 @@ function validate(formProps) {
 
 	if (!formProps.dateOfBirth) {
 		errors.dateOfBirth = "Please select date of birth of participant";
+	}
+	
+	if (!formProps.apparelSize) {
+		errors.apparelSize = "Please choose an apparel size";
 	}
 
 	if (!formProps.countryOfResidence) {
@@ -429,9 +412,6 @@ function validate(formProps) {
 		errors.postcode = "Please enter the postcode";
 	}
 
-	if (!formProps.postcode) {
-		errors.postcode = "Please enter the postcode";
-	}
 
 	if (!formProps.emergencyContactName) {
 		errors.emergencyContactName =
@@ -448,16 +428,20 @@ function validate(formProps) {
 			"Please enter the relationship of the emergency contact and the participant";
 	}
 
-	if (!formProps.withMedicalCondition) {
+	if (formProps.withMedicalCondition !== true && formProps.withMedicalCondition !== false) {
 		errors.withMedicalCondition = "Please select one";
 	}
 
 	if (
-		formProps.withMedicalCondition === "yes" &&
+		formProps.withMedicalCondition === true &&
 		!formProps.medicalConditionDescription
 	) {
 		errors.medicalConditionDescription =
 			"Please enter the description of medical condition";
+	}
+	
+	if (wantsPostalService !== true && wantsPostalService !== false) {
+		errors.wantsPostalService = "Please choose one";
 	}
 	
 	if (wantsPostalService === true) {

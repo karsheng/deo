@@ -18,45 +18,21 @@ const style = {
 };
 
 
-// TODO: to speed us testing. delete this after development
-const fakeParticipant = {
-  self: "yes",
-  fullName: "Gavin Belson",
-  email: "gavin@hooli.com",
-  identityNumber: "12345678",
-  male: "male",
-  nationality: "Malaysia",
-  countryOfResidence: "Malaysia",
-  phone: "1234567",
-  postcode: "1235456",
-  apparelSize: "M",
-  dateOfBirth: new Date(1968,1,1),
-  emergencyContactName: "Richard Hendricks",
-  emergencyContactPhone: "123475953",
-  relationship: "123475953",
-  withMedicalCondition: "yes",
-  medicalConditionDescription: "High colestrol because of blood boy",
-  wantsPostalService: true,
-  line1: "123 Hooli Road",
-  line2: "Silicon Valley",
-  line3: "Palo Alto",
-  postalCity: "San Francisco",
-  postalState: "Others",
-  postalPostcode: "12345",
-  postalCountry: "United States"
-};
-
 class RegistrationCheckDialog extends Component {
     
     handleSelfRegistration() {
-        this.props.updateParticipantInfo(fakeParticipant);
+        let participant = {
+            ...this.props.user,
+            registerForSelf: true
+        };
+        this.props.updateParticipantInfo(participant);
         this.props.closeRegCheckDialog();
         this.props.history.push("/registration/participant/" +  this.props.match.params._id);
     }
     
     handleOthersRegistration() {
         const participant = {
-            self: "others"
+            registerForSelf: false
         };
         
         this.props.updateParticipantInfo(participant);
@@ -94,5 +70,11 @@ class RegistrationCheckDialog extends Component {
     }    
 }
 
+function mapStateToProps(state) {
+    return {
+        user: state.profile.info  
+    };
+}
 
-export default connect(null, { updateParticipantInfo })(withRouter(RegistrationCheckDialog));
+
+export default connect(mapStateToProps, { updateParticipantInfo })(withRouter(RegistrationCheckDialog));

@@ -6,6 +6,7 @@ import registrationReducer from './registration_reducer';
 import participantReducer from './participant_reducer';
 import stepperReducer from './stepper_reducer';
 import snackbarReducer from './snackbar_reducer';
+import profileReducer from './profile_reducer';
 
 const rootReducer = combineReducers({
   form,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   registration: registrationReducer,
   participant: participantReducer,
   stepper: stepperReducer,
-  snackbar: snackbarReducer
+  snackbar: snackbarReducer,
+  profile: profileReducer
 });
 
 export default rootReducer;
