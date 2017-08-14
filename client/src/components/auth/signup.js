@@ -25,7 +25,7 @@ class Signup extends Component {
   handleFormSubmit(formProps) {
     this.props.signupUser(formProps, () => {
       this.props.openSnackbar(`Signed in as ${formProps.email}`);
-      this.props.history.goBack();
+      this.props.history.push('/');
     });
   }
 

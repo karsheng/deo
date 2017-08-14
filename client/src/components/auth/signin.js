@@ -23,7 +23,7 @@ class Signin extends Component {
 	handleFormSubmit({ email, password }) {
 		this.props.signinUser({ email, password }, () => {
 			this.props.openSnackbar(`Signed in as ${email}`);
-    		this.props.history.goBack();
+    		this.props.history.push('/');
 		});
 	}
 

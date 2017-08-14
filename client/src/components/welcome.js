@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions/event_actions';
-import { Link } from 'react-router-dom';
 import _ from 'lodash';
-import { Card, CardHeader, CardMedia, CardActions } from 'material-ui/Card';
 import Slider from 'react-slick';
-import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
 import EventCard from './event/event_card';
+import Progress from './progress';
 
 const settings = {
   dots: true,
@@ -24,21 +22,21 @@ class WelcomePage extends Component {
 	componentWillMount() {
 		this.props.fetchEvents();
 	}
-	renderEvents() {
-		const events =  _.map(this.props.events, (event) => {
-			if (event.open) {
-				return(
+	
+	renderEvents(events) {
+		return _.map(events, (event) => {
+			return(
+				<div>
 					<EventCard
 						key={event._id}
 						event={event}
 					/>
-				);
-			}
+				</div>
+			);
 		});
-
-		return _.without(events, undefined);
 	}
 	render() {
+		const { events } = this.props;
 		return(
 			<div>
 				<Slider {...settings}>
@@ -52,7 +50,7 @@ class WelcomePage extends Component {
 				<div className="col-xs-12">
 					<h2>Events</h2>
 				</div>
-					{this.renderEvents()}
+					{this.renderEvents(events)}
 				<br/>
 				<RaisedButton
 					label="View More"
