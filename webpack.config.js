@@ -47,7 +47,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'client/src/index.html'
     }),
-    //new webpack.optimize.UglifyJsPlugin()
+    new webpack.optimize.UglifyJsPlugin()
   ],
   devServer: {
     compress: true,
