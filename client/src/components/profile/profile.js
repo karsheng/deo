@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchUserInfo } from '../../actions/profile_actions';
 import _ from 'lodash';
 import Paper from 'material-ui/Paper';
 import Chip from 'material-ui/Chip';
@@ -10,6 +9,7 @@ import { List, ListItem } from 'material-ui/List';
 import { formatDate } from '../../helper/';
 import { Card, CardHeader, CardText, CardActions } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
+import Progress from '../progress';
 
 const style = {
 	card: {
@@ -25,15 +25,14 @@ const style = {
 	},
 	chip: {
 		margin: '4px auto'
-	}
+	},
+	cardActions: {
+		textAlign: 'center'
+	},
 };
 
 
 class UserProfile extends Component {
-	componentWillMount() {
-		this.props.fetchUserInfo();
-	}
-
 	renderUserInterests(interests) {
 		return interests.map((interest) => {
 			return(
@@ -160,7 +159,7 @@ class UserProfile extends Component {
 
 	render() {
 		const { user } = this.props;
-		if (!user) return <div>loading...</div>;
+		if (!user) return <Progress />;
 		return(
 			<div>
     		<Card style={style.card}>
@@ -174,16 +173,14 @@ class UserProfile extends Component {
 					<br />
 					{this.renderMedicalCondition(user.medicalCondition)}
 				</CardText>
-				<CardActions>
+				<br />
+				<br />
+				<CardActions style={style.cardActions}>
 					<RaisedButton label="Edit Profile" 
 						onTouchTap={() => this.props.history.push('/profile/edit')}
 					/>
-					<RaisedButton label="Change Email" />
-					<RaisedButton label="Change Password" />
 				</CardActions>
     		</Card>
-    		<br/>
-    		<br/>
     		<div className="col-xs-12">
 					<h2>Events Joined</h2>
 				</div>
@@ -219,4 +216,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps, { fetchUserInfo })(UserProfile);
+export default connect(mapStateToProps)(UserProfile);

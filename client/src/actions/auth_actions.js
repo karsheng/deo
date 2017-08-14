@@ -7,7 +7,8 @@ import {
 	AUTH_SIGNUP_ERROR,
 	OPEN_AUTH_DIALOG,
 	CLOSE_AUTH_DIALOG,
-	FETCH_USER_INFO
+	FETCH_USER_INFO,
+	UPDATE_USER_INFO
 } from './types';
 
 
@@ -101,7 +102,13 @@ export function signupUser(formProps, cb) {
 
 export function signoutUser() {
 	localStorage.removeItem('deotoken');
-	return { type: UNAUTH_USER };
+	return function(dispatch) {
+		dispatch({ type: UNAUTH_USER });
+		dispatch({
+			type: UPDATE_USER_INFO,
+			payload: {}
+		});
+	};
 }
 
 export function openAuthDialog() {

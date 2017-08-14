@@ -16,7 +16,9 @@ export default function(state = {}, action) {
 
 function mapDataToFormKey(user) {
 	
-	user.dateOfBirth = new Date(user.dateOfBirth);
+	if (user.dateOfBirth) {
+		user.dateOfBirth = new Date(user.dateOfBirth);
+	}
 	
 	if (user.emergencyContact) {
 		user.emergencyContactName = user.emergencyContact.name;
