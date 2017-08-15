@@ -18,6 +18,7 @@ import EventCategoryTable from "./event_category_table";
 import AuthDialog from '../auth/auth_dialog';
 import RegistrationCheckDialog from '../registration/registration_check_dialog';
 import EventAccommodationDialog from './event_accommodation_dialog';
+import EventDirectionDialog from './event_direction_dialog';
 
 const style = {
 	card: {
@@ -41,7 +42,8 @@ class EventPage extends Component {
 		super(props);
 		this.state = {
 			regCheckDialogOpen: false,
-			accoDialogOpen: false
+			accoDialogOpen: false,
+			directionDialogOpen: false
 		};
 	}
 	
@@ -61,6 +63,13 @@ class EventPage extends Component {
 		this.setState({ accoDialogOpen: false });
 	}
 	
+	openDirectionDialog() {
+		this.setState({ directionDialogOpen: true });
+	}
+	
+	closeDirectionDialog() {
+		this.setState({ directionDialogOpen: false });
+	}
 	
 	renderOrganizerDetails(organizers) {
 		return organizers.map(organizer => {
@@ -95,7 +104,7 @@ class EventPage extends Component {
 					Date & Time : {`${formatDate(event.datetime)} ${time}`}
 				</p>
 				<p>
-					Venue: {event.address} <Link to="/"> (Get direction)</Link>
+					Venue: {event.address}
 				</p>
 				<p>
 					Registration Deadline: {formatDate(event.registrationDeadline)}
@@ -104,6 +113,7 @@ class EventPage extends Component {
 				<RaisedButton 
 					style={style.directionBtn} 
 					label="Direction"
+					onTouchTap={this.openDirectionDialog.bind(this)}
 				/>
 				<RaisedButton 
 					label="Accommodation" 
@@ -228,7 +238,15 @@ class EventPage extends Component {
 				<EventAccommodationDialog 
 					accoDialogOpen={this.state.accoDialogOpen}
 					closeAccoDialog={this.closeAccoDialog.bind(this)}
+					lat={event.lat}
+					lng={event.lng}
 					address={event.address}
+				/>
+				<EventDirectionDialog 
+					directionDialogOpen={this.state.directionDialogOpen}
+					closeDirectionDialog={this.closeDirectionDialog.bind(this)}
+					lat={event.lat}
+					lng={event.lng}
 				/>
 			</div>
 		);

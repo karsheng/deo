@@ -5,7 +5,8 @@ import IconButton from "material-ui/IconButton";
 
 const style = {
   contentStyle: {
-    maxWidth: "300px"
+    maxWidth: 380,
+    maxHeight: 500
   },
   iconBtn: {
       padding: 0,
@@ -25,12 +26,12 @@ const style = {
 };
 
 class EventAccommodationDialog extends Component {
-	renderAirbnbButton(address) {
+	renderAirbnbButton(lat, lng) {
 		return (
 			<IconButton
 			    style={style.iconBtn}
 			    iconStyle={style.airBnb}
-				href={"https://airbnb.com/s/" + address}
+				href={`https://airbnb.com/s/homes?lat=${lat}&lng=${lng}`}
 				target="_blank"
 			>
 				<ReactSVG path="https://upload.wikimedia.org/wikipedia/commons/6/69/Airbnb_Logo_B%C3%A9lo.svg" />
@@ -51,7 +52,7 @@ class EventAccommodationDialog extends Component {
 	}
 	
     render() {
-        const { address } = this.props;
+        const { lat, lng, address } = this.props;
         
         return(
             <Dialog
@@ -62,7 +63,7 @@ class EventAccommodationDialog extends Component {
                 onRequestClose={this.props.closeAccoDialog}
             >
                 <div>
-                    {this.renderAirbnbButton(address)}
+                    {this.renderAirbnbButton(lat, lng)}
                     {this.renderBookingButton(address)}
                 </div>
             </Dialog>
