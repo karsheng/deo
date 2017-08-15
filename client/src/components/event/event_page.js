@@ -2,11 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from "../../actions/event_actions";
 import { openAuthDialog } from '../../actions/auth_actions';
-import _ from "lodash";
 import { Link } from "react-router-dom";
 import Progress from "../progress";
-import ReactSVG from "react-svg";
-import IconButton from "material-ui/IconButton";
 import {
 	Card,
 	CardActions,
@@ -20,6 +17,7 @@ import EventMap from "./event_map";
 import EventCategoryTable from "./event_category_table";
 import AuthDialog from '../auth/auth_dialog';
 import RegistrationCheckDialog from '../registration/registration_check_dialog';
+import EventAccommodationDialog from './event_accommodation_dialog';
 
 const style = {
 	card: {
@@ -32,6 +30,9 @@ const style = {
 	},
 	registerButton: {
 		marginLeft: "8px"
+	},
+	directionBtn: {
+		marginRight: "8px"
 	}
 };
 
@@ -39,7 +40,8 @@ class EventPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			regCheckDialogOpen: false
+			regCheckDialogOpen: false,
+			accoDialogOpen: false
 		};
 	}
 	
@@ -51,6 +53,13 @@ class EventPage extends Component {
 		this.setState({ regCheckDialogOpen: false });
 	}
 	
+	openAccoDialog() {
+		this.setState({ accoDialogOpen: true });
+	}
+	
+	closeAccoDialog() {
+		this.setState({ accoDialogOpen: false });
+	}
 	
 	
 	renderOrganizerDetails(organizers) {
@@ -86,12 +95,21 @@ class EventPage extends Component {
 					Date & Time : {`${formatDate(event.datetime)} ${time}`}
 				</p>
 				<p>
-					Venue: {event.address}
+					Venue: {event.address} <Link to="/"> (Get direction)</Link>
 				</p>
 				<p>
 					Registration Deadline: {formatDate(event.registrationDeadline)}
 				</p>
 				{earlyBirdDetails()}
+				<RaisedButton 
+					style={style.directionBtn} 
+					label="Direction"
+				/>
+				<RaisedButton 
+					label="Accommodation" 
+					onTouchTap={this.openAccoDialog.bind(this)}
+				/>
+				
 			</div>
 		);
 	}
@@ -158,30 +176,6 @@ class EventPage extends Component {
 			/>
 		);
 	}
-	renderAirbnbButton(address) {
-		return (
-			<IconButton
-				style={{ padding: 0 }}
-				iconStyle={{ width: 36, height: 36 }}
-				href={"https://airbnb.com/s/" + address}
-				target="_blank"
-			>
-				<ReactSVG path="/src/svg/airbnb.svg" />
-			</IconButton>
-		);
-	}
-	renderBookingButton(address) {
-		return (
-			<IconButton
-				style={{ padding: 0 }}
-				iconStyle={{ width: 60, height: 36 }}
-				href={"https://www.booking.com/search.html?ss=" + address}
-				target="_blank"
-			>
-				<ReactSVG path="/src/svg/booking.svg" />
-			</IconButton>
-		);
-	}
 
 	componentDidMount() {
 		window.scrollTo(0, 0);
@@ -230,6 +224,11 @@ class EventPage extends Component {
 				<RegistrationCheckDialog 
 					regCheckDialogOpen={this.state.regCheckDialogOpen}
 					closeRegCheckDialog={this.closeRegCheckDialog.bind(this)}
+				/>
+				<EventAccommodationDialog 
+					accoDialogOpen={this.state.accoDialogOpen}
+					closeAccoDialog={this.closeAccoDialog.bind(this)}
+					address={event.address}
 				/>
 			</div>
 		);
