@@ -8,5 +8,5 @@ export function updateParticipantInfo(participant) {
 			type: UPDATE_PARTICIPANT_INFO,
 			payload: participant
 		});
-	}
+	};
 }

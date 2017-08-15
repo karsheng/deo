@@ -14,7 +14,7 @@ import {
 import { COUNTRIES, STATESNAME } from "../../constants";
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
-import { updateUserProfile } from '../../actions/profile_actions';
+import { updateUserInfo } from '../../actions/profile_actions';
 import { openSnackbar } from '../../actions/snackbar_actions';
 
 const style = {
@@ -126,7 +126,7 @@ class EditProfile extends Component {
 				description: formProps.medicalConditionDescription
 			};
 			
-			this.props.updateUserProfile(profile, () => {
+			this.props.updateUserInfo(profile, () => {
 				this.props.history.push('/profile');
 				this.props.openSnackbar('Profile successfully updated!');
 			});
@@ -272,7 +272,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { updateUserProfile, openSnackbar })(
+export default connect(mapStateToProps, { updateUserInfo, openSnackbar })(
   reduxForm({
     form: "profile"
   })(EditProfile)

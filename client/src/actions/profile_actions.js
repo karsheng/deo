@@ -5,12 +5,13 @@ import {
 	UPDATE_USER_INFO
 } from './types';
 
-const token = localStorage.getItem('deotoken');
-const config = {
-	headers: { authorization: token }
-};
+
 
 export function fetchUserInfo() {
+	const token = localStorage.getItem('deotoken');
+	const config = {
+		headers: { authorization: token }
+	};
 	if (token) {
 		return function(dispatch) {
 			axios.get(
@@ -31,7 +32,11 @@ export function fetchUserInfo() {
 	}
 }
 
-export function updateUserProfile(profile, cb) {
+export function updateUserInfo(profile, cb) {
+	const token = localStorage.getItem('deotoken');
+	const config = {
+		headers: { authorization: token }
+	};
 
 	if (token) {
 		return function(dispatch) {

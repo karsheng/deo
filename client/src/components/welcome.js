@@ -26,9 +26,8 @@ class WelcomePage extends Component {
 	renderEvents(events) {
 		return _.map(events, (event) => {
 			return(
-				<div>
+				<div key={event._id}>
 					<EventCard
-						key={event._id}
 						event={event}
 					/>
 				</div>
