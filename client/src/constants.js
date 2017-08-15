@@ -1,5 +1,5 @@
 // Change this
-export const ROOT_URL = 'https://deo-karsheng.c9users.io:8081'; //'https://deoraces.herokuapp.com'; //'http://localhost:3090';  
+export const ROOT_URL = 'https://deoraces.herokuapp.com'; //'https://deo-karsheng.c9users.io:8081'; //'http://localhost:3090';  
 
 export const INTERESTS = [
   '5km',
