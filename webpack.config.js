@@ -6,7 +6,8 @@ const VENDOR_LIBS = [
   'axios', 'babel-preset-stage-1', 'lodash', 'material-ui',
   'paypal-checkout', 'react', 'react-dom', 'react-redux',
   'react-router-dom', 'react-slick', 'react-svg',
-  'react-tap-event-plugin', 'redux', 'redux-form', 'redux-thunk'
+  'react-tap-event-plugin', 'redux', 'redux-form', 'redux-thunk',
+  'react-google-recaptcha', 'react-async-script'
 ];
 
 module.exports = {
@@ -46,8 +47,8 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: 'client/src/index.html'
-    }),
-    new webpack.optimize.UglifyJsPlugin()
+    })
+    //new webpack.optimize.UglifyJsPlugin()
   ],
   devServer: {
     compress: true,

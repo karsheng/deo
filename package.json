@@ -9,12 +9,12 @@
     "clean": "rimraf dist",
     "build": "NODE_ENV=production npm run clean && webpack -p",
     "serve": "webpack-dev-server",
-    "serve-c9" : "webpack-dev-server -d --watch --history-api-fallback --host $IP --port $PORT"
+    "serve-c9": "webpack-dev-server -d --watch --history-api-fallback --host $IP --port $PORT"
   },
   "author": "Kar Sheng, Lee",
   "license": "ISC",
   "engine": {
-    "node" : "6.11.1"
+    "node": "6.11.1"
   },
   "dependencies": {
     "axios": "^0.16.1",
@@ -37,8 +37,10 @@
     "paypal-checkout": "^4.0.91",
     "paypal-rest-sdk": "^1.7.1",
     "react": "^15.5.4",
+    "react-async-script": "^0.9.1",
     "react-dom": "^15.5.4",
     "react-google-maps": "^7.1.0",
+    "react-google-recaptcha": "^0.9.7",
     "react-redux": "^4.3.0",
     "react-router-dom": "^4.0.0",
     "react-slick": "^0.14.11",

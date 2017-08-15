@@ -122,6 +122,7 @@ class Header extends Component {
       </MenuItem>,
       <MenuItem 
         key={5}
+        containerElement={<Link to="/contact" />}
         onTouchTap={this.handleClose}
       >
         Contact
@@ -173,6 +174,7 @@ class Header extends Component {
               key={5}
               style={style.navItem}
               label="CONTACT"
+              onActive={() => this.props.history.push('/contact')}
             />
             {this.renderSigninSignupTabs()}
           </Tabs>

@@ -17,6 +17,7 @@ import Checkout from './components/registration/checkout';
 import Payment from './components/registration/payment';
 import UserProfile from './components/profile/profile';
 import EditProfile from './components/profile/edit_profile';
+import ContactForm from './components/contact/contact_form';
 
 
 export default class App extends Component {
@@ -36,6 +37,7 @@ export default class App extends Component {
 				    	<Route path="/profile" component={RequireAuth(UserProfile)} />
 						<Route path="/event/browse" component={EventBrowse} />
 						<Route path="/event/:_id" component={EventPage} />
+						<Route path="/contact" component={ContactForm} />
 						<Route path="/signin" component={Signin} />
 						<Route path="/signout" component={Signout} />
 						<Route path="/signup" component={Signup} />
