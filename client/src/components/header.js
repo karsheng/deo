@@ -224,6 +224,10 @@ class Header extends Component {
                 primaryText="Profile"
               />
               <MenuItem
+                containerElement={<Link to="/profile/registrations" />}
+                primaryText="Registrations"
+              />
+              <MenuItem
                 containerElement={<Link to="/signout" />}
                 primaryText="Sign out"
               />

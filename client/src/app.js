@@ -17,6 +17,7 @@ import Checkout from './components/registration/checkout';
 import Payment from './components/registration/payment';
 import UserProfile from './components/profile/profile';
 import EditProfile from './components/profile/edit_profile';
+import Registrations from './components/profile/registrations';
 import ContactForm from './components/contact/contact_form';
 
 
@@ -33,6 +34,7 @@ export default class App extends Component {
 						<Route path="/registration/checkout/:event_id" component={RequireAuth(Checkout)} />
 						<Route path="/registration/payment/:registration_id" component={RequireAuth(Payment)} />
 						<Route path="/registration/meal/:event_id" component={RequireAuth(MealSelection)} />
+						<Route path="/profile/registrations" component={RequireAuth(Registrations)} />
 						<Route path="/profile/edit" component={RequireAuth(EditProfile)} />
 				    	<Route path="/profile" component={RequireAuth(UserProfile)} />
 						<Route path="/event/browse" component={EventBrowse} />

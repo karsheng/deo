@@ -1,6 +1,7 @@
+const mongoose = require('mongoose');
 const Registration = require('../models/registration');
 const Category = require('../models/category');
-const Participant = require('../models/participant');
+const Participant = mongoose.model('participant');
 
 function checkRegistrationEligibity(participant, category, next, cb) {
 	Category.findById(category._id)
@@ -46,7 +47,7 @@ module.exports = {
 		checkRegistrationEligibity(participant, category, next, function(errMessage, isEligible) {
 			if (isEligible) {
 				// check if user already has an unpaid registration		
-				Registration.findOne({ user, paid: 'false' })
+				Registration.findOne({ user, paid: false })
 				.then(unpaidReg => {
 					if (unpaidReg) {
 						// if there is an unpaid registration, update the registration
@@ -66,13 +67,14 @@ module.exports = {
 					} else {
 						// if no unpaid registration, create a new registration document
 						// and update participant info
+
 						const p = new Participant(participant);
 						const registration = new Registration({
 									user: user._id,
 									event: event_id,
 									category,
 									orders,
-									participant: p,
+									participant: p._id,
 									registerForSelf
 								});
 						p.registration = registration._id;

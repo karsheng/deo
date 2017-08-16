@@ -28,6 +28,7 @@ class WelcomePage extends Component {
 			return(
 				<div key={event._id}>
 					<EventCard
+						key={event._id}
 						event={event}
 					/>
 				</div>
@@ -49,7 +50,7 @@ class WelcomePage extends Component {
 				<div className="col-xs-12">
 					<h2>Events</h2>
 				</div>
-					{this.renderEvents(events)}
+					{events ? this.renderEvents(events) : <Progress />}
 				<br/>
 				<RaisedButton
 					label="View More"

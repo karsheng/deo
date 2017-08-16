@@ -52,7 +52,7 @@ export function setTotalPrice(totalPrice) {
 		dispatch({
 			type: SET_TOTAL_PRICE,
 			payload: totalPrice
-		})
+		});
 	};
 }
 
@@ -60,8 +60,11 @@ export function createRegistration({ event, category, orders, participant, regis
 	const token = localStorage.getItem('deotoken');
 	
 	let config = {
-    headers: { authorization: token }
-  };
+    	headers: { authorization: token }
+	};
+	
+	delete participant._id;
+	
 	return function(dispatch) {
 		axios.post(
 			`${ROOT_URL}/api/event/register/${event._id}`,

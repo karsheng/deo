@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
-import Paper from 'material-ui/Paper';
 import Chip from 'material-ui/Chip';
-import { Tabs, Tab } from 'material-ui/Tabs';
-import { List, ListItem } from 'material-ui/List';
 import { formatDate } from '../../helper/';
 import { Card, CardHeader, CardText, CardActions } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -102,6 +99,7 @@ class UserProfile extends Component {
 		}
 		return null;
 	}
+	
 	renderPostalAddress(postalAddress) {
 		if (postalAddress) {
 		return(
@@ -129,34 +127,6 @@ class UserProfile extends Component {
 		return <p>Postal address not provided.</p>;	
 	}
 	
-	renderUpcomingEvents(registrations) {
-		return _.map(registrations, (reg) => {
-			if (reg.event.open) {
-				return(
-      		<ListItem 
-      			primaryText={reg.event.name} 
-      			containerElement={<Link to={"/event/" + reg.event._id} />} 
-      			key={reg.event._id}
-      		/>
-				);
-			}
-		});
-	}
-
-	renderClosedEvents(registrations) {
-		return _.map(registrations, (reg) => {
-			if (!reg.event.open) {
-				return(
-      		<ListItem 
-      			primaryText={reg.event.name} 
-      			containerElement={<Link to={"/event/" + reg.event._id} />} 
-      			key={reg.event._id}
-      		/>
-				);
-			}
-		});
-	}	
-
 	render() {
 		const { user } = this.props;
 		if (!user) return <Progress />;
@@ -181,30 +151,7 @@ class UserProfile extends Component {
 					/>
 				</CardActions>
     		</Card>
-    		<div className="col-xs-12">
-					<h2>Events Joined</h2>
-				</div>
-    		<Tabs>
-    			<Tab label="Upcoming Events">
-    				<Paper style={style.paper}>
-							<List>
-								{this.renderUpcomingEvents(user.registrations)}	
-							</List>
-						</Paper>
-    			</Tab>
-    			<Tab label="Closed Events">
-    				<Paper style={style.paper}>
-	    				<List>
-								{this.renderClosedEvents(user.registrations)}	
-							</List>
-						</Paper>
-    			</Tab>
-    		</Tabs>
-    		<br/>
-    		<br/>
-    		<br/>
-    		<br/>
-    		<br/>
+    		<br/><br/><br/><br/>
 			</div>
 		);
 	}

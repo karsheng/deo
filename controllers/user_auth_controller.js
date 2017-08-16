@@ -105,6 +105,13 @@ module.exports = {
 					model: 'event'
 				}
 			})
+			.populate({ 
+				path: 'registrations', 
+				populate: {
+					path: 'participant',
+					model: 'participant'
+				}
+			})
 			.select('-password -loginAttempts -isAdmin')
 			.then(user => {
 				res.json(user);
@@ -152,6 +159,20 @@ module.exports = {
 			{ new: true }
 		)
 		.select('-password -loginAttempts -isAdmin')
+		.populate({ 
+			path: 'registrations', 
+			populate: {
+				path: 'event',
+				model: 'event'
+			}
+		})
+		.populate({ 
+			path: 'registrations', 
+			populate: {
+				path: 'participant',
+				model: 'participant'
+			}
+		})
 		.then(user => {
 			res.json(user);
 		})
