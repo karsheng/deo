@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import Chip from 'material-ui/Chip';
 import { formatDate } from '../../helper/';
-import { Card, CardHeader, CardText, CardActions } from 'material-ui/Card';
+import { Card, CardTitle, CardText, CardActions } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import Progress from '../progress';
 
 const style = {
 	card: {
 		maxWidth: "768px",
-		margin: "0 auto"
+		margin: "30px auto"
 	},
 	paper: {
 		height: '100%',
@@ -133,7 +133,7 @@ class UserProfile extends Component {
 		return(
 			<div>
     		<Card style={style.card}>
-    			<CardHeader title={`${user.name}'s profile`}/>
+    			<CardTitle title={`${user.name}'s profile`}/>
 				<CardText>
 					{this.renderUserDetails(user)}
 					<br />

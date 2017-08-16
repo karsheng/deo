@@ -7,6 +7,8 @@ import { fetchUserInfo } from '../../actions/profile_actions';
 import { Link } from 'react-router-dom';
 import Progress from '../progress';
 import Avatar from 'material-ui/Avatar';
+import { formatDate } from '../../helper/';
+import Divider from 'material-ui/Divider';
 
 const style = {
 	div: {
@@ -28,13 +30,16 @@ class Registrations extends Component {
 		return registrations.map(reg => {
 			if (reg.event.open) {
 				return(
-		      		<ListItem 
-		      			primaryText={reg.participant.fullName}
-		      			secondaryText={reg.event.name}
-		      			containerElement={<Link to={"/event/" + reg.event._id} />}
-		      			leftAvatar={<Avatar src={reg.event.imageUrl} />}
-		      			key={reg._id}
-		      		/>
+					<div key={reg._id}>
+			      		<Divider inset={false} />
+						<ListItem 
+			      			primaryText={reg.participant.fullName}
+			      			secondaryText={<span>{reg.event.name}<br />{formatDate(reg.event.datetime)}</span>}
+			      			secondaryTextLines={2}
+			      			containerElement={<Link to={"/event/" + reg.event._id} />}
+			      			leftAvatar={<Avatar src={reg.event.imageUrl} />}
+			      		/>
+		      		</div>
 				);
 			}
 		});
@@ -44,13 +49,16 @@ class Registrations extends Component {
 		return registrations.map(reg => {
 			if (!reg.event.open) {
 				return(
-		      		<ListItem 
-		      			primaryText={reg.participant.fullName}
-		      			secondaryText={reg.event.name}
-		      			containerElement={<Link to={"/event/" + reg.event._id} />}
-		      			leftAvatar={<Avatar src={reg.event.imageUrl} />}
-		      			key={reg._id}
-		      		/>
+					<div key={reg._id}>
+			      		<Divider inset={false} />
+						<ListItem 
+			      			primaryText={reg.participant.fullName}
+			      			secondaryText={<span>{reg.event.name}<br />{formatDate(reg.event.datetime)}</span>}
+			      			secondaryTextLines={2}
+			      			containerElement={<Link to={"/event/" + reg.event._id} />}
+			      			leftAvatar={<Avatar src={reg.event.imageUrl} />}
+			      		/>
+		      		</div>
 				);
 			}
 		});
