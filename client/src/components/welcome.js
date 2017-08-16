@@ -47,10 +47,8 @@ class WelcomePage extends Component {
 	      </Slider>	
 				<br/>
 				<br/>
-				<div className="col-xs-12">
-					<h2>Events</h2>
-				</div>
-					{events ? this.renderEvents(events) : <Progress />}
+				<h2 className="col-xs-12">Events</h2>
+				{events ? this.renderEvents(events) : <Progress />}
 				<br/>
 				<RaisedButton
 					label="View More"

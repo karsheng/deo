@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import _ from 'lodash';
 import Chip from 'material-ui/Chip';
 import { formatDate } from '../../helper/';
 import { Card, CardTitle, CardText, CardActions } from 'material-ui/Card';
