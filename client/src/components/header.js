@@ -41,7 +41,8 @@ class Header extends Component {
       open: false,
       isSmallSize: true,
       iconStyleLeft: {},
-      popOverOpen: false
+      popOverOpen: false,
+      selectedTab: 0
     };
   }
 
@@ -75,7 +76,38 @@ class Header extends Component {
         iconStyleLeft: { display: "none" }
       });
     }
+    
+    // if screen size is not SMALL,
+    // selects active tab based on url
+    if (this.props.width !== SMALL) {
+      this.props.history.listen(location => {
+        
+        switch (location.pathname) {
+          case "/":
+            this.setState({ selectedTab: 1 });
+            break;
+          case "/event/browse":
+            this.setState({ selectedTab: 2 });
+            break;
+          case "/results":
+            this.setState({ selectedTab: 3 });
+            break;
+          case "/contact":
+            this.setState({ selectedTab: 5 });
+            break;
+          case "/signin":
+            this.setState({ selectedTab: 6 });
+            break;
+          case "/signup":
+            this.setState({ selectedTab: 7 });
+            break;
+          default:
+            this.setState({ selectedTab: 0 });
+        }
+      });
+    }
   }
+  
 
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.width === SMALL) {
@@ -146,35 +178,40 @@ class Header extends Component {
     } else {
       // render tabs if screen is not small
       return (
-          <Tabs>
+          <Tabs value={this.state.selectedTab}>
             <Tab
               key={1}
               style={style.navItem}
               label="HOME"
               onActive={() => this.props.history.push('/')}
+              value={1}
             />
             <Tab
               key={2}
               style={style.navItem}
               label="EVENTS"
               onActive={() => this.props.history.push('/event/browse')}
+              value={2}
             />
             <Tab
               key={3}
               style={style.navItem}
               label="RESULTS"
+              value={3}
             />
             <Tab
               key={4}
               style={style.navItem}
               label="BLOG"
               containerElement={<Link to="http://www.deorunner.com/" target="_blank" />}
+              value={4}
             />
             <Tab
               key={5}
               style={style.navItem}
               label="CONTACT"
               onActive={() => this.props.history.push('/contact')}
+              value={5}
             />
             {this.renderSigninSignupTabs()}
           </Tabs>
@@ -190,12 +227,14 @@ class Header extends Component {
               style={style.navItem}
               label="Sign in"
               containerElement={<Link to="/signin" />}
+              value={6}
             />,
             <Tab
               key={7}
               style={style.navItem}
               label="Sign up"
-              containerElement={<Link to="/signup" />} 
+              containerElement={<Link to="/signup" />}
+              value={7}
             />
       ]);  
     }

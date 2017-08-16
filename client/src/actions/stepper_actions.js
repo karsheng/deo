@@ -6,5 +6,5 @@ export function updateStepper(step) {
 			type: UPDATE_STEPPER,
 			payload: step
 		});
-	}
+	};
 }
