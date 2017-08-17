@@ -35,6 +35,7 @@ module.exports = function(app) {
 
 	app.get('/api/registration/:registration_id', requireAuth, UserController.getRegistrationInfo);
 	app.post('/api/event/register/:event_id', requireAuth, UserController.registerForEvent);
+	app.get('/api/event/category/available/:event_id', requireAuth, UserController.getCategoriesAvailability);
 	
 	// fake payment execution
 	// to be deleted when payment system is integrated

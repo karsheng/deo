@@ -12,6 +12,8 @@ const faker = require("faker");
 const mongoose = require("mongoose");
 const Registration = mongoose.model("registration");
 const data = require("../../helper/");
+const executeFakePayment = require('../../helper/fake_payment_execute_helper');
+const _ = require('lodash');
 
 describe("User Controller", function(done) {
 	this.timeout(15000);
@@ -98,7 +100,7 @@ describe("User Controller", function(done) {
 							true,
 							21,
 							48,
-							1000,
+							1,
 							e,
 							"RM 100",
 							"run",
@@ -198,6 +200,30 @@ describe("User Controller", function(done) {
 						assert(reg.participant.fullName === 'Gavin Belson');
 						done();
 					});
+			});
+	});
+	
+	it('GET to /api/event/category/available:event_id returns an object where the key is the category_id and value is availability', done => {
+		createRegistration(userToken, event._id, cat4, [], data.participant, true)
+			.then(reg => {
+				executeFakePayment(userToken, reg)
+				.then(payment => {
+					request(app)
+						.get(`/api/event/category/available/${event._id}`)
+						.set("authorization", userToken)
+						.end((err, res) => {
+							assert(res.body.length === 4);
+							var availability = {};
+							_.map(res.body, a => {
+								_.merge(availability, a);
+							});
+							assert(availability[cat1._id] === true);
+							assert(availability[cat2._id] === true);
+							assert(availability[cat3._id] === true);
+							assert(availability[cat4._id] === false);
+							done();				
+						});
+				});
 			});
 	});
 	

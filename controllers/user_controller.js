@@ -1,26 +1,7 @@
-const mongoose = require('mongoose');
 const Registration = require('../models/registration');
+const Event = require('../models/event');
 const Category = require('../models/category');
-const Participant = mongoose.model('participant');
-
-function checkRegistrationEligibity(participant, category, next, cb) {
-	Category.findById(category._id)
-		.populate({ path: 'event', model: 'event' })
-		.then(category => {
-			Registration.checkStatus(category, function(err, isOpen) {
-				if (err) return next(err);
-				if (isOpen) {
-					category.checkEligibility(participant, function(isEligible) {
-						if (isEligible) return cb(null, true);
-						return cb({ message: 'Not allowed to register for this category' }, false);
-					});
-				} else {
-					return cb({ message: 'Registration for this category is closed' }, false);
-				}
-			});
-		})
-		.catch(next);
-}
+const Participant = require('../models/participant');
 
 module.exports = {
 	getRegistrationInfo(req, res, next) {
@@ -92,5 +73,57 @@ module.exports = {
 				res.status(422).send(errMessage);
 			}
 		});
+	},
+	getCategoriesAvailability(req, res, next) {
+		const { event_id }  = req.params;
+		
+		Event.findById(event_id)
+		.populate({
+			path: 'categories',
+			model: 'category'
+		})
+		.then(event => {
+			const availabilities = event.categories.map(category => {
+				return getAvailability(category);
+			});
+			
+			Promise.all(availabilities)
+			.then(result => {
+				res.json(result);
+			})
+			.catch(next);
+		})
+		.catch(next);
 	}
 };
+
+function getAvailability(category) {
+	return new Promise((resolve, reject) => {
+		var availability = {};
+		return category.checkAvailability(function(err, available) {
+			if (err) return reject(err);
+			availability[category._id] = available;
+			resolve(availability);
+		});
+	});
+}
+	
+			
+function checkRegistrationEligibity(participant, category, next, cb) {
+	Category.findById(category._id)
+		.populate({ path: 'event', model: 'event' })
+		.then(category => {
+			Registration.checkStatus(category, function(err, isOpen) {
+				if (err) return next(err);
+				if (isOpen) {
+					category.checkEligibility(participant, function(isEligible) {
+						if (isEligible) return cb(null, true);
+						return cb({ message: 'Not allowed to register for this category' }, false);
+					});
+				} else {
+					return cb({ message: 'Registration for this category is closed' }, false);
+				}
+			});
+		})
+		.catch(next);
+}

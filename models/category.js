@@ -28,7 +28,17 @@ CategorySchema.methods.checkEligibility = function(participant, cb) {
 	}
 
 	return cb(false);
-}
+};
+
+CategorySchema.methods.checkAvailability = function(cb) {
+	const category = this;
+	const Registration = require('./registration');
+	
+	Registration.find({ category, paid: true }, function(err, result) {
+		if (err) return cb(err, null);
+		return cb(null, result.length < category.participantLimit);
+	});
+};
 
 function _calculateAge(birthday) {
   const ageDifMs = Date.now() - new Date(birthday);
