@@ -30,7 +30,7 @@ createAdmin("admin@deoevents.com", "qwerty12345").then(adminToken => {
 				true,
 				21,
 				999,
-				1000,
+				1,
 				events[0],
 				"RM 300",
 				"run",

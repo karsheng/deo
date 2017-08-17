@@ -3,27 +3,33 @@ import Paper from "material-ui/Paper";
 import FlatButton from "material-ui/FlatButton";
 
 const style = {
-	height: 200,
-	width: "100%",
-	maxWidth: "168px",
-	textAlign: "center",
-	display: "inline-block",
+	enabled: {
+		height: 200,
+		width: "100%",
+		maxWidth: "168px",
+		textAlign: "center",
+		display: "inline-block"	
+	},
+	disabled: {
+		height: 200,
+		width: "100%",
+		maxWidth: "168px",
+		textAlign: "center",
+		display: "inline-block",
+		backgroundColor: "#B0B0B0"	
+	},
+	available: {
+		color: 'green'
+	},
+	unavailable: {
+		color: 'red'
+	}
 };
-
-const disabledStyle = {
-	height: 200,
-	width: "100%",
-	maxWidth: "168px",
-	textAlign: "center",
-	display: "inline-block",
-	backgroundColor: "grey"
-}
 
 class CategoryCard extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			available: true,
 			disabled: true
 		};
 	}
@@ -37,6 +43,18 @@ class CategoryCard extends Component {
 			) {
 			this.setState({ disabled: false });
 		}
+		
+		if (!category.available) {
+			this.setState({ disabled: true });
+		}
+	}
+	
+	componentWillReceiveProps(nextProps){
+		
+		if (nextProps.selected && this.state.disabled) {
+			nextProps.setSelectedCategory(null);
+		}
+		
 	}
 
 	handleSelection() {
@@ -45,12 +63,12 @@ class CategoryCard extends Component {
 	}
 
 	render() {
-		const { available } = this.state;
 		const { category, selected, earlyBirdValid } = this.props;
-
+		const { available } = category;
+		
 		return (
 			<div className="col-xs-6 col-md-3">
-				<Paper style={this.state.disabled ? disabledStyle : style} zDepth={selected ? 5 : 1}>
+				<Paper style={this.state.disabled ? style.disabled : style.enabled} zDepth={selected ? 5 : 1}>
 					<div style={{ margin: 10 }}>
 						<h4>
 							{category.name}
@@ -60,10 +78,13 @@ class CategoryCard extends Component {
 								? `RM ${category.price.earlyBird} (early bird)`
 								: `RM ${category.price.normal}`}
 						</h5>
+						<h5 style={available ? style.available : style.unavailable}>
+							{available ? "Available" : "Not Available"}
+						</h5>
 						<FlatButton
 							primary={true}
 							disabled={this.state.disabled}
-							label="Select"
+							label={selected ? "SELECTED" : "SELECT"}
 							onTouchTap={this.handleSelection.bind(this)}
 						/>
 					</div>

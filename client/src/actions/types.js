@@ -13,6 +13,11 @@ export const FETCH_EVENTS = 'fetch_events';
 export const FETCH_EVENT = 'fetch_event';
 export const FETCH_SPECIFIC_EVENTS = 'fetch_specific_events';
 
+export const DISPATCH_EVENTS_CATEGORIES = 'dispatch_events_categories';
+export const DISPATCH_EVENT_CATEGORIES = 'dispatch_event_categories';
+export const FETCH_CATEGORIES_AVAILABILITY = 'fetch_categories_availability';
+
+
 export const SELECT_CATEGORY = 'select_category';
 export const SELECT_MEAL = 'select_meal';
 export const DESELECT_MEAL = 'deselect_meal';

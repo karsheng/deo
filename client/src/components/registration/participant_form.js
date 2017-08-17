@@ -10,6 +10,7 @@ import { COUNTRIES, STATESNAME } from "../../constants";
 import CircularProgress from "material-ui/CircularProgress";
 import Stepper from './stepper';
 import Paper from 'material-ui/Paper';
+import { fetchCategoriesAvailability } from '../../actions/category_actions';
 import Divider from 'material-ui/Divider';
 import {
 	renderMenuItem,
@@ -44,6 +45,7 @@ class ParticipantForm extends Component {
 		this.props.updateStepper(0);
 		const { event_id } = this.props.match.params;
 		this.props.fetchEvent(event_id, () => {
+			this.props.fetchCategoriesAvailability(event_id);
 		});
 	}
 
@@ -478,7 +480,7 @@ function renderErrorText(touched, error) {
   }
 }
 
-export default connect(mapStateToProps, { ...participant_actions, fetchEvent, updateStepper })(
+export default connect(mapStateToProps, { ...participant_actions, fetchEvent, updateStepper, fetchCategoriesAvailability })(
 	reduxForm({
 		validate,
 		form: "participant"

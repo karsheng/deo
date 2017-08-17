@@ -3,7 +3,10 @@ import { ROOT_URL } from '../constants';
 import { 
 	FETCH_EVENTS, 
 	FETCH_EVENT,
-	FETCH_SPECIFIC_EVENTS 
+	FETCH_SPECIFIC_EVENTS,
+	DISPATCH_EVENTS_CATEGORIES,
+	DISPATCH_EVENT_CATEGORIES
+	
 } from './types';
 
 export function fetchEvents() {
@@ -17,12 +20,17 @@ export function fetchEvents() {
 				type: FETCH_EVENTS,
 				payload: events
 			});
+			
+			dispatch({
+				type: DISPATCH_EVENTS_CATEGORIES,
+				payload: events
+			});
 
 		})
 		.catch(err => {
 			console.log(err);
 		});
-	}
+	};
 
 }
 
@@ -36,13 +44,18 @@ export function fetchEvent(event_id, cb) {
 				type: FETCH_EVENT,
 				payload: event
 			});
+			
+			dispatch({
+				type: DISPATCH_EVENT_CATEGORIES,
+				payload: event
+			});
 
 			cb();
 		})
 		.catch(err => {
 			console.log(err);
 		});
-	}	
+	};	
 }
 
 export function fetchSpecificEvents(type, cb) {
@@ -62,6 +75,6 @@ export function fetchSpecificEvents(type, cb) {
 		.catch(err => {
 			console.log(err);
 		});
-	}
+	};
 
 }
