@@ -72,10 +72,11 @@ export function createRegistration({ event, category, orders, participant, regis
 			config
 		)
 		.then(response => {
-			cb(response.data);
+			cb(null, response.data);
 		})
 		.catch(err => {
 			console.log(err);
+			cb(err, null);
 		});
 	};
 }

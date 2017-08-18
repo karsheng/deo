@@ -51,10 +51,11 @@ export function updateUserInfo(profile, cb) {
 					payload: response.data
 				});
 			
-				cb();
+				cb(null);
 			})
 			.catch(err => {
 				console.log(err);
+				cb(err);
 			});
 			
 		};

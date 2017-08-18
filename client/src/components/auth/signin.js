@@ -21,9 +21,13 @@ const style = {
 class Signin extends Component {
 
 	handleFormSubmit({ email, password }) {
-		this.props.signinUser({ email, password }, () => {
-			this.props.openSnackbar(`Signed in as ${email}`);
-    		this.props.history.push('/');
+		return new Promise((resolve, reject) => {
+			return this.props.signinUser({ email, password }, (err) => {
+				if (err) return resolve();
+				this.props.openSnackbar(`Signed in as ${email}`);
+	    		this.props.history.push('/');
+	    		resolve();
+			});	
 		});
 	}
 
@@ -38,7 +42,7 @@ class Signin extends Component {
 	}
 
 	render() {
-		const { handleSubmit, pristine, reset, submitting} = this.props;
+		const { handleSubmit, pristine, submitting} = this.props;
 		return(
 			<Paper zDepth={3} style={style.paper}>
 				<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>

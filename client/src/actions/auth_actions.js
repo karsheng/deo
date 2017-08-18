@@ -34,17 +34,19 @@ export function signinUser({ email, password }, cb) {
 						payload: response.data
 					});
 
-					cb();
+					cb(null);
 				})
 				.catch((err) => {
 					console.log(err);
 					dispatch(authSigninError('An error occured'));
-
+					cb(err);
+					
 				});				
 			})
 			.catch((err) => {
 				console.log(err);
 				dispatch(authSigninError('Bad Sign In Info'));
+				cb(err);
 			});
 	};
 
@@ -86,15 +88,18 @@ export function signupUser(formProps, cb) {
 						payload: response.data
 					});
 
-					cb();
+					cb(null);
 				})
 				.catch((err) => {
 					console.log(err);
 					dispatch(authSignupError('An error occured'));
+					cb(err);
+
 				});
 			})
 			.catch(({response}) => {
 				dispatch(authSignupError(response.data.error));
+				cb(response.data.error);
 			});
 	};
 

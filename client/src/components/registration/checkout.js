@@ -31,7 +31,8 @@ class Checkout extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			earlyBirdValid: false
+			earlyBirdValid: false,
+			submitting: false
 		};
 	}
 
@@ -57,6 +58,7 @@ class Checkout extends Component {
 	}
 
 	handleCheckout() {
+		this.setState({ submitting: true });
 		const { 
 			event, 
 			selectedCategory, 
@@ -73,9 +75,11 @@ class Checkout extends Component {
 				participant,
 				registerForSelf: participant.registerForSelf
 			},
-			(registration) => {
+			(err, registration) => {
+				if (err) return this.setState({ submitting: false });
 				this.props.history.push(`/registration/payment/${registration._id}`);
-			});
+			});	
+		
 	}
 
 	renderCategoryPrice(category) {
@@ -285,6 +289,7 @@ class Checkout extends Component {
 							label="Payment"
 							primary={true}
 							style={style.nextBtn}
+							disabled={this.state.submitting}
 							onTouchTap={this.handleCheckout.bind(this)}
 						/>
 					</div>

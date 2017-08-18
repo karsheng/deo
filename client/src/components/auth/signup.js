@@ -23,10 +23,15 @@ const style = {
 class Signup extends Component {
 
   handleFormSubmit(formProps) {
-    this.props.signupUser(formProps, () => {
-      this.props.openSnackbar(`Signed in as ${formProps.email}`);
-      this.props.history.push('/');
+    return new Promise(resolve => {
+      return this.props.signupUser(formProps, err => {
+        if (err) return resolve();
+        this.props.openSnackbar(`Signed in as ${formProps.email}`);
+        this.props.history.push('/');
+        resolve();
+      });  
     });
+    
   }
 
   renderAlert() {
@@ -40,7 +45,7 @@ class Signup extends Component {
   }
   
   render() {
-    const { handleSubmit, pristine, reset, submitting} = this.props;
+    const { handleSubmit, pristine, submitting} = this.props;
     // javascript triocl
     // if (x && y && z) === true return z
     return (

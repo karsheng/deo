@@ -5,7 +5,15 @@ import axios from 'axios';
 import RaisedButton from 'material-ui/RaisedButton';
 
 class FakePaymentButton extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			submitting: false
+		};
+	}
 	handleFakePayment() {
+		this.setState({ submitting: true });
+		
 		const { regId } = this.props;
 		const token = localStorage.getItem('deotoken');
 	
@@ -23,6 +31,7 @@ class FakePaymentButton extends Component {
 		})
 		.catch(err => {
 			console.log(err);
+			this.setState({ submitting: false });
 		});
 
 	}
@@ -34,6 +43,7 @@ class FakePaymentButton extends Component {
 					style={{ float: "center" }}
 					label="Pay now"
 					secondary={true}
+					disabled={this.state.submitting}
 					onTouchTap={this.handleFakePayment.bind(this)}
 				/>
 			</div>

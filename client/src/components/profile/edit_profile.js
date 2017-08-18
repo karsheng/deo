@@ -103,33 +103,37 @@ class EditProfile extends Component {
     }
     
     handleFormSubmit(formProps) {
-    	let profile = { ...formProps };
-    	
-			profile.postalAddress = {
-				line1: formProps.line1,
-				line2: formProps.line2,
-				line3: formProps.line3,
-				city: formProps.postalCity,
-				postcode: formProps.postalPostcode,
-				state: formProps.postalState,
-				country: formProps.postalCountry
-			};
-			
-			profile.emergencyContact = {
-				name: formProps.emergencyContactName,
-				relationship: formProps.relationship,
-				phone: formProps.emergencyContactPhone
-			};
-			
-			profile.medicalCondition = {
-				yes: formProps.withMedicalCondition,
-				description: formProps.medicalConditionDescription
-			};
-			
-			this.props.updateUserInfo(profile, () => {
-				this.props.history.push('/profile');
-				this.props.openSnackbar('Profile successfully updated!');
-			});
+    	return new Promise(resolve => {
+    		let profile = { ...formProps };
+	    	
+				profile.postalAddress = {
+					line1: formProps.line1,
+					line2: formProps.line2,
+					line3: formProps.line3,
+					city: formProps.postalCity,
+					postcode: formProps.postalPostcode,
+					state: formProps.postalState,
+					country: formProps.postalCountry
+				};
+				
+				profile.emergencyContact = {
+					name: formProps.emergencyContactName,
+					relationship: formProps.relationship,
+					phone: formProps.emergencyContactPhone
+				};
+				
+				profile.medicalCondition = {
+					yes: formProps.withMedicalCondition,
+					description: formProps.medicalConditionDescription
+				};
+				
+				this.props.updateUserInfo(profile, err => {
+					if (err) return resolve();
+					this.props.history.push('/profile');
+					this.props.openSnackbar('Profile successfully updated!');
+					resolve();
+				});
+    	});
     }
     
     render() {
