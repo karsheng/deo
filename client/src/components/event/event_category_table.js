@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
 	Table,
 	TableBody,
@@ -7,7 +7,7 @@ import {
 	TableHeaderColumn,
 	TableRow,
 	TableRowColumn
-} from "material-ui/Table";
+} from 'material-ui/Table';
 
 class EventCategoryTable extends Component {
 	constructor(props) {
@@ -67,18 +67,18 @@ class EventCategoryTable extends Component {
 	render() {
 		const style = {
 			categoryColumn: {
-				width: this.state.hasEarlyBirdRate ? "40%" : "75%",
-				whiteSpace: "normal",
-				wordWrap: "break-word"
+				width: this.state.hasEarlyBirdRate ? '40%' : '75%',
+				whiteSpace: 'normal',
+				wordWrap: 'break-word'
 			},
 			priceColumns: {
-				whiteSpace: "normal",
-				wordWrap: "break-word"
+				whiteSpace: 'normal',
+				wordWrap: 'break-word'
 			}
 		};
 
 		return (
-			<div style={{ overflowX: "auto" }}>
+			<div style={{ overflowX: 'auto' }}>
 				<Table>
 					<TableHeader adjustForCheckbox={false} displaySelectAll={false}>
 						<TableRow>

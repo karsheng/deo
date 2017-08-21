@@ -18,8 +18,8 @@ class EventBrowse extends Component {
 
 	isWithinFilteredRange(element, index, array) {
 		let min, max;
-		
-		switch(this.state.distance) {
+
+		switch (this.state.distance) {
 			case 0:
 				min = 0;
 				max = 9999;
@@ -36,7 +36,7 @@ class EventBrowse extends Component {
 				min = 10;
 				max = 21;
 				break;
-			case 42: 
+			case 42:
 				min = 21;
 				max = 42;
 				break;
@@ -62,56 +62,56 @@ class EventBrowse extends Component {
 
 	isInSelectedState(stateName) {
 		if (this.state.stateName === 'any') {
-			return true
+			return true;
 		} else {
 			return stateName === this.state.stateName;
 		}
 	}
 
 	setFilter(e, state) {
-    e.preventDefault();
+		e.preventDefault();
 		this.setState(state);
 	}
 
 	componentWillMount() {
-		this.props.fetchSpecificEvents(this.state.type, () => {
-
-		});
+		this.props.fetchSpecificEvents(this.state.type, () => {});
 	}
 
 	renderEvents() {
-		const filteredEvents =  _.map(this.props.filteredEvents, (event_id) => {
+		const filteredEvents = _.map(this.props.filteredEvents, event_id => {
 			return this.props.events[event_id];
 		});
 
 		return filteredEvents.map(event => {
 			const distances = _getDistance(event.categories);
-			const distanceIsWithinRange = distances.some(this.isWithinFilteredRange.bind(this));
-			const eventIsInSelectedMonth = this.isInSelectedMonth.bind(this)(event.datetime);
-			const eventisInSelectedState = this.isInSelectedState.bind(this)(event.stateName);
-			if (distanceIsWithinRange && eventIsInSelectedMonth && eventisInSelectedState) {
-				return(
-					<EventCard
-						key={event._id}
-						event={event}
-					/>
-				);
+			const distanceIsWithinRange = distances.some(
+				this.isWithinFilteredRange.bind(this)
+			);
+			const eventIsInSelectedMonth = this.isInSelectedMonth.bind(this)(
+				event.datetime
+			);
+			const eventisInSelectedState = this.isInSelectedState.bind(this)(
+				event.stateName
+			);
+			if (
+				distanceIsWithinRange &&
+				eventIsInSelectedMonth &&
+				eventisInSelectedState
+			) {
+				return <EventCard key={event._id} event={event} />;
 			}
 		});
 	}
 
 	render() {
 		const { events } = this.props;
-		if (!events) return <div>Loading...</div>; 
-		return(
+		if (!events) return <div>Loading...</div>;
+		return (
 			<div>
 				<div className="col-xs-12">
 					<h2>Browse Events</h2>
 				</div>
-				<EventFilter 
-					state={this.state}
-					setFilter={this.setFilter}
-				/>
+				<EventFilter state={this.state} setFilter={this.setFilter} />
 				{this.renderEvents()}
 			</div>
 		);
@@ -120,10 +120,9 @@ class EventBrowse extends Component {
 
 function _getDistance(categories) {
 	return categories.map(category => {
-		return category.distance
+		return category.distance;
 	});
 }
-
 
 function mapStateToProps(state) {
 	return {

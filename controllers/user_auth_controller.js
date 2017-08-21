@@ -2,7 +2,6 @@ const jwt = require('jwt-simple');
 const User = require('../models/user');
 const config = require('../config');
 
-
 function tokenForUser(user) {
 	const timestamp = new Date().getTime();
 	return jwt.encode({ sub: user.id, iat: timestamp }, config.secret);
@@ -12,24 +11,24 @@ module.exports = {
 	signin(req, res, next) {
 		// User has already had their email and password auth'd
 		// We just need to give them a token
-		res.send({ token: tokenForUser(req.user) }); 
+		res.send({ token: tokenForUser(req.user) });
 	},
 	signup(req, res, next) {
-		const {
-			name, 
-			email, 
-			password
-		} = req.body;
+		const { name, email, password } = req.body;
 
 		if (!email || !password || !name) {
-			return res.status(422).send({ error: 'You must provide email and password' });
+			return res
+				.status(422)
+				.send({ error: 'You must provide email and password' });
 		}
 
 		// TODO: email and password validation
 
 		// see if a user with a given email exists
 		User.findOne({ email: email }, function(err, existingUser) {
-			if (err) { return next(err); }
+			if (err) {
+				return next(err);
+			}
 
 			// if a user with email does exist, return an error
 			if (existingUser) {
@@ -44,10 +43,12 @@ module.exports = {
 			});
 
 			user.save(function(err) {
-				if (err) { return next(err); }
+				if (err) {
+					return next(err);
+				}
 
-			// respond to request indicating the user was created		
-			res.json({ token: tokenForUser(user) });
+				// respond to request indicating the user was created
+				res.json({ token: tokenForUser(user) });
 			});
 		});
 	},
@@ -56,57 +57,55 @@ module.exports = {
 
 		User.findOne({ email })
 			.then(existingUser => {
-				if (existingUser) return res.status(422).send({ error: 'Email is in use' });
+				if (existingUser)
+					return res.status(422).send({ error: 'Email is in use' });
 
-				User.findByIdAndUpdate(
-					req.user._id,
-					{ email },
-					{ new: true }
-				)
-				.then(user => res.json(user))
-				.catch(next);
+				User.findByIdAndUpdate(req.user._id, { email }, { new: true })
+					.then(user => res.json(user))
+					.catch(next);
 			})
 			.catch(next);
 	},
 	changePassword(req, res, next) {
-		const { 
-			oldPassword, 
-			newPassword,
-			confirmPassword
-		} = req.body;
+		const { oldPassword, newPassword, confirmPassword } = req.body;
 
 		if (newPassword !== confirmPassword) {
-			return res.status(422).send({ error: 'Passwords do not match'});
+			return res.status(422).send({ error: 'Passwords do not match' });
 		}
 
 		var user = req.user;
 
 		user.comparePassword(oldPassword, function(err, isMatch) {
-			if (err) { return res.status(422).send(err); }
+			if (err) {
+				return res.status(422).send(err);
+			}
 
-			if (!isMatch) { return res.status(422).send({ error: 'Wrong old password'}); }
+			if (!isMatch) {
+				return res.status(422).send({ error: 'Wrong old password' });
+			}
 
 			user.password = newPassword;
 
 			user.save(function(err) {
-				if (err) { return next(err); }
-				
+				if (err) {
+					return next(err);
+				}
+
 				res.send({ message: 'Password change successful' });
 			});
-
 		});
 	},
 	getProfile(req, res, next) {
 		User.findById(req.user._id)
-			.populate({ 
-				path: 'registrations', 
+			.populate({
+				path: 'registrations',
 				populate: {
 					path: 'event',
 					model: 'event'
 				}
 			})
-			.populate({ 
-				path: 'registrations', 
+			.populate({
+				path: 'registrations',
 				populate: {
 					path: 'participant',
 					model: 'participant'
@@ -158,24 +157,24 @@ module.exports = {
 			},
 			{ new: true }
 		)
-		.select('-password -loginAttempts -isAdmin')
-		.populate({ 
-			path: 'registrations', 
-			populate: {
-				path: 'event',
-				model: 'event'
-			}
-		})
-		.populate({ 
-			path: 'registrations', 
-			populate: {
-				path: 'participant',
-				model: 'participant'
-			}
-		})
-		.then(user => {
-			res.json(user);
-		})
-		.catch(next);
+			.select('-password -loginAttempts -isAdmin')
+			.populate({
+				path: 'registrations',
+				populate: {
+					path: 'event',
+					model: 'event'
+				}
+			})
+			.populate({
+				path: 'registrations',
+				populate: {
+					path: 'participant',
+					model: 'participant'
+				}
+			})
+			.then(user => {
+				res.json(user);
+			})
+			.catch(next);
 	}
 };

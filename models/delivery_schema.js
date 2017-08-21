@@ -11,7 +11,7 @@ const DeliverySchema = new Schema({
         westMalaysia: Number,
         international: Number,
         others: Number
-    }    
+    }
 });
 
 module.exports = DeliverySchema;

@@ -2,7 +2,6 @@ const User = require('../models/user');
 const config = require('../config');
 const jwt = require('jwt-simple');
 
-
 function tokenForUser(user) {
 	const timestamp = new Date().getTime();
 	return jwt.encode({ sub: user.id, iat: timestamp }, config.secret);
@@ -18,11 +17,13 @@ module.exports = {
 			isAdmin: true
 		});
 		admin.save(function(err) {
-				if (err) { return next(err); }
-				res.json({ token: tokenForUser(admin) });
-			});
+			if (err) {
+				return next(err);
+			}
+			res.json({ token: tokenForUser(admin) });
+		});
 	},
 	signin(req, res, next) {
-		res.send({ token: tokenForUser(req.user) }); 
+		res.send({ token: tokenForUser(req.user) });
 	}
 };

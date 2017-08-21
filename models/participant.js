@@ -8,7 +8,7 @@ const ParticipantSchema = new Schema({
     countryOfResidence: String,
     gender: Boolean,
     dateOfBirth: Date,
-    email: { type: String, lowercase: true},
+    email: { type: String, lowercase: true },
     phone: String,
     postcode: String,
     city: String,
@@ -20,7 +20,7 @@ const ParticipantSchema = new Schema({
     },
     medicalCondition: {
         yes: { type: Boolean },
-        description: String,
+        description: String
     },
     apparelSize: String,
     waiverDeclaration: Boolean,
@@ -37,7 +37,7 @@ const ParticipantSchema = new Schema({
         postcode: String,
         country: String
     },
-    wantsPostalService: Boolean 
+    wantsPostalService: Boolean
 });
 
 const Participant = mongoose.model('participant', ParticipantSchema);

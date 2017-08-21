@@ -1,7 +1,6 @@
 const request = require('supertest');
 const app = require('../app');
 
-
 module.exports = (name, email, password) => {
 	return new Promise((resolve, reject) => {
 		request(app)
@@ -15,4 +14,4 @@ module.exports = (name, email, password) => {
 				resolve(res.body.token);
 			});
 	});
-}
+};

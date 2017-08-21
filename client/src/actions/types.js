@@ -17,7 +17,6 @@ export const DISPATCH_EVENTS_CATEGORIES = 'dispatch_events_categories';
 export const DISPATCH_EVENT_CATEGORIES = 'dispatch_event_categories';
 export const FETCH_CATEGORIES_AVAILABILITY = 'fetch_categories_availability';
 
-
 export const SELECT_CATEGORY = 'select_category';
 export const SELECT_MEAL = 'select_meal';
 export const DESELECT_MEAL = 'deselect_meal';

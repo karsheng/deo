@@ -3,11 +3,23 @@ let path = require('path');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const VENDOR_LIBS = [
-  'axios', 'babel-preset-stage-1', 'lodash', 'material-ui',
-  'paypal-checkout', 'react', 'react-dom', 'react-redux',
-  'react-router-dom', 'react-slick', 'react-svg',
-  'react-tap-event-plugin', 'redux', 'redux-form', 'redux-thunk',
-  'react-google-recaptcha', 'react-async-script'
+  'axios',
+  'babel-preset-stage-1',
+  'lodash',
+  'material-ui',
+  'paypal-checkout',
+  'react',
+  'react-dom',
+  'react-redux',
+  'react-router-dom',
+  'react-slick',
+  'react-svg',
+  'react-tap-event-plugin',
+  'redux',
+  'redux-form',
+  'redux-thunk',
+  'react-google-recaptcha',
+  'react-async-script'
 ];
 
 module.exports = {
@@ -22,16 +34,13 @@ module.exports = {
   },
   module: {
     rules: [
-      { 
+      {
         use: 'babel-loader',
         test: /\.js$/,
         exclude: /node_modules/
       },
       {
-        use: [
-        'style-loader', 
-        'css-loader'
-        ],
+        use: ['style-loader', 'css-loader'],
         test: /\.css$/
       }
     ]

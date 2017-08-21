@@ -5,8 +5,8 @@ import { formatDate } from '../../helper/';
 import { withRouter } from 'react-router-dom';
 
 const style = {
-	cardContainer:  {
-		marginBottom: '24px'	
+	cardContainer: {
+		marginBottom: '24px'
 	},
 	cardActions: {
 		textAlign: 'center'
@@ -21,36 +21,29 @@ const style = {
 class EventCard extends Component {
 	render() {
 		const { event } = this.props;
-		return(
+		return (
 			<div className="col-xs-12 col-sm-4">
-				<Card
-					containerStyle={style.cardContainer}
-				>
+				<Card containerStyle={style.cardContainer}>
 					<CardHeader
 						title={event.name}
 						subtitle={event.address + ' | ' + formatDate(event.datetime)}
-					>
-					</CardHeader>
+					/>
 					<CardMedia>
 						<img src={event.imageUrl} alt={event.name} />
 					</CardMedia>
-					<CardActions
-						style={style.cardActions}
-					>
-						 <FlatButton
-						 	style={style.viewEventButton}
-						 	fullWidth={true}
-						 	secondary={true}
-						 	onTouchTap={() => this.props.history.push(`/event/${event._id}`)}
-						 	label="View Event"
-						 >
-						 </FlatButton>
+					<CardActions style={style.cardActions}>
+						<FlatButton
+							style={style.viewEventButton}
+							fullWidth={true}
+							secondary={true}
+							onTouchTap={() => this.props.history.push(`/event/${event._id}`)}
+							label="View Event"
+						/>
 					</CardActions>
 				</Card>
 			</div>
 		);
 	}
 }
-
 
 export default withRouter(EventCard);

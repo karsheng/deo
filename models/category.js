@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const CategorySchema = new Schema({
 	name: { type: String },
-	price: { 
+	price: {
 		earlyBird: Number,
 		normal: Number
 	},
@@ -11,7 +11,7 @@ const CategorySchema = new Schema({
 	ageMin: { type: Number },
 	ageMax: { type: Number },
 	participantLimit: { type: Number },
-	event: { 
+	event: {
 		type: Schema.Types.ObjectId,
 		ref: 'event'
 	},
@@ -23,7 +23,11 @@ const CategorySchema = new Schema({
 CategorySchema.methods.checkEligibility = function(participant, cb) {
 	const category = this;
 	const age = _calculateAge(participant.dateOfBirth);
-	if (age >= category.ageMin && age <= category.ageMax && participant.gender === category.gender) {
+	if (
+		age >= category.ageMin &&
+		age <= category.ageMax &&
+		participant.gender === category.gender
+	) {
 		return cb(true);
 	}
 
@@ -33,7 +37,7 @@ CategorySchema.methods.checkEligibility = function(participant, cb) {
 CategorySchema.methods.checkAvailability = function(cb) {
 	const category = this;
 	const Registration = require('./registration');
-	
+
 	Registration.find({ category, paid: true }, function(err, result) {
 		if (err) return cb(err, null);
 		return cb(null, result.length < category.participantLimit);
@@ -41,11 +45,10 @@ CategorySchema.methods.checkAvailability = function(cb) {
 };
 
 function _calculateAge(birthday) {
-  const ageDifMs = Date.now() - new Date(birthday);
-  const ageDate = new Date(ageDifMs);
-  return Math.abs(ageDate.getUTCFullYear() - 1970);
+	const ageDifMs = Date.now() - new Date(birthday);
+	const ageDate = new Date(ageDifMs);
+	return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
-
 
 const Category = mongoose.model('category', CategorySchema);
 

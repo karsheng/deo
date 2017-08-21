@@ -6,9 +6,12 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy = require('passport-local');
 
 // Create local strategy
-const localOptions = { usernameField: 'email' }
-const localLogin = new LocalStrategy(localOptions, function(email, password, done) {
-	
+const localOptions = { usernameField: 'email' };
+const localLogin = new LocalStrategy(localOptions, function(
+	email,
+	password,
+	done
+) {
 	User.getAuthenticated(email, password, function(err, user, reason) {
 		if (err) return done(err);
 		if (user) return done(null, user);
@@ -27,11 +30,8 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
 				done(null, false);
 				break;
 		}
-
 	});
-
 });
-
 
 // Setup option for JWT Strategy
 const jwtOptions = {
@@ -40,14 +40,16 @@ const jwtOptions = {
 };
 
 // Create JWT strategy
-const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done){
+const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {
 	// See if the user ID in the payload exists in our database
 	// if it does, call 'done' with that user
 	// otherwise, call done without user object
 	User.findById(payload.sub, function(err, user) {
 		// second argument should be user object,
 		// but null here since there's an error
-		if (err) { return done(err, false); } 
+		if (err) {
+			return done(err, false);
+		}
 
 		if (user) {
 			done(null, user);
@@ -58,8 +60,12 @@ const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done){
 });
 
 // admin local strategy
-const adminLocalOptions = { usernameField: 'email' }
-const adminLocalLogin = new LocalStrategy(adminLocalOptions, function(email, password, done) {
+const adminLocalOptions = { usernameField: 'email' };
+const adminLocalLogin = new LocalStrategy(adminLocalOptions, function(
+	email,
+	password,
+	done
+) {
 	User.getAuthenticated(email, password, function(err, user, reason) {
 		if (err) return done(err);
 		if (user && user.isAdmin) return done(null, user);
@@ -78,9 +84,7 @@ const adminLocalLogin = new LocalStrategy(adminLocalOptions, function(email, pas
 				done(null, false);
 				break;
 		}
-
 	});
-
 });
 
 // Setup option for JWT Strategy
@@ -90,9 +94,11 @@ const adminJwtOptions = {
 };
 
 // Create JWT strategy
-const adminJwtLogin = new JwtStrategy(adminJwtOptions, function(payload, done){
+const adminJwtLogin = new JwtStrategy(adminJwtOptions, function(payload, done) {
 	User.findById(payload.sub, function(err, user) {
-		if (err) { return done(err, false); } 
+		if (err) {
+			return done(err, false);
+		}
 
 		if (user && user.isAdmin) {
 			done(null, user);

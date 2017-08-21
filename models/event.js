@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const CollectionSchema = require("./collection_schema");
-const OrganizerSchema = require("./organizer_schema");
-const ApparelSchema = require("./apparel_schema");
-const DeliverySchema = require("./delivery_schema");
+const CollectionSchema = require('./collection_schema');
+const OrganizerSchema = require('./organizer_schema');
+const ApparelSchema = require('./apparel_schema');
+const DeliverySchema = require('./delivery_schema');
 
 const EventSchema = new Schema({
 	name: String,
@@ -16,13 +16,13 @@ const EventSchema = new Schema({
 	categories: [
 		{
 			type: Schema.Types.ObjectId,
-			ref: "category"
+			ref: 'category'
 		}
 	],
 	meals: [
 		{
 			type: Schema.Types.ObjectId,
-			ref: "meal"
+			ref: 'meal'
 		}
 	],
 	open: {
@@ -36,10 +36,10 @@ const EventSchema = new Schema({
 	registrationDeadline: Date,
 	organizer: [OrganizerSchema],
 	apparel: ApparelSchema,
-    delivery: DeliverySchema
+	delivery: DeliverySchema
 });
 
-EventSchema.pre("save", function(next) {
+EventSchema.pre('save', function(next) {
 	const event = this;
 	_getEventTypes(event, function(err, types) {
 		if (err) {
@@ -51,10 +51,10 @@ EventSchema.pre("save", function(next) {
 });
 
 function _getEventTypes(event, cb) {
-	const Category = require("./category");
+	const Category = require('./category');
 	let types = [];
 
-	Category.populate(event, { path: "categories" }, function(err, result) {
+	Category.populate(event, { path: 'categories' }, function(err, result) {
 		if (err) {
 			return cb(err);
 		}
@@ -67,6 +67,6 @@ function _getEventTypes(event, cb) {
 	});
 }
 
-const Event = mongoose.model("event", EventSchema);
+const Event = mongoose.model('event', EventSchema);
 
 module.exports = Event;

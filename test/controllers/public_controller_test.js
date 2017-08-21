@@ -1,16 +1,16 @@
-const assert = require("assert");
-const request = require("supertest");
-const app = require("../../app");
-const createAdmin = require("../../helper/create_admin_helper");
-const createCategory = require("../../helper/create_category_helper");
-const createEvent = require("../../helper/create_event_helper");
-const updateEvent = require("../../helper/update_event_helper");
-const createMeal = require("../../helper/create_meal_helper");
-const createAssociate = require("../../helper/create_associate_helper");
-const faker = require("faker");
-const data = require("../../helper/");
+const assert = require('assert');
+const request = require('supertest');
+const app = require('../../app');
+const createAdmin = require('../../helper/create_admin_helper');
+const createCategory = require('../../helper/create_category_helper');
+const createEvent = require('../../helper/create_event_helper');
+const updateEvent = require('../../helper/update_event_helper');
+const createMeal = require('../../helper/create_meal_helper');
+const createAssociate = require('../../helper/create_associate_helper');
+const faker = require('faker');
+const data = require('../../helper/');
 
-describe("Public Controller", function(done) {
+describe('Public Controller', function(done) {
 	this.timeout(15000);
 	var adminToken;
 	var cat1, cat2, cat3, cat4, cat5, cat6;
@@ -18,26 +18,26 @@ describe("Public Controller", function(done) {
 	var event1, event2, event3;
 
 	beforeEach(done => {
-		createAdmin("karshenglee@gmail.com", "qwerty123").then(token => {
+		createAdmin('karshenglee@gmail.com', 'qwerty123').then(token => {
 			adminToken = token;
 			Promise.all([
 				createMeal(
 					adminToken,
-					"Food 1",
+					'Food 1',
 					11.0,
 					faker.lorem.paragraph(),
 					faker.image.food()
 				),
 				createMeal(
 					adminToken,
-					"Food 2",
+					'Food 2',
 					22.0,
 					faker.lorem.paragraph(),
 					faker.image.food()
 				),
 				createMeal(
 					adminToken,
-					"Food 3",
+					'Food 3',
 					33.0,
 					faker.lorem.paragraph(),
 					faker.image.food()
@@ -47,87 +47,87 @@ describe("Public Controller", function(done) {
 				meal2 = meals[1];
 				meal3 = meals[2];
 				Promise.all([
-					createEvent(adminToken, "Test Event 1"),
-					createEvent(adminToken, "Test Event 2"),
-					createEvent(adminToken, "Test Event 3")
+					createEvent(adminToken, 'Test Event 1'),
+					createEvent(adminToken, 'Test Event 2'),
+					createEvent(adminToken, 'Test Event 3')
 				]).then(events => {
 					Promise.all([
 						createCategory(
 							adminToken,
-							"5km",
+							'5km',
 							{ earlyBird: 40, normal: 50 },
 							true,
 							21,
 							48,
 							1000,
 							events[0],
-							"RM 100",
-							"run",
+							'RM 100',
+							'run',
 							5
 						),
 						createCategory(
 							adminToken,
-							"10km",
+							'10km',
 							{ earlyBird: 50, normal: 60 },
 							true,
 							21,
 							48,
 							1000,
 							events[0],
-							"RM 100",
-							"run",
+							'RM 100',
+							'run',
 							10
 						),
 						createCategory(
 							adminToken,
-							"half-marathon",
+							'half-marathon',
 							{ earlyBird: 60, normal: 70 },
 							true,
 							21,
 							48,
 							1000,
 							events[0],
-							"RM 100",
-							"run",
+							'RM 100',
+							'run',
 							21
 						),
 						createCategory(
 							adminToken,
-							"full-marathon",
+							'full-marathon',
 							{ earlyBird: 70, normal: 80 },
 							true,
 							21,
 							48,
 							1000,
 							events[0],
-							"RM 100",
-							"swimming",
+							'RM 100',
+							'swimming',
 							42
 						),
 						createCategory(
 							adminToken,
-							"5km",
+							'5km',
 							{ earlyBird: 80, normal: 90 },
 							true,
 							21,
 							48,
 							1000,
 							events[1],
-							"RM 100",
-							"swimming",
+							'RM 100',
+							'swimming',
 							5
 						),
 						createCategory(
 							adminToken,
-							"10km",
+							'10km',
 							{ earlyBird: 50, normal: 60 },
 							true,
 							21,
 							48,
 							1000,
 							events[1],
-							"RM 100",
-							"swimming",
+							'RM 100',
+							'swimming',
 							10
 						)
 					]).then(cats => {
@@ -141,9 +141,9 @@ describe("Public Controller", function(done) {
 							updateEvent(
 								adminToken,
 								events[0]._id,
-								"Event 1",
+								'Event 1',
 								new Date().getTime(),
-								"Desa Parkcity",
+								'Desa Parkcity',
 								3.1862,
 								101.6299,
 								faker.lorem.paragraph(),
@@ -152,14 +152,14 @@ describe("Public Controller", function(done) {
 								[meal1, meal2, meal3],
 								false,
 								{
-									address: "1 Newell Road",
-									time: "11th Nov 2017, 12th Nov 2017",
-									description: "collection description",
+									address: '1 Newell Road',
+									time: '11th Nov 2017, 12th Nov 2017',
+									description: 'collection description',
 									lat: 3.11,
 									lng: 101
 								},
-								"http:result.com/result",
-								"Kuala Lumpur",
+								'http:result.com/result',
+								'Kuala Lumpur',
 								new Date(2017, 1, 1),
 								new Date(2018, 2, 2),
 								data.organizer,
@@ -169,9 +169,9 @@ describe("Public Controller", function(done) {
 							updateEvent(
 								adminToken,
 								events[1]._id,
-								"Event 2",
+								'Event 2',
 								new Date(2018, 4, 4),
-								"Genting Highland",
+								'Genting Highland',
 								4.1862,
 								102.6299,
 								faker.lorem.paragraph(),
@@ -180,14 +180,14 @@ describe("Public Controller", function(done) {
 								[meal1],
 								true,
 								{
-									address: "1 Newell Road",
-									time: "11th Nov 2017, 12th Nov 2017",
-									description: "collection description",
+									address: '1 Newell Road',
+									time: '11th Nov 2017, 12th Nov 2017',
+									description: 'collection description',
 									lat: 3.11,
 									lng: 101
 								},
-								"http:result.com/result",
-								"Kuala Lumpur",
+								'http:result.com/result',
+								'Kuala Lumpur',
 								new Date(2017, 1, 1),
 								new Date(2018, 2, 2),
 								data.organizer,
@@ -197,9 +197,9 @@ describe("Public Controller", function(done) {
 							updateEvent(
 								adminToken,
 								events[2]._id,
-								"Test Event 3",
+								'Test Event 3',
 								new Date(2017, 5, 5),
-								"Some Place",
+								'Some Place',
 								4.1862,
 								102.6299,
 								faker.lorem.paragraph(),
@@ -208,14 +208,14 @@ describe("Public Controller", function(done) {
 								[meal1],
 								true,
 								{
-									address: "1 Road",
-									time: "11th Nov 2017, 12th Nov 2017",
-									description: "collection description",
+									address: '1 Road',
+									time: '11th Nov 2017, 12th Nov 2017',
+									description: 'collection description',
 									lat: 3.11,
 									lng: 101
 								},
-								"http:result.com/result",
-								"Kuala Lumpur",
+								'http:result.com/result',
+								'Kuala Lumpur',
 								new Date(2017, 1, 1),
 								new Date(2018, 2, 2),
 								data.organizer,
@@ -234,16 +234,16 @@ describe("Public Controller", function(done) {
 		});
 	});
 
-	it("GET to /api/event/:event_id returns event info", done => {
+	it('GET to /api/event/:event_id returns event info', done => {
 		request(app).get(`/api/event/${event1._id}`).end((err, res) => {
-			assert(res.body.name === "Event 1");
-			assert(res.body.meals[0].name === "Food 1");
-			assert(res.body.categories[0].name === "5km");
+			assert(res.body.name === 'Event 1');
+			assert(res.body.meals[0].name === 'Food 1');
+			assert(res.body.categories[0].name === '5km');
 			assert(res.body.lat === 3.1862);
-			assert(res.body.collectionInfo[0].address === "1 Newell Road");
+			assert(res.body.collectionInfo[0].address === '1 Newell Road');
 			assert(res.body.collectionInfo[0].lng === 101);
-			assert(res.body.resultUrl === "http:result.com/result");
-			assert(res.body.type[0] === "run");
+			assert(res.body.resultUrl === 'http:result.com/result');
+			assert(res.body.type[0] === 'run');
 			assert(new Date(res.body.earlyBirdEndDate).getYear() === 117);
 			assert(new Date(res.body.registrationDeadline).getYear() === 118);
 			assert(res.body.organizer[0].name === 'Fictional Sports Brand');
@@ -253,84 +253,84 @@ describe("Public Controller", function(done) {
 		});
 	});
 
-	it("GET to /api/event/open/all returns all open events sorted by date (starts with soonest event)", done => {
-		request(app).get("/api/event/open/all").end((err, res) => {
+	it('GET to /api/event/open/all returns all open events sorted by date (starts with soonest event)', done => {
+		request(app).get('/api/event/open/all').end((err, res) => {
 			assert(res.body.length === 2);
-			assert(res.body[0].name === "Test Event 3");
-			assert(res.body[1].name === "Event 2");
+			assert(res.body[0].name === 'Test Event 3');
+			assert(res.body[1].name === 'Event 2');
 			done();
 		});
 	});
 
-	it("GET to /api/event/open with query returns all open specific events", done => {
-		request(app).get("/api/event/open?type=run").end((err, res) => {
+	it('GET to /api/event/open with query returns all open specific events', done => {
+		request(app).get('/api/event/open?type=run').end((err, res) => {
 			assert(res.body.length === 1);
-			assert(res.body[0].name === "Test Event 3");
-			request(app).get("/api/event/open?type=swimming").end((err, res) => {
+			assert(res.body[0].name === 'Test Event 3');
+			request(app).get('/api/event/open?type=swimming').end((err, res) => {
 				assert(res.body.length === 1);
-				assert(res.body[0].name === "Event 2");
+				assert(res.body[0].name === 'Event 2');
 				done();
 			});
 		});
 	});
 
-	it("GET to /api/associate/:associate_id returns an associate", done => {
+	it('GET to /api/associate/:associate_id returns an associate', done => {
 		createAssociate(
 			adminToken,
-			"Adidas",
+			'Adidas',
 			faker.image.sports(),
 			faker.image.imageUrl(),
-			"Adidas Street 1",
-			"Adidas City",
-			"Adidas County",
-			"Berlin",
+			'Adidas Street 1',
+			'Adidas City',
+			'Adidas County',
+			'Berlin',
 			13586,
-			"Germany",
-			"Key sponsor"
+			'Germany',
+			'Key sponsor'
 		).then(asso => {
 			request(app).get(`/api/associate/${asso._id}`).end((err, res) => {
-				assert(res.body.name === "Adidas");
-				assert(res.body.address2 === "Adidas City");
-				assert(res.body.postcode === "13586");
-				assert(res.body.country === "Germany");
+				assert(res.body.name === 'Adidas');
+				assert(res.body.address2 === 'Adidas City');
+				assert(res.body.postcode === '13586');
+				assert(res.body.country === 'Germany');
 				done();
 			});
 		});
 	});
 
-	it("GET to /api/associate/all returns all associate", done => {
+	it('GET to /api/associate/all returns all associate', done => {
 		Promise.all([
 			createAssociate(
 				adminToken,
-				"Adidas",
+				'Adidas',
 				faker.image.sports(),
 				faker.image.imageUrl(),
-				"Adidas Street 1",
-				"Adidas City",
-				"Adidas County",
-				"Berlin",
+				'Adidas Street 1',
+				'Adidas City',
+				'Adidas County',
+				'Berlin',
 				13586,
-				"Germany",
-				"Key sponsor"
+				'Germany',
+				'Key sponsor'
 			),
 			createAssociate(
 				adminToken,
-				"Nike",
+				'Nike',
 				faker.image.sports(),
 				faker.image.imageUrl(),
-				"Nike Street 1",
-				"Nike City",
-				"Nike County",
-				"New York",
+				'Nike Street 1',
+				'Nike City',
+				'Nike County',
+				'New York',
 				13586,
-				"U.S.",
-				"Key sponsor 2"
+				'U.S.',
+				'Key sponsor 2'
 			)
 		]).then(associates => {
-			request(app).get("/api/associate/all").end((err, res) => {
+			request(app).get('/api/associate/all').end((err, res) => {
 				assert(res.body.length === 2);
-				assert(res.body[0].name === "Adidas");
-				assert(res.body[1].name === "Nike");
+				assert(res.body[0].name === 'Adidas');
+				assert(res.body[1].name === 'Nike');
 				done();
 			});
 		});

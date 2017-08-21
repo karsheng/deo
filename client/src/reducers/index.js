@@ -10,15 +10,15 @@ import profileReducer from './profile_reducer';
 import categoryReducer from './category_reducer';
 
 const rootReducer = combineReducers({
-  form,
-  auth : authReducer,
-  events: eventReducer,
-  registration: registrationReducer,
-  participant: participantReducer,
-  stepper: stepperReducer,
-  snackbar: snackbarReducer,
-  profile: profileReducer,
-  categories: categoryReducer
+	form,
+	auth: authReducer,
+	events: eventReducer,
+	registration: registrationReducer,
+	participant: participantReducer,
+	stepper: stepperReducer,
+	snackbar: snackbarReducer,
+	profile: profileReducer,
+	categories: categoryReducer
 });
 
 export default rootReducer;

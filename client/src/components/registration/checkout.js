@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setTotalPrice, createRegistration } from '../../actions/registration_actions';
+import {
+	setTotalPrice,
+	createRegistration
+} from '../../actions/registration_actions';
 import _ from 'lodash';
 import RaisedButton from 'material-ui/RaisedButton';
 import { participantFormCompleted } from '../../helper/';
@@ -13,11 +16,11 @@ import Divider from 'material-ui/Divider';
 
 const style = {
 	paper: {
-		height: "100%",
-		width: "100%",
-		maxWidth: "768px",
-		margin: "auto",
-		padding: "20px"		
+		height: '100%',
+		width: '100%',
+		maxWidth: '768px',
+		margin: 'auto',
+		padding: '20px'
 	},
 	nextBtn: {
 		float: 'right'
@@ -40,36 +43,33 @@ class Checkout extends Component {
 		this.props.updateStepper(3);
 		const { event_id } = this.props.match.params;
 		const { selectedCategory, event } = this.props;
-		if (!selectedCategory) return this.props.history.push(`/registration/participant/${event_id}`);
+		if (!selectedCategory)
+			return this.props.history.push(`/registration/participant/${event_id}`);
 		// if (!participantFormCompleted(participant)) return this.props.history.push(`/registration/participant/${event_id}`);
 		if (!event) return this.props.history.push(`/event/${event_id}`);
-		
+
 		const { earlyBirdEndDate } = event;
-		
+
 		if (earlyBirdEndDate && new Date(earlyBirdEndDate) > Date.now()) {
 			this.setState({ earlyBirdValid: true });
 		}
 
 		this.props.setTotalPrice(this.getTotalPrice());
 	}
-	
+
 	componentDidMount() {
 		window.scrollTo(0, 0);
 	}
 
 	handleCheckout() {
 		this.setState({ submitting: true });
-		const { 
-			event, 
-			selectedCategory, 
-			selectedMeals,
-			participant
-		} = this.props;
-		
+		const { event, selectedCategory, selectedMeals, participant } = this.props;
+
 		const orders = _.values(selectedMeals);
-		
+
 		this.props.createRegistration(
-			{ event, 
+			{
+				event,
 				category: selectedCategory,
 				orders,
 				participant,
@@ -78,54 +78,58 @@ class Checkout extends Component {
 			(err, registration) => {
 				if (err) return this.setState({ submitting: false });
 				this.props.history.push(`/registration/payment/${registration._id}`);
-			});	
-		
+			}
+		);
 	}
 
 	renderCategoryPrice(category) {
 		const { earlyBird, normal } = category.price;
 
 		return this.state.earlyBirdValid ? earlyBird : normal;
-
 	}
 
 	getTotalPrice() {
-		const {
-			selectedMeals,
-			selectedCategory,
-			event,
-			participant
-		} = this.props;
+		const { selectedMeals, selectedCategory, event, participant } = this.props;
 
-		let totalPrice = this.state.earlyBirdValid ? selectedCategory.price.earlyBird : selectedCategory.price.normal;
+		let totalPrice = this.state.earlyBirdValid
+			? selectedCategory.price.earlyBird
+			: selectedCategory.price.normal;
 
 		_.map(selectedMeals, selectedMeal => {
 			totalPrice += selectedMeal.meal.price * selectedMeal.quantity;
 		});
-		
+
 		if (event.delivery.hasDeliveryOption && participant.wantsPostalService) {
-			totalPrice += determinePostalCharges(participant.postalAddress, event.delivery.postalCharges, function(location, charges) {
-				return charges;
-			});	
+			totalPrice += determinePostalCharges(
+				participant.postalAddress,
+				event.delivery.postalCharges,
+				function(location, charges) {
+					return charges;
+				}
+			);
 		}
-		
+
 		return totalPrice;
 	}
-	
+
 	renderPostalCharges(event, participant) {
 		if (event.delivery.hasDeliveryOption && participant.wantsPostalService) {
-			return determinePostalCharges(participant.postalAddress, event.delivery.postalCharges, function(location, charges) {
-				return(
-					<div>
-						<div className="col-xs-8">
-							{`Postal charges: ${location}`}	
+			return determinePostalCharges(
+				participant.postalAddress,
+				event.delivery.postalCharges,
+				function(location, charges) {
+					return (
+						<div>
+							<div className="col-xs-8">
+								{`Postal charges: ${location}`}
+							</div>
+							<div style={style.priceCol} className="col-xs-4">
+								{charges.toFixed(2)}
+							</div>
 						</div>
-						<div style={style.priceCol} className="col-xs-4">
-							{charges.toFixed(2)}
-						</div>
-					</div>
-				);				
-			});
+					);
+				}
+			);
 		}
 	}
 
@@ -134,7 +138,11 @@ class Checkout extends Component {
 			return (
 				<div key={selectedMeal.meal._id}>
 					<div className="col-xs-8">
-						{selectedMeal.meal.name + ' (RM '+ selectedMeal.meal.price.toFixed(2) + ') x ' + selectedMeal.quantity}
+						{selectedMeal.meal.name +
+							' (RM ' +
+							selectedMeal.meal.price.toFixed(2) +
+							') x ' +
+							selectedMeal.quantity}
 					</div>
 					<div style={style.priceCol} className="col-xs-4">
 						{(selectedMeal.meal.price * selectedMeal.quantity).toFixed(2)}
@@ -145,26 +153,41 @@ class Checkout extends Component {
 	}
 
 	renderParticipantDetails(participant) {
-		
-		const postalDetails = (participant) => {
+		const postalDetails = participant => {
 			if (participant.wantsPostalService) {
 				const { postalAddress } = participant;
-				return(
+				return (
 					<div>
 						<h4>Postal Address</h4>
-						<p>{postalAddress.line1}</p>
-						<p>{postalAddress.line2}</p>
-						<p>{postalAddress.line3}</p>
-						<p>{postalAddress.city}</p>
-						<p>{postalAddress.postcode}</p>
-						{postalAddress.state.toLowerCase() !== "others" ? <p>{postalAddress.state}</p> : ""}
-						<p>{postalAddress.country}</p>
+						<p>
+							{postalAddress.line1}
+						</p>
+						<p>
+							{postalAddress.line2}
+						</p>
+						<p>
+							{postalAddress.line3}
+						</p>
+						<p>
+							{postalAddress.city}
+						</p>
+						<p>
+							{postalAddress.postcode}
+						</p>
+						{postalAddress.state.toLowerCase() !== 'others'
+							? <p>
+									{postalAddress.state}
+								</p>
+							: ''}
+						<p>
+							{postalAddress.country}
+						</p>
 					</div>
 				);
-			}	
+			}
 		};
-		
-		return(
+
+		return (
 			<div>
 				<div className="col-xs-12 col-md-6">
 					<h4>Participant Details</h4>
@@ -178,7 +201,7 @@ class Checkout extends Component {
 						Identity Number: {participant.identityNumber}
 					</p>
 					<p>
-						Gender: {participant.gender ? "Male" : "Female"}
+						Gender: {participant.gender ? 'Male' : 'Female'}
 					</p>
 					<p>
 						Nationality: {participant.nationality}
@@ -212,13 +235,16 @@ class Checkout extends Component {
 				<div className="col-xs-12 col-md-6">
 					<h4>Medical Condition</h4>
 					<p>
-						Medical Condition: {participant.medicalCondition.yes ? "Yes" : "No"}
+						Medical Condition: {participant.medicalCondition.yes ? 'Yes' : 'No'}
 					</p>
 					<p>
 						Description: {participant.medicalCondition.description}
 					</p>
 					<h4>Racepack Collection</h4>
-					<p>Collection: {participant.wantsPostalService ? "by post" : "self collection"}</p>					
+					<p>
+						Collection:{' '}
+						{participant.wantsPostalService ? 'by post' : 'self collection'}
+					</p>
 					{postalDetails(participant)}
 				</div>
 			</div>
@@ -226,24 +252,19 @@ class Checkout extends Component {
 	}
 
 	render() {
-		const {
-			event,
-			selectedCategory,
-			selectedMeals,
-			participant
-		} = this.props;
+		const { event, selectedCategory, selectedMeals, participant } = this.props;
 
 		if (!event) {
-			return(
-				<CircularProgress />
-			);
+			return <CircularProgress />;
 		}
 
-		return(
+		return (
 			<div>
 				<Stepper />
-				<Paper zDepth={3} style={style.paper} >
-					<h2>{event.name}</h2>
+				<Paper zDepth={3} style={style.paper}>
+					<h2>
+						{event.name}
+					</h2>
 					<h3>Step 4: Confirmation and Payment</h3>
 					<div className="row">
 						<div className="col-xs-8">
@@ -265,27 +286,30 @@ class Checkout extends Component {
 					</div>
 					<hr />
 					<div className="row">
-						<div className="col-xs-8">
-							Total
-						</div>
+						<div className="col-xs-8">Total</div>
 						<div style={style.priceCol} className="col-xs-4">
 							{this.getTotalPrice().toFixed(2)}
 						</div>
 					</div>
-					<br /><br />
+					<br />
+					<br />
 					<div className="row">
 						{this.renderParticipantDetails(participant)}
 					</div>
-					<br /><br /><br /><br />
+					<br />
+					<br />
+					<br />
+					<br />
 					<Divider />
 					<br />
 					<div>
-						<RaisedButton 
+						<RaisedButton
 							label="Back"
 							secondary={true}
-							onTouchTap={() => this.props.history.push(`/registration/meal/${event._id}`)}
+							onTouchTap={() =>
+								this.props.history.push(`/registration/meal/${event._id}`)}
 						/>
-						<RaisedButton 
+						<RaisedButton
 							label="Payment"
 							primary={true}
 							style={style.nextBtn}
@@ -308,4 +332,8 @@ function mapStateToProps(state, ownProps) {
 	};
 }
 
-export default connect(mapStateToProps, { setTotalPrice, createRegistration, updateStepper })(Checkout);
+export default connect(mapStateToProps, {
+	setTotalPrice,
+	createRegistration,
+	updateStepper
+})(Checkout);

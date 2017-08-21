@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import * as actions from "../../actions/event_actions";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../actions/event_actions';
 import { openAuthDialog } from '../../actions/auth_actions';
-import { Link } from "react-router-dom";
-import Progress from "../progress";
+import { Link } from 'react-router-dom';
+import Progress from '../progress';
 import {
 	Card,
 	CardActions,
 	CardMedia,
 	CardTitle,
 	CardText
-} from "material-ui/Card";
-import RaisedButton from "material-ui/RaisedButton";
-import { formatDate, getTime } from "../../helper/";
-import EventMap from "./event_map";
-import EventCategoryTable from "./event_category_table";
+} from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
+import { formatDate, getTime } from '../../helper/';
+import EventMap from './event_map';
+import EventCategoryTable from './event_category_table';
 import AuthDialog from '../auth/auth_dialog';
 import RegistrationCheckDialog from '../registration/registration_check_dialog';
 import EventAccommodationDialog from './event_accommodation_dialog';
@@ -22,18 +22,18 @@ import EventDirectionDialog from './event_direction_dialog';
 
 const style = {
 	card: {
-		maxWidth: "768px",
-		margin: "0 auto"
+		maxWidth: '768px',
+		margin: '0 auto'
 	},
 	cardImg: {
-		maxHeight: "380px",
-		height: "auto"
+		maxHeight: '380px',
+		height: 'auto'
 	},
 	registerButton: {
-		marginLeft: "8px"
+		marginLeft: '8px'
 	},
 	directionBtn: {
-		marginRight: "8px"
+		marginRight: '8px'
 	}
 };
 
@@ -46,39 +46,51 @@ class EventPage extends Component {
 			directionDialogOpen: false
 		};
 	}
-	
+
 	openRegCheckDialog() {
 		this.setState({ regCheckDialogOpen: true });
 	}
-	
+
 	closeRegCheckDialog() {
 		this.setState({ regCheckDialogOpen: false });
 	}
-	
+
 	openAccoDialog() {
 		this.setState({ accoDialogOpen: true });
 	}
-	
+
 	closeAccoDialog() {
 		this.setState({ accoDialogOpen: false });
 	}
-	
+
 	openDirectionDialog() {
 		this.setState({ directionDialogOpen: true });
 	}
-	
+
 	closeDirectionDialog() {
 		this.setState({ directionDialogOpen: false });
 	}
-	
+
 	renderOrganizerDetails(organizers) {
 		return organizers.map(organizer => {
-			return(
+			return (
 				<div key={organizer._id}>
 					<h3> Organizer Details</h3>
-					{organizer.name ? <p>Organizer: {organizer.name}</p> : ''}
-					{organizer.email ? <p>Email: {organizer.email}</p> : ''}
-					{organizer.website ? <p>Website: {organizer.email}</p> : ''}
+					{organizer.name
+						? <p>
+								Organizer: {organizer.name}
+							</p>
+						: ''}
+					{organizer.email
+						? <p>
+								Email: {organizer.email}
+							</p>
+						: ''}
+					{organizer.website
+						? <p>
+								Website: {organizer.email}
+							</p>
+						: ''}
 				</div>
 			);
 		});
@@ -88,9 +100,9 @@ class EventPage extends Component {
 		const time = getTime(event.datetime);
 		const earlyBirdDetails = () => {
 			if (event.earlyBirdEndDate) {
-				return(
+				return (
 					<p>
-						Early Bird Expiry Date: {formatDate(event.earlyBirdEndDate)} 
+						Early Bird Expiry Date: {formatDate(event.earlyBirdEndDate)}
 					</p>
 				);
 			}
@@ -110,16 +122,15 @@ class EventPage extends Component {
 					Registration Deadline: {formatDate(event.registrationDeadline)}
 				</p>
 				{earlyBirdDetails()}
-				<RaisedButton 
-					style={style.directionBtn} 
+				<RaisedButton
+					style={style.directionBtn}
 					label="Direction"
 					onTouchTap={this.openDirectionDialog.bind(this)}
 				/>
-				<RaisedButton 
-					label="Accommodation" 
+				<RaisedButton
+					label="Accommodation"
 					onTouchTap={this.openAccoDialog.bind(this)}
 				/>
-				
 			</div>
 		);
 	}
@@ -132,7 +143,13 @@ class EventPage extends Component {
 					<div key={collection._id}>
 						<h3>Collection Info</h3>
 						<p>
-							Location: <Link to={`https://www.google.com/maps?q=${collection.lat},${collection.lng}`} target="_blank">{collection.address}</Link>
+							Location:{' '}
+							<Link
+								to={`https://www.google.com/maps?q=${collection.lat},${collection.lng}`}
+								target="_blank"
+							>
+								{collection.address}
+							</Link>
 						</p>
 						<p>
 							Date & Time: {collection.time}
@@ -141,14 +158,14 @@ class EventPage extends Component {
 							Description: {collection.description}
 						</p>
 					</div>
-				);	
+				);
 			});
 		}
 	}
-	
+
 	renderDeliveryInfo(delivery) {
 		if (delivery.hasDeliveryOption) {
-			return(
+			return (
 				<div>
 					<p>Delivery By Post: Yes</p>
 				</div>
@@ -156,18 +173,17 @@ class EventPage extends Component {
 		}
 	}
 
-
 	renderApparelInfo(apparel) {
 		if (apparel.sizes) {
-			return(
+			return (
 				<div>
 					<h3>Apparel Info</h3>
 					<p>Attachment to be added</p>
 				</div>
 			);
-		}	
+		}
 	}
-	
+
 	handleRegisterButtonclick() {
 		if (this.props.authenticated) {
 			this.openRegCheckDialog();
@@ -231,18 +247,18 @@ class EventPage extends Component {
 					</CardMedia>
 				</Card>
 				<AuthDialog />
-				<RegistrationCheckDialog 
+				<RegistrationCheckDialog
 					regCheckDialogOpen={this.state.regCheckDialogOpen}
 					closeRegCheckDialog={this.closeRegCheckDialog.bind(this)}
 				/>
-				<EventAccommodationDialog 
+				<EventAccommodationDialog
 					accoDialogOpen={this.state.accoDialogOpen}
 					closeAccoDialog={this.closeAccoDialog.bind(this)}
 					lat={event.lat}
 					lng={event.lng}
 					address={event.address}
 				/>
-				<EventDirectionDialog 
+				<EventDirectionDialog
 					directionDialogOpen={this.state.directionDialogOpen}
 					closeDirectionDialog={this.closeDirectionDialog.bind(this)}
 					lat={event.lat}
@@ -260,4 +276,6 @@ function mapStateToProps(state, ownProps) {
 	};
 }
 
-export default connect(mapStateToProps, { ...actions, openAuthDialog })(EventPage);
+export default connect(mapStateToProps, { ...actions, openAuthDialog })(
+	EventPage
+);

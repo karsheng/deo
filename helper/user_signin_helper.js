@@ -9,8 +9,8 @@ module.exports = (email, password) => {
 				email: email,
 				password: password
 			})
-			.end((err, res) => {	
+			.end((err, res) => {
 				resolve(res);
 			});
 	});
-}
+};

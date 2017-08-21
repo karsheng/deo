@@ -23,25 +23,25 @@ const PaymentSchema = new Schema(
 PaymentSchema.pre('save', function(next) {
 	const payment = this;
 
-	Registration
-		.findByIdAndUpdate(
-			payment.registration,
-			{ paid: true }
-		)
-		.exec(function(err, registration) {
-			if (err) { return next(err); }
-			User
-			.findById(payment.user)
-			.exec(function(err, user) {
-				if (err) { return next(err); }
-				user.registrations.push(payment.registration);
-				user.save()
-					.then(_ => {
-						next();
-					})
-					.catch(next)
-			});
+	Registration.findByIdAndUpdate(payment.registration, {
+		paid: true
+	}).exec(function(err, registration) {
+		if (err) {
+			return next(err);
+		}
+		User.findById(payment.user).exec(function(err, user) {
+			if (err) {
+				return next(err);
+			}
+			user.registrations.push(payment.registration);
+			user
+				.save()
+				.then(_ => {
+					next();
+				})
+				.catch(next);
 		});
+	});
 });
 
 const Payment = mongoose.model('payment', PaymentSchema);

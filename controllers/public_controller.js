@@ -25,8 +25,7 @@ module.exports = {
 		const { type } = req.query;
 		const query = type === 'any' ? { open: true } : { type, open: true };
 
-		Event
-			.find(query)
+		Event.find(query)
 			.populate({ path: 'categories', model: 'category' })
 			.sort({ datetime: 1 })
 			.then(events => res.json(events))
@@ -35,9 +34,7 @@ module.exports = {
 	getAssociate(req, res, next) {
 		const { associate_id } = req.params;
 
-		Associate.findById(associate_id)
-			.then(asso => res.json(asso))
-			.catch(next);
+		Associate.findById(associate_id).then(asso => res.json(asso)).catch(next);
 	},
 	getAllAssociates(req, res, next) {
 		Associate.find({})
@@ -45,4 +42,4 @@ module.exports = {
 			.then(associates => res.json(associates))
 			.catch(next);
 	}
-}
+};

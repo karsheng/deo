@@ -15,61 +15,63 @@ module.exports = {
 		const { user } = req;
 
 		Registration.findById(registration_id)
-		.populate({ path: 'category', model: 'category' })
-		.populate({ path: 'orders.meal', model: 'meal' })
-		.then(reg => {
-			if (reg) {
-				const categoryItem = [{
-					name: reg.category.name,
-					sku: reg.category.name,
-					price: reg.category.price,
-					currency: 'MYR',
-					quantity: 1
-				}];
-				const ordersItems = reg.orders.map(order => {
-					return {
-						name: order.meal.name,
-						sku: order.meal.name,
-						price: order.meal.price,
-						currency: 'MYR',
-						quantity: order.quantity
-					}
-				});
-
-				const create_payment_json = {
-					intent: 'sale',
-					payer: {
-						payment_method: 'paypal'
-					},
-					redirect_urls: {
-						return_url: 'http://localhost:8080/',
-						cancel_url: 'http://localhost:8080/'
-					},
-					transactions: [{
-						item_list: {
-							items: [...categoryItem, ...ordersItems]
-						},
-						amount: {
+			.populate({ path: 'category', model: 'category' })
+			.populate({ path: 'orders.meal', model: 'meal' })
+			.then(reg => {
+				if (reg) {
+					const categoryItem = [
+						{
+							name: reg.category.name,
+							sku: reg.category.name,
+							price: reg.category.price,
 							currency: 'MYR',
-							total: reg.totalBill
+							quantity: 1
 						}
-					}]
-				};
+					];
+					const ordersItems = reg.orders.map(order => {
+						return {
+							name: order.meal.name,
+							sku: order.meal.name,
+							price: order.meal.price,
+							currency: 'MYR',
+							quantity: order.quantity
+						};
+					});
 
-				paypal.payment.create(create_payment_json, function(err, payment) {
-					if (err) { 
-						next(err); 
-					} else {
-						res.send(payment);
-					}
+					const create_payment_json = {
+						intent: 'sale',
+						payer: {
+							payment_method: 'paypal'
+						},
+						redirect_urls: {
+							return_url: 'http://localhost:8080/',
+							cancel_url: 'http://localhost:8080/'
+						},
+						transactions: [
+							{
+								item_list: {
+									items: [...categoryItem, ...ordersItems]
+								},
+								amount: {
+									currency: 'MYR',
+									total: reg.totalBill
+								}
+							}
+						]
+					};
 
-				})
-			} else {
-				return res.status(422).send({error: 'Registration not found'});
-			}
-		})
-		.catch(next);
-
+					paypal.payment.create(create_payment_json, function(err, payment) {
+						if (err) {
+							next(err);
+						} else {
+							res.send(payment);
+						}
+					});
+				} else {
+					return res.status(422).send({ error: 'Registration not found' });
+				}
+			})
+			.catch(next);
 	},
 	executePayment(req, res, next) {
 		const { registration_id } = req.params;
@@ -77,9 +79,12 @@ module.exports = {
 
 		const execute_payment_json = {
 			payer_id: payerID
-		}
+		};
 
-		paypal.payment.execute(paymentID, execute_payment_json, function(err, paypalResponse) {
+		paypal.payment.execute(paymentID, execute_payment_json, function(
+			err,
+			paypalResponse
+		) {
 			if (err) {
 				next(err);
 			} else {
@@ -92,9 +97,7 @@ module.exports = {
 						paypalPaymentId: paypalResponse.id
 					});
 
-					payment.save()
-						.then(p => res.send(p))
-						.catch(next);
+					payment.save().then(p => res.send(p)).catch(next);
 				} else {
 					res.status(422).send({ error: 'Payment not approved' });
 				}

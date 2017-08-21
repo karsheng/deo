@@ -5,20 +5,20 @@ import { closeSnackbar } from '../actions/snackbar_actions';
 
 class SnackbarComponent extends Component {
     render() {
-        return(
-          <Snackbar
-            message={this.props.message}
-            open={this.props.open}
-            autoHideDuration={4000}
-            onRequestClose={this.props.closeSnackbar}
-          />
+        return (
+            <Snackbar
+                message={this.props.message}
+                open={this.props.open}
+                autoHideDuration={4000}
+                onRequestClose={this.props.closeSnackbar}
+            />
         );
     }
 }
 
 function mapStateToProps(state) {
     const { open, message } = state.snackbar;
-    
+
     return {
         open,
         message

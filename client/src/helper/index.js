@@ -5,28 +5,36 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import { RadioButtonGroup } from 'material-ui/RadioButton';
 
-export const formatDate = (datetime) => {
+export const formatDate = datetime => {
   if (datetime) {
     const date = new Date(datetime);
-  	 
+
     const monthNames = [
-      "Jan", "Feb", "Mar",
-      "Apr", "May", "Jun", "Jul",
-      "Aug", "Sep", "Oct",
-      "Nov", "Dec"
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
     ];
-  
+
     const day = date.getDate();
     const monthIndex = date.getMonth();
     const year = date.getFullYear();
-  
+
     return day + ' ' + monthNames[monthIndex] + ' ' + year;
   }
-  
+
   return null;
 };
 
-export const getTime = (datetime) => {
+export const getTime = datetime => {
   const date = new Date(datetime);
   const hours = date.getHours();
   const minutes = date.getMinutes();
@@ -35,21 +43,26 @@ export const getTime = (datetime) => {
 
   function formatTime(i) {
     if (i < 10) {
-      i = "0" + i;
+      i = '0' + i;
     }
     return i;
   }
 };
 
-
-export const renderMenuItem = (itemArray) => {
+export const renderMenuItem = itemArray => {
   return itemArray.map(itemValue => {
-    return <MenuItem key={itemValue} value={itemValue} primaryText={itemValue} />;
+    return (
+      <MenuItem key={itemValue} value={itemValue} primaryText={itemValue} />
+    );
   });
 };
 
-export const renderRadioGroup = ({ input, meta: { touched, error }, ...rest }) => {
-  return(
+export const renderRadioGroup = ({
+  input,
+  meta: { touched, error },
+  ...rest
+}) => {
+  return (
     <div>
       <RadioButtonGroup
         {...input}
@@ -57,7 +70,9 @@ export const renderRadioGroup = ({ input, meta: { touched, error }, ...rest }) =
         valueSelected={input.value}
         onChange={(event, value) => input.onChange(value)}
       />
-      <div className="error-text">{renderErrorText(touched, error)}</div>
+      <div className="error-text">
+        {renderErrorText(touched, error)}
+      </div>
     </div>
   );
 };
@@ -70,7 +85,7 @@ export const renderSelectField = ({
   multiple,
   disabled,
   ...custom
-}) => (
+}) =>
   <SelectField
     multiple={multiple}
     floatingLabelText={label}
@@ -80,28 +95,35 @@ export const renderSelectField = ({
     onChange={(event, index, value) => input.onChange(value)}
     children={children}
     {...custom}
-  />
-);
+  />;
 
-export const renderDatePicker = ({ input, label, meta: { touched, error }, ...custom }) => {
+export const renderDatePicker = ({
+  input,
+  label,
+  meta: { touched, error },
+  ...custom
+}) => {
   return (
     <div>
       <DatePicker
-        onChange={(e, val) => {return input.onChange(val)}}
+        onChange={(e, val) => {
+          return input.onChange(val);
+        }}
         {...custom}
-        value={(input.value) ? input.value : {}}
+        value={input.value ? input.value : {}}
       />
-      <div className="error-text">{renderErrorText(touched, error)}</div>
+      <div className="error-text">
+        {renderErrorText(touched, error)}
+      </div>
     </div>
-    
-
   );
 };
 
-export const renderField = (field) => {
+export const renderField = field => {
   const { meta: { touched, error } } = field;
-  return(
-    <TextField hintText={field.label}
+  return (
+    <TextField
+      hintText={field.label}
       floatingLabelText={field.label}
       disabled={field.disabled}
       errorText={touched && error}
@@ -111,12 +133,12 @@ export const renderField = (field) => {
   );
 };
 
-export const renderAddressTextField = (field) => {
+export const renderAddressTextField = field => {
   const { meta: { touched, error } } = field;
-  return(
-    <TextField hintText={field.label}
+  return (
+    <TextField
+      hintText={field.label}
       floatingLabelText={field.label}
-
       errorText={touched && error}
       type={field.type}
       {...field.input}
@@ -124,10 +146,11 @@ export const renderAddressTextField = (field) => {
   );
 };
 
-export const renderTextarea = (field) => {
+export const renderTextarea = field => {
   const { meta: { touched, error } } = field;
-  return(
-    <TextField hintText={field.label}
+  return (
+    <TextField
+      hintText={field.label}
       floatingLabelText={field.label}
       errorText={touched && error}
       multiLine={true}
@@ -141,11 +164,11 @@ export const renderTextarea = (field) => {
 
 function renderErrorText(touched, error) {
   if (touched) {
-    return (error);
+    return error;
   }
 }
 
-export const participantFormCompleted = (participant) => {
+export const participantFormCompleted = participant => {
   const {
     registerForSelf,
     fullName,
@@ -168,20 +191,20 @@ export const participantFormCompleted = (participant) => {
   if (medicalCondition) {
     if (medicalCondition.yes === true) {
       if (medicalCondition.description) {
-        medicalConditionCheck = true;  
+        medicalConditionCheck = true;
       }
     } else {
       medicalConditionCheck = true;
     }
   }
-  
+
   // if participant doesn't want delivery service
   // pass deliverycheck
   let deliveryCheck = !wantsPostalService;
-  
+
   // if participant wants delivery service
   // check if address details are filled
-  const { line1, city, state, country} = postalAddress;
+  const { line1, city, state, country } = postalAddress;
   if (wantsPostalService === true) {
     deliveryCheck = line1 && city && state && country && postalAddress.postcode;
   }
@@ -203,27 +226,34 @@ export const participantFormCompleted = (participant) => {
     dateOfBirth &&
     emergencyContact.name &&
     emergencyContact.relationship &&
-    emergencyContact.phone && 
-    medicalConditionCheck && 
+    emergencyContact.phone &&
+    medicalConditionCheck &&
     deliveryCheck
   );
 };
 
-
-export const calculateAge = (dateOfBirth) => {
+export const calculateAge = dateOfBirth => {
   const ageDifMs = Date.now() - new Date(dateOfBirth);
   const ageDate = new Date(ageDifMs);
   return Math.abs(ageDate.getUTCFullYear() - 1970);
 };
 
-export const determinePostalCharges = (postalAddress, eventPostalCharges, cb) => {
-	if (postalAddress.country.toLowerCase() === "malaysia") {
-		if (postalAddress.state.toLowerCase() === 'sabah' || postalAddress.state.toLowerCase() === 'sarawak' || postalAddress.state.toLowerCase() === 'labuan') {
-			return cb("East Malaysia", eventPostalCharges.eastMalaysia);
-		} else {
-			return cb("West Malaysia", eventPostalCharges.westMalaysia);
-		}
-	} else {
-		return cb("International", eventPostalCharges.international);
-	}
+export const determinePostalCharges = (
+  postalAddress,
+  eventPostalCharges,
+  cb
+) => {
+  if (postalAddress.country.toLowerCase() === 'malaysia') {
+    if (
+      postalAddress.state.toLowerCase() === 'sabah' ||
+      postalAddress.state.toLowerCase() === 'sarawak' ||
+      postalAddress.state.toLowerCase() === 'labuan'
+    ) {
+      return cb('East Malaysia', eventPostalCharges.eastMalaysia);
+    } else {
+      return cb('West Malaysia', eventPostalCharges.westMalaysia);
+    }
+  } else {
+    return cb('International', eventPostalCharges.international);
+  }
 };

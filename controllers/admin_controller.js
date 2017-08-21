@@ -31,33 +31,27 @@ module.exports = {
 			distance
 		});
 
-		category.save()
-			.then(cat => res.send(cat))
-			.catch(next);
+		category.save().then(cat => res.send(cat)).catch(next);
 	},
 	removeCategory(req, res, next) {
 		const { category_id } = req.params;
 
 		Category.findByIdAndRemove(category_id)
-		.then(cat => res.send(cat))
-		.catch(next);
+			.then(cat => res.send(cat))
+			.catch(next);
 	},
 	createEvent(req, res, next) {
-		const { 
-			name
-		} = req.body;
+		const { name } = req.body;
 
 		const event = new Event({
 			name
 		});
 
-		event.save()
-			.then(e => res.json(e))
-			.catch(next);
+		event.save().then(e => res.json(e)).catch(next);
 	},
 	updateEvent(req, res, next) {
 		const { event_id } = req.params;
-		const { 
+		const {
 			name,
 			datetime,
 			address,
@@ -81,37 +75,38 @@ module.exports = {
 		// hence use findById and save instead
 		// pre 'save' hook is used to update event type
 		Event.findById(event_id)
-		.then(event => {
-			event.name = name;
-			event.datetime = datetime;
-			event.address = address;
-			event.lat = lat;
-			event.lng = lng;
-			event.description = description;
-			event.imageUrl = imageUrl;
-			event.categories = categories;
-			event.meals = meals;
-			event.open = open;
-			event.collectionInfo = collectionInfo;
-			event.resultUrl = resultUrl;
-			event.stateName = stateName;
-			event.earlyBirdEndDate = earlyBirdEndDate;
-			event.registrationDeadline = registrationDeadline;
-			event.organizer = organizer;
-			event.apparel = apparel;
-			event.delivery = delivery;
-			
-			event.save()
-				.then(result => {
-					res.json(result);
-				})
-				.catch(next);
-		})
-		.catch(next);
+			.then(event => {
+				event.name = name;
+				event.datetime = datetime;
+				event.address = address;
+				event.lat = lat;
+				event.lng = lng;
+				event.description = description;
+				event.imageUrl = imageUrl;
+				event.categories = categories;
+				event.meals = meals;
+				event.open = open;
+				event.collectionInfo = collectionInfo;
+				event.resultUrl = resultUrl;
+				event.stateName = stateName;
+				event.earlyBirdEndDate = earlyBirdEndDate;
+				event.registrationDeadline = registrationDeadline;
+				event.organizer = organizer;
+				event.apparel = apparel;
+				event.delivery = delivery;
+
+				event
+					.save()
+					.then(result => {
+						res.json(result);
+					})
+					.catch(next);
+			})
+			.catch(next);
 	},
 	deleteEvent(req, res, next) {
 		const { event_id } = req.params;
-		
+
 		Event.findByIdAndRemove(event_id)
 			.then(removedEvent => res.send(removedEvent))
 			.catch(next);
@@ -126,28 +121,20 @@ module.exports = {
 			imageUrl
 		});
 
-		meal.save()
-		.then(m => res.json(m))
-		.catch(next);
+		meal.save().then(m => res.json(m)).catch(next);
 	},
 	getMeal(req, res, next) {
 		const { meal_id } = req.params;
 
-		Meal.findById(meal_id)
-			.then(meal => res.json(meal))
-			.catch(next);
+		Meal.findById(meal_id).then(meal => res.json(meal)).catch(next);
 	},
 	getAllMeals(req, res, next) {
-		Meal.find({})
-			.then(meals => res.json(meals))
-			.catch(next);
+		Meal.find({}).then(meals => res.json(meals)).catch(next);
 	},
 	deleteMeal(req, res, next) {
 		const { meal_id } = req.params;
 
-		Meal.findByIdAndRemove(meal_id)
-			.then(meal => res.json(meal))
-			.catch(next);
+		Meal.findByIdAndRemove(meal_id).then(meal => res.json(meal)).catch(next);
 	},
 	createAssociate(req, res, next) {
 		const {
@@ -176,9 +163,7 @@ module.exports = {
 			description
 		});
 
-		associate.save()
-			.then(asso => res.json(asso))
-			.catch(next);
+		associate.save().then(asso => res.json(asso)).catch(next);
 	},
 	updateAssociate(req, res, next) {
 		const {

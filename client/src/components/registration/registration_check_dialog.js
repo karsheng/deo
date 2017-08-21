@@ -6,20 +6,18 @@ import { withRouter, Link } from 'react-router-dom';
 import { updateParticipantInfo } from '../../actions/participant_actions';
 
 const style = {
-  contentStyle: {
-    maxWidth: "300px"
-  },
-  selfBtn: {
-      margin: "16px auto"
-  },
-  h5: {
-      textAlign: "center"
-  }
+    contentStyle: {
+        maxWidth: '300px'
+    },
+    selfBtn: {
+        margin: '16px auto'
+    },
+    h5: {
+        textAlign: 'center'
+    }
 };
 
-
 class RegistrationCheckDialog extends Component {
-    
     handleSelfRegistration() {
         let participant = {
             ...this.props.user,
@@ -27,21 +25,25 @@ class RegistrationCheckDialog extends Component {
         };
         this.props.updateParticipantInfo(participant);
         this.props.closeRegCheckDialog();
-        this.props.history.push("/registration/participant/" +  this.props.match.params._id);
+        this.props.history.push(
+            '/registration/participant/' + this.props.match.params._id
+        );
     }
-    
+
     handleOthersRegistration() {
         const participant = {
             registerForSelf: false
         };
-        
+
         this.props.updateParticipantInfo(participant);
         this.props.closeRegCheckDialog();
-        this.props.history.push("/registration/participant/" +  this.props.match.params._id);
+        this.props.history.push(
+            '/registration/participant/' + this.props.match.params._id
+        );
     }
-    
+
     render() {
-        return(
+        return (
             <Dialog
                 title="Are you registering for yourself or others?"
                 modal={false}
@@ -51,30 +53,35 @@ class RegistrationCheckDialog extends Component {
                 autoScrollBodyContent={true}
             >
                 <br />
-                <RaisedButton 
-                    primary={true} 
+                <RaisedButton
+                    primary={true}
                     label="Self"
                     fullWidth={true}
                     style={style.selfBtn}
                     onTouchTap={this.handleSelfRegistration.bind(this)}
                 />
-                <RaisedButton 
-                    secondary={true} 
+                <RaisedButton
+                    secondary={true}
                     label="Others"
                     fullWidth={true}
                     onTouchTap={this.handleOthersRegistration.bind(this)}
                 />
-                <Link to="/profile"><h5 style={style.h5}>Or update profile for faster registration in future!</h5></Link>
+                <Link to="/profile">
+                    <h5 style={style.h5}>
+                        Or update profile for faster registration in future!
+                    </h5>
+                </Link>
             </Dialog>
         );
-    }    
+    }
 }
 
 function mapStateToProps(state) {
     return {
-        user: state.profile  
+        user: state.profile
     };
 }
 
-
-export default connect(mapStateToProps, { updateParticipantInfo })(withRouter(RegistrationCheckDialog));
+export default connect(mapStateToProps, { updateParticipantInfo })(
+    withRouter(RegistrationCheckDialog)
+);

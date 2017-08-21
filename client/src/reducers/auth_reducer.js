@@ -12,18 +12,18 @@ const initialState = {
 };
 
 export default function(state = { ...initialState }, action) {
-	switch(action.type) {
+	switch (action.type) {
 		case AUTH_USER:
-			return { ...state, error:'', authenticated: true };
+			return { ...state, error: '', authenticated: true };
 		case UNAUTH_USER:
 			return { ...state, authenticated: false };
 		case AUTH_SIGNIN_ERROR:
 			return { ...state, signinError: action.payload };
 		case AUTH_SIGNUP_ERROR:
 			return { ...state, signupError: action.payload };
-		case OPEN_AUTH_DIALOG: 
+		case OPEN_AUTH_DIALOG:
 			return { ...state, authDialogOpen: true };
-		case CLOSE_AUTH_DIALOG: 
+		case CLOSE_AUTH_DIALOG:
 			return { ...state, authDialogOpen: false };
 	}
 

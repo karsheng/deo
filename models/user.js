@@ -11,27 +11,29 @@ const UserSchema = new Schema({
 	fullName: { type: String },
 	email: { type: String, unique: true, lowercase: true },
 	password: String,
-    phone: String,
+	phone: String,
 	gender: { type: Boolean },
 	identityNumber: String,
-    nationality: String,
-    countryOfResidence: String,
+	nationality: String,
+	countryOfResidence: String,
 	city: { type: String },
 	postcode: { type: String },
 	state: { type: String },
-	registrations: [{
-		type: Schema.Types.ObjectId,
-		ref: 'registration'
-	}],
+	registrations: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: 'registration'
+		}
+	],
 	emergencyContact: {
-        name: String,
-        relationship: String,
-        phone: String
-    },
-    medicalCondition: {
-        yes: { type: Boolean },
-        description: String,
-    },
+		name: String,
+		relationship: String,
+		phone: String
+	},
+	medicalCondition: {
+		yes: { type: Boolean },
+		description: String
+	},
 	interests: [String],
 	dateOfBirth: {
 		type: Date
@@ -41,14 +43,14 @@ const UserSchema = new Schema({
 		default: false
 	},
 	postalAddress: {
-        line1: String,
-        line2: String,
-        line3: String,
-        city: String,
-        state: String,
-        postcode: String,
-        country: String
-    },
+		line1: String,
+		line2: String,
+		line3: String,
+		city: String,
+		state: String,
+		postcode: String,
+		country: String
+	},
 	loginAttempts: { type: Number, required: true, default: 0 },
 	lockUntil: { type: Number }
 });
@@ -58,23 +60,26 @@ UserSchema.virtual('isLocked').get(function() {
 	return !!(this.lockUntil && this.lockUntil > Date.now());
 });
 
-
 // On Save Hook, encrypt password
 // Before saving a model, run this function
 UserSchema.pre('save', function(next) {
 	// get access to the user model
 	const user = this;
 
-	if (!user.isModified('password')) { 
-		return next(); 
+	if (!user.isModified('password')) {
+		return next();
 	}
 	// generate a salt then run callback
 	bcrypt.genSalt(10, function(err, salt) {
-		if (err) { return next(err); }
+		if (err) {
+			return next(err);
+		}
 
 		// hash (encrypt) our password using the salt
 		bcrypt.hash(user.password, salt, null, function(err, hash) {
-			if (err) { return next(err); }
+			if (err) {
+				return next(err);
+			}
 
 			// overwrite plain text password with encrypted password
 			user.password = hash;
@@ -83,21 +88,25 @@ UserSchema.pre('save', function(next) {
 	});
 });
 
-UserSchema.methods.comparePassword = function(candidatePassword, callback){
+UserSchema.methods.comparePassword = function(candidatePassword, callback) {
 	bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-		if (err) { return callback(err); }
+		if (err) {
+			return callback(err);
+		}
 		callback(null, isMatch);
 	});
 };
 
-
 UserSchema.methods.incLoginAttempts = function(cb) {
 	// if we have a previous lock that has expired, restart at 1
 	if (this.lockUntil && this.lockUntil < Date.now()) {
-		return this.update({
-			$set: { loginAttempts: 1 },
-			$unset: { lockUntil: 1 }
-		}, cb);
+		return this.update(
+			{
+				$set: { loginAttempts: 1 },
+				$unset: { lockUntil: 1 }
+			},
+			cb
+		);
 	}
 	// otherwise we're incrementing
 	const updates = { $inc: { loginAttempts: 1 } };
@@ -108,12 +117,12 @@ UserSchema.methods.incLoginAttempts = function(cb) {
 	return this.update(updates, cb);
 };
 
-// expose enum on the model, and provide an internal convenience reference 
-const reasons = UserSchema.statics.failedLogin = {
+// expose enum on the model, and provide an internal convenience reference
+const reasons = (UserSchema.statics.failedLogin = {
 	NOT_FOUND: 0,
 	PASSWORD_INCORRECT: 1,
 	MAX_ATTEMPTS: 2
-};
+});
 
 UserSchema.statics.getAuthenticated = function(email, password, cb) {
 	this.findOne({ email: email }, function(err, user) {

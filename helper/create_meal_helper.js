@@ -12,8 +12,8 @@ module.exports = (token, name, price, description, imageUrl) => {
 				description,
 				imageUrl
 			})
-			.end((err, res) => {	
+			.end((err, res) => {
 				resolve(res.body);
 			});
 	});
-}
+};

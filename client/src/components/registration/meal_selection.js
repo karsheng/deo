@@ -13,11 +13,11 @@ import Divider from 'material-ui/Divider';
 
 const style = {
 	paper: {
-		height: "100%",
-		width: "100%",
-		maxWidth: "768px",
-		margin: "auto",
-		padding: "20px"		
+		height: '100%',
+		width: '100%',
+		maxWidth: '768px',
+		margin: 'auto',
+		padding: '20px'
 	},
 	nextBtn: {
 		float: 'right'
@@ -25,66 +25,66 @@ const style = {
 };
 
 class MealSelection extends Component {
-
 	componentWillMount() {
 		const { selectedCategory, selectedMeals } = this.props;
 		const { event_id } = this.props.match.params;
 
 		if (!selectedCategory) return this.props.history.push(`/event/${event_id}`);
-		if (selectedCategory.event !== event_id) return this.props.history.push(`/event/${event_id}`);
+		if (selectedCategory.event !== event_id)
+			return this.props.history.push(`/event/${event_id}`);
 		// if selectedMeals' event is not equal to event_id
 		// set selectedMeals to {} with resetMealSelection action
-		if (!_.findKey(selectedMeals, { event: event_id })) this.props.resetMealSelection();
+		if (!_.findKey(selectedMeals, { event: event_id }))
+			this.props.resetMealSelection();
 		this.props.updateStepper(2);
 	}
-	
+
 	componentDidMount() {
 		window.scrollTo(0, 0);
 	}
 
 	renderMealForm(event) {
-		return event.meals.map((meal) => {
-			return(
-				<MealCard
-					key={meal._id} 
-					meal={meal}
-					event={event}
-				/>
-			);
+		return event.meals.map(meal => {
+			return <MealCard key={meal._id} meal={meal} event={event} />;
 		});
 	}
 
-	render()	{
+	render() {
 		const { event } = this.props;
 		if (!event) {
-			return(
-				<CircularProgress />
-			);
+			return <CircularProgress />;
 		}
 
-		return(
+		return (
 			<div>
 				<Stepper />
-				<Paper zDepth={3} style={style.paper} >
-					<h2>{event.name}</h2>
+				<Paper zDepth={3} style={style.paper}>
+					<h2>
+						{event.name}
+					</h2>
 					<h3>Step 3: Order Meal</h3>
 					<div className="row">
 						{this.renderMealForm(event)}
 					</div>
 					<div>
-					<br /><br /><br /><br />
-					<Divider />
-					<br />					
-						<RaisedButton 
+						<br />
+						<br />
+						<br />
+						<br />
+						<Divider />
+						<br />
+						<RaisedButton
 							label="Back"
 							secondary={true}
-							onTouchTap={() => this.props.history.push(`/registration/category/${event._id}`)}
+							onTouchTap={() =>
+								this.props.history.push(`/registration/category/${event._id}`)}
 						/>
-						<RaisedButton 
+						<RaisedButton
 							label="Next"
 							primary={true}
 							style={style.nextBtn}
-							onTouchTap={() => this.props.history.push(`/registration/checkout/${event._id}`)}
+							onTouchTap={() =>
+								this.props.history.push(`/registration/checkout/${event._id}`)}
 						/>
 					</div>
 				</Paper>
@@ -101,4 +101,6 @@ function mapStateToProps(state, ownProps) {
 	};
 }
 
-export default connect(mapStateToProps, { resetMealSelection, updateStepper })(MealSelection);
+export default connect(mapStateToProps, { resetMealSelection, updateStepper })(
+	MealSelection
+);

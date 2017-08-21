@@ -10,4 +10,4 @@ module.exports = (token, registration) => {
 				resolve(res.body);
 			});
 	});
-}
+};

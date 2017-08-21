@@ -1,7 +1,7 @@
 import { UPDATE_STEPPER } from '../actions/types';
 
-export default function(state =[], action) {
-	switch(action.type) {
+export default function(state = [], action) {
+	switch (action.type) {
 		case UPDATE_STEPPER:
 			return changeStepperState(action.payload);
 	}
@@ -12,7 +12,7 @@ export default function(state =[], action) {
 function changeStepperState(step) {
 	let stepperState = [];
 
-	for(let i = 0; i < 4; i++) {
+	for (let i = 0; i < 4; i++) {
 		if (i <= step) {
 			stepperState.push(false);
 		} else {

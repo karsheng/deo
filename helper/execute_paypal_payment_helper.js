@@ -7,11 +7,11 @@ module.exports = (token, registration, payment_id, payer_id) => {
 			.post(`/api/paypal/execute-payment/${registration._id}`)
 			.set('authorization', token)
 			.send({
-				payment_id, 
+				payment_id,
 				payer_id
 			})
 			.end((err, res) => {
 				resolve(res.body);
 			});
 	});
-}
+};

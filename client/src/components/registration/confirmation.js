@@ -6,15 +6,15 @@ import Paper from 'material-ui/Paper';
 
 const style = {
 	paper: {
-		height: "100%",
-		width: "100%",
-		maxWidth: "768px",
-		margin: "auto",
-		padding: "20px",
-		marginTop: "30px"
+		height: '100%',
+		width: '100%',
+		maxWidth: '768px',
+		margin: 'auto',
+		padding: '20px',
+		marginTop: '30px'
 	},
 	h4: {
-		textAlign: "center"
+		textAlign: 'center'
 	}
 };
 
@@ -26,7 +26,7 @@ class ConfirmationPage extends Component {
 			// if registration is not paid, redirect to payment
 			if (!registration.paid) {
 				this.props.history.push(`/registration/payment/${registration_id}`);
-			} 
+			}
 		});
 	}
 
@@ -36,13 +36,21 @@ class ConfirmationPage extends Component {
 
 	render() {
 		const { event, totalBill, participant } = this.props.info;
-		return(
+		return (
 			<Paper zDepth={3} style={style.paper}>
 				<h2>Confirmation</h2>
-				<h3>{event.name}</h3>
-				<p>Total: RM {totalBill.toFixed(2)}</p>
-				<br /><br />
-				<h4 style={style.h4}>Thank you for registering with us! A confirmation email will be sent to {participant.email}.</h4>
+				<h3>
+					{event.name}
+				</h3>
+				<p>
+					Total: RM {totalBill.toFixed(2)}
+				</p>
+				<br />
+				<br />
+				<h4 style={style.h4}>
+					Thank you for registering with us! A confirmation email will be sent
+					to {participant.email}.
+				</h4>
 			</Paper>
 		);
 	}
@@ -50,8 +58,11 @@ class ConfirmationPage extends Component {
 
 function mapStateToProps(state) {
 	return {
-		info: state.registration.info		
+		info: state.registration.info
 	};
 }
 
-export default connect(mapStateToProps, { fetchRegistrationInfo, openSnackbar })(ConfirmationPage);
+export default connect(mapStateToProps, {
+	fetchRegistrationInfo,
+	openSnackbar
+})(ConfirmationPage);

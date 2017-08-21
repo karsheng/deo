@@ -1,13 +1,10 @@
-import _ from "lodash";
-import React, { Component } from "react";
-import withScriptjs from "react-google-maps/lib/async/withScriptjs";
-import CircularProgress from "material-ui/CircularProgress";
-import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+import _ from 'lodash';
+import React, { Component } from 'react';
+import withScriptjs from 'react-google-maps/lib/async/withScriptjs';
+import CircularProgress from 'material-ui/CircularProgress';
+import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 
-const EventMapGoogle = _.flowRight(
-  withScriptjs,
-  withGoogleMap
-)(props =>
+const EventMapGoogle = _.flowRight(withScriptjs, withGoogleMap)(props =>
   <GoogleMap
     defaultZoom={18}
     defaultCenter={{ lat: props.lat, lng: props.lng }}

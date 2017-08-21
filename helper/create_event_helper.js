@@ -11,4 +11,4 @@ module.exports = (token, name) => {
 				resolve(res.body);
 			});
 	});
-}
+};

@@ -20,31 +20,51 @@ import EditProfile from './components/profile/edit_profile';
 import Registrations from './components/profile/registrations';
 import ContactForm from './components/contact/contact_form';
 
-
 export default class App extends Component {
 	render() {
-		return(
+		return (
 			<div>
 				<Header />
 				<div>
 					<Switch>
-						<Route path="/registration/confirmation/:registration_id" component={RequireAuth(ConfirmationPage)} />
-						<Route path="/registration/participant/:event_id" component={RequireAuth(ParticipantForm)} />
-						<Route path="/registration/category/:event_id" component={RequireAuth(CategorySelection)} />
-						<Route path="/registration/checkout/:event_id" component={RequireAuth(Checkout)} />
-						<Route path="/registration/payment/:registration_id" component={RequireAuth(Payment)} />
-						<Route path="/registration/meal/:event_id" component={RequireAuth(MealSelection)} />
-						<Route path="/profile/registrations" component={RequireAuth(Registrations)} />
+						<Route
+							path="/registration/confirmation/:registration_id"
+							component={RequireAuth(ConfirmationPage)}
+						/>
+						<Route
+							path="/registration/participant/:event_id"
+							component={RequireAuth(ParticipantForm)}
+						/>
+						<Route
+							path="/registration/category/:event_id"
+							component={RequireAuth(CategorySelection)}
+						/>
+						<Route
+							path="/registration/checkout/:event_id"
+							component={RequireAuth(Checkout)}
+						/>
+						<Route
+							path="/registration/payment/:registration_id"
+							component={RequireAuth(Payment)}
+						/>
+						<Route
+							path="/registration/meal/:event_id"
+							component={RequireAuth(MealSelection)}
+						/>
+						<Route
+							path="/profile/registrations"
+							component={RequireAuth(Registrations)}
+						/>
 						<Route path="/profile/edit" component={RequireAuth(EditProfile)} />
-				    	<Route path="/profile" component={RequireAuth(UserProfile)} />
+						<Route path="/profile" component={RequireAuth(UserProfile)} />
 						<Route path="/event/browse" component={EventBrowse} />
 						<Route path="/event/:_id" component={EventPage} />
 						<Route path="/contact" component={ContactForm} />
 						<Route path="/signin" component={Signin} />
 						<Route path="/signout" component={Signout} />
 						<Route path="/signup" component={Signup} />
-					    <Route path="/" component={WelcomePage} />					
-					</Switch>				
+						<Route path="/" component={WelcomePage} />
+					</Switch>
 				</div>
 			</div>
 		);

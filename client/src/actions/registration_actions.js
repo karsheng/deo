@@ -10,7 +10,7 @@ import {
 } from './types';
 
 export function selectCategory(category, cb) {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: SELECT_CATEGORY,
 			payload: category
@@ -20,9 +20,9 @@ export function selectCategory(category, cb) {
 }
 
 export function selectMeal({ meal, quantity, event }) {
-	// event is included to verify if 
+	// event is included to verify if
 	// selectedMeal is for which event
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: SELECT_MEAL,
 			payload: { meal, quantity, event }
@@ -31,7 +31,7 @@ export function selectMeal({ meal, quantity, event }) {
 }
 
 export function deselectMeal(meal_id) {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: DESELECT_MEAL,
 			payload: meal_id
@@ -40,7 +40,7 @@ export function deselectMeal(meal_id) {
 }
 
 export function resetMealSelection() {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: RESET_MEAL_SELECTION
 		});
@@ -48,7 +48,7 @@ export function resetMealSelection() {
 }
 
 export function setTotalPrice(totalPrice) {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: SET_TOTAL_PRICE,
 			payload: totalPrice
@@ -56,28 +56,32 @@ export function setTotalPrice(totalPrice) {
 	};
 }
 
-export function createRegistration({ event, category, orders, participant, registerForSelf }, cb) {
+export function createRegistration(
+	{ event, category, orders, participant, registerForSelf },
+	cb
+) {
 	const token = localStorage.getItem('deotoken');
-	
+
 	let config = {
-    	headers: { authorization: token }
+		headers: { authorization: token }
 	};
-	
+
 	delete participant._id;
-	
+
 	return function(dispatch) {
-		axios.post(
-			`${ROOT_URL}/api/event/register/${event._id}`,
-			{ category, orders, participant, registerForSelf },
-			config
-		)
-		.then(response => {
-			cb(null, response.data);
-		})
-		.catch(err => {
-			console.log(err);
-			cb(err, null);
-		});
+		axios
+			.post(
+				`${ROOT_URL}/api/event/register/${event._id}`,
+				{ category, orders, participant, registerForSelf },
+				config
+			)
+			.then(response => {
+				cb(null, response.data);
+			})
+			.catch(err => {
+				console.log(err);
+				cb(err, null);
+			});
 	};
 }
 
@@ -85,22 +89,20 @@ export function fetchRegistrationInfo(registration_id, cb) {
 	const token = localStorage.getItem('deotoken');
 
 	let config = {
-    headers: { authorization: token }
-  };
+		headers: { authorization: token }
+	};
 	return function(dispatch) {
-		axios.get(
-			`${ROOT_URL}/api/registration/${registration_id}`,
-			config
-		)
-		.then(response => {
-			dispatch({
-				type: FETCH_REGISTRATION_INFO,
-				payload: response.data
+		axios
+			.get(`${ROOT_URL}/api/registration/${registration_id}`, config)
+			.then(response => {
+				dispatch({
+					type: FETCH_REGISTRATION_INFO,
+					payload: response.data
+				});
+				cb(response.data);
+			})
+			.catch(err => {
+				console.log(err);
 			});
-			cb(response.data);
-		})
-		.catch(err => {
-			console.log(err);
-		});
-	};	
+	};
 }

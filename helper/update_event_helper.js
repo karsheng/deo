@@ -1,5 +1,5 @@
-const request = require("supertest");
-const app = require("../app");
+const request = require('supertest');
+const app = require('../app');
 
 module.exports = (
 	token,
@@ -26,7 +26,7 @@ module.exports = (
 	return new Promise((resolve, reject) => {
 		request(app)
 			.put(`/api/admin/event/${event_id}`)
-			.set("admin-authorization", token)
+			.set('admin-authorization', token)
 			.send({
 				name,
 				datetime,

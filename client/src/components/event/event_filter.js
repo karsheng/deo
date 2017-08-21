@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import SelectField from "material-ui/SelectField";
-import { connect } from "react-redux";
-import { fetchSpecificEvents } from "../../actions/event_actions";
-import MenuItem from "material-ui/MenuItem";
-import { STATESNAME } from "../../constants";
+import React, { Component } from 'react';
+import SelectField from 'material-ui/SelectField';
+import { connect } from 'react-redux';
+import { fetchSpecificEvents } from '../../actions/event_actions';
+import MenuItem from 'material-ui/MenuItem';
+import { STATESNAME } from '../../constants';
 
 const style = {
-	selectField: { 
+	selectField: {
 		maxWidth: '176px',
-		marginRight: '30px' 
+		marginRight: '30px'
 	}
 };
 

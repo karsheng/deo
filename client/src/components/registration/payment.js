@@ -9,12 +9,12 @@ import FakePaymentButton from './fake_payment_button';
 
 const style = {
 	paper: {
-		height: "100%",
-		width: "100%",
-		maxWidth: "768px",
-		margin: "auto",
-		padding: "20px"	,
-		marginTop: "30px"
+		height: '100%',
+		width: '100%',
+		maxWidth: '768px',
+		margin: 'auto',
+		padding: '20px',
+		marginTop: '30px'
 	}
 };
 
@@ -26,22 +26,30 @@ class Payment extends Component {
 
 	render() {
 		const { event, totalBill } = this.props.info;
-		
+
 		if (!event) {
-			return(
+			return (
 				<div>
 					<Progress />
 				</div>
 			);
-		} 
-		return(
+		}
+		return (
 			<Paper zDepth={3} style={style.paper}>
 				<h2>Payment</h2>
-				<h3>{event.name}</h3>
-				<h4>Total: RM {totalBill.toFixed(2)}</h4>
-				<br /><br /><br /><br />
-				<h6 style={{ textAlign: "center" }}>
-					This is to simulate payment by user. Payment system will be integrated as part of Milestone 2
+				<h3>
+					{event.name}
+				</h3>
+				<h4>
+					Total: RM {totalBill.toFixed(2)}
+				</h4>
+				<br />
+				<br />
+				<br />
+				<br />
+				<h6 style={{ textAlign: 'center' }}>
+					This is to simulate payment by user. Payment system will be integrated
+					as part of Milestone 2
 				</h6>
 				<FakePaymentButton
 					regId={this.props.info._id}
@@ -49,7 +57,7 @@ class Payment extends Component {
 				/>
 			</Paper>
 		);
-	}	
+	}
 }
 
 function mapStateToProps(state) {

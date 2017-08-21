@@ -10,24 +10,23 @@ import { Link } from 'react-router-dom';
 
 const style = {
 	paper: {
-		height: "100%",
-		width: "100%",
-		maxWidth: "500px",
-		margin: "30px auto",
-		padding: "20px"
+		height: '100%',
+		width: '100%',
+		maxWidth: '500px',
+		margin: '30px auto',
+		padding: '20px'
 	}
 };
 
 class Signin extends Component {
-
 	handleFormSubmit({ email, password }) {
 		return new Promise((resolve, reject) => {
-			return this.props.signinUser({ email, password }, (err) => {
+			return this.props.signinUser({ email, password }, err => {
 				if (err) return resolve();
 				this.props.openSnackbar(`Signed in as ${email}`);
-	    		this.props.history.push('/');
-	    		resolve();
-			});	
+				this.props.history.push('/');
+				resolve();
+			});
 		});
 	}
 
@@ -42,8 +41,8 @@ class Signin extends Component {
 	}
 
 	render() {
-		const { handleSubmit, pristine, submitting} = this.props;
-		return(
+		const { handleSubmit, pristine, submitting } = this.props;
+		return (
 			<Paper zDepth={3} style={style.paper}>
 				<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
 					<h2>Sign In</h2>
@@ -53,21 +52,31 @@ class Signin extends Component {
 						type="text"
 						component={renderField}
 					/>
-					<br/>
+					<br />
 					<Field
 						label="Password"
 						name="password"
 						type="password"
 						component={renderField}
 					/>
-					<br/>
+					<br />
 					{this.renderAlert()}
-					<br/>
-					<br/>
-					<RaisedButton primary={true} type="submit" label="Login" className="button-submit" disabled={pristine || submitting} ></RaisedButton>
-					<br /><br />
-					<h5>Not a member? <Link to="/signup">Sign up here!</Link></h5>
-        			<br /><br />
+					<br />
+					<br />
+					<RaisedButton
+						primary={true}
+						type="submit"
+						label="Login"
+						className="button-submit"
+						disabled={pristine || submitting}
+					/>
+					<br />
+					<br />
+					<h5>
+						Not a member? <Link to="/signup">Sign up here!</Link>
+					</h5>
+					<br />
+					<br />
 				</form>
 			</Paper>
 		);
@@ -80,9 +89,4 @@ function mapStateToProps(state) {
 
 export default reduxForm({
 	form: 'signin'
-})(
-	connect(mapStateToProps, { ...actions, openSnackbar })(Signin)
-);
-
-
-
+})(connect(mapStateToProps, { ...actions, openSnackbar })(Signin));
